@@ -1,4 +1,4 @@
-package opnsense
+package api
 
 import (
 	"bytes"
@@ -12,7 +12,6 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
-	"sync"
 	"time"
 )
 
@@ -24,18 +23,7 @@ const (
 
 type Client struct {
 	client *retryablehttp.Client
-
-	// Controllers
-	Routes     *routes
-	Interfaces *interfaces
-	Unbound    *unbound
-
-	opts Options
-}
-
-type controller interface {
-	Client() *Client
-	Mutex() *sync.Mutex
+	opts   Options
 }
 
 type Options struct {
@@ -76,11 +64,6 @@ func NewClient(options Options) *Client {
 	if options.MaxRetries != 0 {
 		client.client.RetryMax = int(options.MaxRetries)
 	}
-
-	// Add controllers
-	client.Routes = newRoutes(client)
-	client.Interfaces = newInterfaces(client)
-	client.Unbound = newUnbound(client)
 
 	return client
 }

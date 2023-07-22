@@ -1,4 +1,9 @@
-package opnsense
+package api
+
+type Controller interface {
+	Client() *Client
+	Name() string
+}
 
 // Response structs
 type addResp struct {

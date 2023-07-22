@@ -1,4 +1,4 @@
-package opnsense
+package api
 
 import "encoding/json"
 
