@@ -1,4 +1,4 @@
-package opnsense
+package api
 
 import (
 	"context"
@@ -6,13 +6,13 @@ import (
 	"reflect"
 )
 
-// makeSetFunc creates a func that creates/updates the resource
-func makeSetFunc(c controller, endpoint string, reconfigureEndpoint string) func(ctx context.Context, data any) (string, error) {
+// MakeSetFunc creates a func that creates/updates the resource
+func MakeSetFunc(c Controller, endpoint string, reconfigureEndpoint string) func(ctx context.Context, data any) (string, error) {
 	return func(ctx context.Context, data any) (string, error) {
 		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 		// the API from being written to while it's reconfiguring, which results in data loss.
-		c.Mutex().Lock()
-		defer c.Mutex().Unlock()
+		GlobalMutexKV.Lock(c.Name(), ctx)
+		defer GlobalMutexKV.Unlock(c.Name(), ctx)
 
 		// Make request to OPNsense
 		respJson := &addResp{}
@@ -36,10 +36,10 @@ func makeSetFunc(c controller, endpoint string, reconfigureEndpoint string) func
 	}
 }
 
-// makeGetFunc creates a func that reads the resource
-func makeGetFunc[K any](c *Client, endpoint string, data *K) func(ctx context.Context, id string) (*K, error) {
+// MakeGetFunc creates a func that reads the resource
+func MakeGetFunc[K any](c Controller, endpoint string, data *K) func(ctx context.Context, id string) (*K, error) {
 	return func(ctx context.Context, id string) (*K, error) {
-		err := c.doRequest(ctx, "GET",
+		err := c.Client().doRequest(ctx, "GET",
 			fmt.Sprintf("%s/%s", endpoint, id), nil, data)
 
 		// Handle errors
@@ -57,13 +57,13 @@ func makeGetFunc[K any](c *Client, endpoint string, data *K) func(ctx context.Co
 	}
 }
 
-// makeDeleteFunc creates a func that deletes the resource
-func makeDeleteFunc(c controller, endpoint, reconfigureEndpoint string) func(ctx context.Context, id string) error {
+// MakeDeleteFunc creates a func that deletes the resource
+func MakeDeleteFunc(c Controller, endpoint, reconfigureEndpoint string) func(ctx context.Context, id string) error {
 	return func(ctx context.Context, id string) error {
 		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 		// the API from being written to while it's reconfiguring, which results in data loss.
-		c.Mutex().Lock()
-		defer c.Mutex().Unlock()
+		GlobalMutexKV.Lock(c.Name(), ctx)
+		defer GlobalMutexKV.Unlock(c.Name(), ctx)
 
 		respJson := &deleteResp{}
 		err := c.Client().doRequest(ctx, "POST", fmt.Sprintf("%s/%s", endpoint, id), nil, respJson)
