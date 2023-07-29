@@ -11,8 +11,8 @@ func MakeSetFunc(c Controller, endpoint string, reconfigureEndpoint string) func
 	return func(ctx context.Context, data any) (string, error) {
 		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 		// the API from being written to while it's reconfiguring, which results in data loss.
-		GlobalMutexKV.Lock(c.Name(), ctx)
-		defer GlobalMutexKV.Unlock(c.Name(), ctx)
+		GlobalMutexKV.Lock(clientMutexKey, ctx)
+		defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 		// Make request to OPNsense
 		respJson := &addResp{}
@@ -62,8 +62,8 @@ func MakeDeleteFunc(c Controller, endpoint, reconfigureEndpoint string) func(ctx
 	return func(ctx context.Context, id string) error {
 		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 		// the API from being written to while it's reconfiguring, which results in data loss.
-		GlobalMutexKV.Lock(c.Name(), ctx)
-		defer GlobalMutexKV.Unlock(c.Name(), ctx)
+		GlobalMutexKV.Lock(clientMutexKey, ctx)
+		defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 		respJson := &deleteResp{}
 		err := c.Client().doRequest(ctx, "POST", fmt.Sprintf("%s/%s", endpoint, id), nil, respJson)

@@ -25,6 +25,8 @@ const (
 	clientMaxRetries = 4
 )
 
+var clientMutexKey = "OPNSENSE"
+
 type Client struct {
 	client *retryablehttp.Client
 	opts   Options
