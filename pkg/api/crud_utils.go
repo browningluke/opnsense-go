@@ -2,86 +2,120 @@ package api
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"reflect"
+	"github.com/browningluke/opnsense-go/pkg/errs"
 )
 
-// MakeSetFunc creates a func that creates/updates the resource
-func MakeSetFunc(c Controller, endpoint string, reconfigureEndpoint string) func(ctx context.Context, data any) (string, error) {
-	return func(ctx context.Context, data any) (string, error) {
-		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
-		// the API from being written to while it's reconfiguring, which results in data loss.
-		GlobalMutexKV.Lock(clientMutexKey, ctx)
-		defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
-
-		// Make request to OPNsense
-		respJson := &addResp{}
-		err := c.Client().doRequest(ctx, "POST", endpoint, data, respJson)
-		if err != nil {
-			return "", err
-		}
-
-		// Validate result
-		if respJson.Result != "saved" {
-			return "", fmt.Errorf("resource not changed. result: %s. errors: %s", respJson.Result, respJson.Validations)
-		}
-
-		// Reconfigure (i.e. restart) the OPNsense service
-		err = c.Client().ReconfigureService(ctx, reconfigureEndpoint)
-		if err != nil {
-			return "", err
-		}
-
-		return respJson.UUID, nil
+func resourceWrap[K any](monad string, resource K) map[string]K {
+	return map[string]K{
+		monad: resource,
 	}
 }
 
-// MakeGetFunc creates a func that reads the resource
-func MakeGetFunc[K any](c Controller, endpoint string, data *K) func(ctx context.Context, id string) (*K, error) {
-	return func(ctx context.Context, id string) (*K, error) {
-		err := c.Client().doRequest(ctx, "GET",
-			fmt.Sprintf("%s/%s", endpoint, id), nil, data)
+func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.RawMessage) error {
+	wrapped := reqData[monad]
 
-		// Handle errors
-		if err != nil {
+	if err := json.Unmarshal(wrapped, resource); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpoint string) (string, error) {
+	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
+	// the API from being written to while it's reconfiguring, which results in data loss.
+	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
+
+	// Wrap resource
+	wrapped := resourceWrap(opts.Monad, resource)
+
+	// Make request to OPNsense
+	respJson := &addResp{}
+	err := c.doRequest(ctx, "POST", endpoint, wrapped, respJson)
+	if err != nil {
+		return "", err
+	}
+
+	// Validate result
+	if respJson.Result != "saved" {
+		return "", fmt.Errorf("resource not changed. result: %s. errors: %s", respJson.Result, respJson.Validations)
+	}
+
+	// Reconfigure (i.e. restart) the OPNsense service
+	err = c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
+	if err != nil {
+		return respJson.UUID, err
+	}
+
+	return respJson.UUID, nil
+}
+
+func Add[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K) (string, error) {
+	return set(c, ctx, opts, resource, opts.AddEndpoint)
+}
+
+func Update[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) error {
+	_, err := set(c, ctx, opts, resource, fmt.Sprintf("%s/%s", opts.ReconfigureEndpoint, id))
+	return err
+}
+
+func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) (*K, error) {
+	// Get generic data
+	var reqData map[string]json.RawMessage
+
+	// Make request to OPNsense
+	err := c.doRequest(ctx, "GET",
+		fmt.Sprintf("%s/%s", opts.GetEndpoint, id), nil, &reqData)
+
+	// Handle request errors
+	if err != nil {
+		switch err.(type) {
+		case *json.UnmarshalTypeError:
 			// Handle unmarshal error (means ID is invalid, or was deleted upstream)
-			if err.Error() == fmt.Sprintf("json: cannot unmarshal array into Go value of type %s",
-				reflect.TypeOf(data).Elem().String()) {
-				return nil, fmt.Errorf("unable to find resource. it may have been deleted upstream")
-			}
-
-			return nil, err
+			return nil, errs.NewNotFoundError()
 		}
-
-		return data, nil
+		return nil, err
 	}
+
+	// Unwrap json
+	err = resourceUnwrap(opts.Monad, resource, reqData)
+	if err != nil {
+		return nil, err
+	}
+
+	// Handle unwrap errors
+	if err != nil {
+		return nil, err
+	}
+
+	return resource, nil
 }
 
-// MakeDeleteFunc creates a func that deletes the resource
-func MakeDeleteFunc(c Controller, endpoint, reconfigureEndpoint string) func(ctx context.Context, id string) error {
-	return func(ctx context.Context, id string) error {
-		// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
-		// the API from being written to while it's reconfiguring, which results in data loss.
-		GlobalMutexKV.Lock(clientMutexKey, ctx)
-		defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
+func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
+	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
+	// the API from being written to while it's reconfiguring, which results in data loss.
+	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
-		respJson := &deleteResp{}
-		err := c.Client().doRequest(ctx, "POST", fmt.Sprintf("%s/%s", endpoint, id), nil, respJson)
-		if err != nil {
-			return err
-		}
-
-		// Validate that override was deleted
-		if respJson.Result != "deleted" {
-			return fmt.Errorf("resource not deleted. result: %s", respJson.Result)
-		}
-
-		// Reconfigure (i.e. restart) the OPNsense service
-		err = c.Client().ReconfigureService(ctx, reconfigureEndpoint)
-		if err != nil {
-			return err
-		}
-
-		return nil
+	respJson := &deleteResp{}
+	err := c.doRequest(ctx, "POST", fmt.Sprintf("%s/%s", opts.DeleteEndpoint, id), nil, respJson)
+	if err != nil {
+		return err
 	}
+
+	// Validate that override was deleted
+	if respJson.Result != "deleted" {
+		return fmt.Errorf("resource not deleted. result: %s", respJson.Result)
+	}
+
+	// Reconfigure (i.e. restart) the OPNsense service
+	err = c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
