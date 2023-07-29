@@ -9,10 +9,13 @@ import (
 	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/errs"
 	"github.com/hashicorp/go-retryablehttp"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"strings"
 	"time"
 )
 
@@ -137,14 +140,17 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 	respJson := &struct {
 		Status string `json:"status"`
 	}{}
-	err := c.doRequest(ctx, "POST", "/unbound/service/reconfigure", nil, respJson)
+	err := c.doRequest(ctx, "POST", endpoint, nil, respJson)
 	if err != nil {
 		return err
 	}
 
-	// Validate unbound restarted correctly
-	if respJson.Status != "ok" {
-		return fmt.Errorf("reconfigure failed. status: %s", respJson.Status)
+	// Validate service restarted correctly
+	status := cases.Lower(language.English).String(
+		strings.TrimSpace(respJson.Status),
+	)
+	if status != "ok" {
+		return fmt.Errorf("reconfigure failed. status: %s", status)
 	}
 
 	return nil
