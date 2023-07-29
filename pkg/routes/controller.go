@@ -14,7 +14,3 @@ type Controller struct {
 func (c *Controller) Client() *api.Client {
 	return c.Api
 }
-
-func (c *Controller) Name() string {
-	return "routes"
-}

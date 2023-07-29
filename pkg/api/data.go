@@ -2,7 +2,6 @@ package api
 
 type Controller interface {
 	Client() *Client
-	Name() string
 }
 
 // Response structs
