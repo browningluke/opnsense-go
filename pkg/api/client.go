@@ -137,7 +137,7 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 	respJson := &struct {
 		Status string `json:"status"`
 	}{}
-	err := c.doRequest(ctx, "POST", "/unbound/service/reconfigure", nil, respJson)
+	err := c.doRequest(ctx, "POST", endpoint, nil, respJson)
 	if err != nil {
 		return err
 	}
