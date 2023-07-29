@@ -58,7 +58,7 @@ func Add[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K) (stri
 }
 
 func Update[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) error {
-	_, err := set(c, ctx, opts, resource, fmt.Sprintf("%s/%s", opts.ReconfigureEndpoint, id))
+	_, err := set(c, ctx, opts, resource, fmt.Sprintf("%s/%s", opts.UpdateEndpoint, id))
 	return err
 }
 
