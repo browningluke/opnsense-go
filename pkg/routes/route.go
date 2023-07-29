@@ -2,16 +2,17 @@ package routes
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	routesRouteAddEndpoint    = "/routes/routes/addroute"
-	routesRouteGetEndpoint    = "/routes/routes/getroute"
-	routesRouteUpdateEndpoint = "/routes/routes/setroute"
-	routesRouteDeleteEndpoint = "/routes/routes/delroute"
-)
+var RouteOpts = api.ReqOpts{
+	AddEndpoint:         "/routes/routes/addroute",
+	GetEndpoint:         "/routes/routes/getroute",
+	UpdateEndpoint:      "/routes/routes/setroute",
+	DeleteEndpoint:      "/routes/routes/delroute",
+	ReconfigureEndpoint: routesRouteReconfigureEndpoint,
+	Monad:               "route",
+}
 
 // Data structs
 
@@ -24,36 +25,18 @@ type Route struct {
 
 // CRUD operations
 
-func (c *Controller) AddRoute(ctx context.Context, route *Route) (string, error) {
-	return api.MakeSetFunc(c, routesRouteAddEndpoint, routesRouteReconfigureEndpoint)(ctx,
-		map[string]*Route{
-			"route": route,
-		},
-	)
+func (c *Controller) AddRoute(ctx context.Context, resource *Route) (string, error) {
+	return api.Add(c.Client(), ctx, RouteOpts, resource)
 }
 
 func (c *Controller) GetRoute(ctx context.Context, id string) (*Route, error) {
-	get, err := api.MakeGetFunc(c, routesRouteGetEndpoint,
-		&struct {
-			Route Route `json:"route"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Route, nil
+	return api.Get(c.Client(), ctx, RouteOpts, &Route{}, id)
 }
 
-func (c *Controller) UpdateRoute(ctx context.Context, id string, route *Route) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", routesRouteUpdateEndpoint, id),
-		routesRouteReconfigureEndpoint)(ctx,
-		map[string]*Route{
-			"route": route,
-		},
-	)
-	return err
+func (c *Controller) UpdateRoute(ctx context.Context, id string, resource *Route) error {
+	return api.Update(c.Client(), ctx, RouteOpts, resource, id)
 }
 
 func (c *Controller) DeleteRoute(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, routesRouteDeleteEndpoint, routesRouteReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, RouteOpts, id)
 }

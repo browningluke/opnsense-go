@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/browningluke/opnsense-go/pkg/errs"
 	"github.com/hashicorp/go-retryablehttp"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -130,7 +129,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	// Unmarshal resp JSON data to struct
 	err = json.NewDecoder(res.Body).Decode(resp)
 	if err != nil {
-		return errs.NewNotFoundError()
+		return err
 	}
 
 	return nil

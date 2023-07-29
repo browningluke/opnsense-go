@@ -2,16 +2,17 @@ package unbound
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	unboundForwardAddEndpoint    = "/unbound/settings/addDot"
-	unboundForwardGetEndpoint    = "/unbound/settings/getDot"
-	unboundForwardUpdateEndpoint = "/unbound/settings/setDot"
-	unboundForwardDeleteEndpoint = "/unbound/settings/delDot"
-)
+var ForwardOpts = api.ReqOpts{
+	AddEndpoint:         "/unbound/settings/addDot",
+	GetEndpoint:         "/unbound/settings/getDot",
+	UpdateEndpoint:      "/unbound/settings/setDot",
+	DeleteEndpoint:      "/unbound/settings/delDot",
+	ReconfigureEndpoint: unboundReconfigureEndpoint,
+	Monad:               "dot",
+}
 
 // Data structs
 
@@ -27,35 +28,17 @@ type Forward struct {
 // CRUD operations
 
 func (c *Controller) AddForward(ctx context.Context, resource *Forward) (string, error) {
-	return api.MakeSetFunc(c, unboundForwardAddEndpoint, unboundReconfigureEndpoint)(ctx,
-		map[string]*Forward{
-			"dot": resource,
-		},
-	)
+	return api.Add(c.Client(), ctx, ForwardOpts, resource)
 }
 
 func (c *Controller) GetForward(ctx context.Context, id string) (*Forward, error) {
-	get, err := api.MakeGetFunc(c, unboundForwardGetEndpoint,
-		&struct {
-			Dot Forward `json:"dot"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Dot, nil
+	return api.Get(c.Client(), ctx, ForwardOpts, &Forward{}, id)
 }
 
 func (c *Controller) UpdateForward(ctx context.Context, id string, resource *Forward) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", unboundForwardUpdateEndpoint, id),
-		unboundReconfigureEndpoint)(ctx,
-		map[string]*Forward{
-			"dot": resource,
-		},
-	)
-	return err
+	return api.Update(c.Client(), ctx, ForwardOpts, resource, id)
 }
 
 func (c *Controller) DeleteForward(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, unboundForwardDeleteEndpoint, unboundReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, ForwardOpts, id)
 }

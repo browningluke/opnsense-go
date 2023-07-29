@@ -1,7 +1,13 @@
 package api
 
-type Controller interface {
-	Client() *Client
+type ReqOpts struct {
+	AddEndpoint         string
+	GetEndpoint         string
+	UpdateEndpoint      string
+	DeleteEndpoint      string
+	ReconfigureEndpoint string
+
+	Monad string
 }
 
 // Response structs

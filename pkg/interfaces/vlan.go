@@ -2,17 +2,17 @@ package interfaces
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	interfacesVlanReconfigureEndpoint = "/interfaces/vlan_settings/reconfigure"
-	interfacesVlanAddEndpoint         = "/interfaces/vlan_settings/addItem"
-	interfacesVlanGetEndpoint         = "/interfaces/vlan_settings/getItem"
-	interfacesVlanUpdateEndpoint      = "/interfaces/vlan_settings/setItem"
-	interfacesVlanDeleteEndpoint      = "/interfaces/vlan_settings/delItem"
-)
+var VlanOpts = api.ReqOpts{
+	AddEndpoint:         "/interfaces/vlan_settings/addItem",
+	GetEndpoint:         "/interfaces/vlan_settings/getItem",
+	UpdateEndpoint:      "/interfaces/vlan_settings/setItem",
+	DeleteEndpoint:      "/interfaces/vlan_settings/delItem",
+	ReconfigureEndpoint: "/interfaces/vlan_settings/reconfigure",
+	Monad:               "vlan",
+}
 
 // Data structs
 
@@ -26,36 +26,18 @@ type Vlan struct {
 
 // CRUD operations
 
-func (c *Controller) AddVlan(ctx context.Context, vlan *Vlan) (string, error) {
-	return api.MakeSetFunc(c, interfacesVlanAddEndpoint, interfacesVlanReconfigureEndpoint)(ctx,
-		map[string]*Vlan{
-			"vlan": vlan,
-		},
-	)
+func (c *Controller) AddVlan(ctx context.Context, resource *Vlan) (string, error) {
+	return api.Add(c.Client(), ctx, VlanOpts, resource)
 }
 
 func (c *Controller) GetVlan(ctx context.Context, id string) (*Vlan, error) {
-	get, err := api.MakeGetFunc(c, interfacesVlanGetEndpoint,
-		&struct {
-			Vlan Vlan `json:"vlan"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Vlan, nil
+	return api.Get(c.Client(), ctx, VlanOpts, &Vlan{}, id)
 }
 
-func (c *Controller) UpdateVlan(ctx context.Context, id string, vlan *Vlan) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", interfacesVlanUpdateEndpoint, id),
-		interfacesVlanReconfigureEndpoint)(ctx,
-		map[string]*Vlan{
-			"vlan": vlan,
-		},
-	)
-	return err
+func (c *Controller) UpdateVlan(ctx context.Context, id string, resource *Vlan) error {
+	return api.Update(c.Client(), ctx, VlanOpts, resource, id)
 }
 
 func (c *Controller) DeleteVlan(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, interfacesVlanDeleteEndpoint, interfacesVlanReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, VlanOpts, id)
 }

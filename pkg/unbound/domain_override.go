@@ -2,16 +2,17 @@ package unbound
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	unboundDomainOverrideAddEndpoint    = "/unbound/settings/addDomainOverride"
-	unboundDomainOverrideGetEndpoint    = "/unbound/settings/getDomainOverride"
-	unboundDomainOverrideUpdateEndpoint = "/unbound/settings/setDomainOverride"
-	unboundDomainOverrideDeleteEndpoint = "/unbound/settings/delDomainOverride"
-)
+var DomainOverrideOpts = api.ReqOpts{
+	AddEndpoint:         "/unbound/settings/addDomainOverride",
+	GetEndpoint:         "/unbound/settings/getDomainOverride",
+	UpdateEndpoint:      "/unbound/settings/setDomainOverride",
+	DeleteEndpoint:      "/unbound/settings/delDomainOverride",
+	ReconfigureEndpoint: unboundReconfigureEndpoint,
+	Monad:               "domain",
+}
 
 // Data structs
 
@@ -25,35 +26,17 @@ type DomainOverride struct {
 // CRUD operations
 
 func (c *Controller) AddDomainOverride(ctx context.Context, resource *DomainOverride) (string, error) {
-	return api.MakeSetFunc(c, unboundDomainOverrideAddEndpoint, unboundReconfigureEndpoint)(ctx,
-		map[string]*DomainOverride{
-			"domain": resource,
-		},
-	)
+	return api.Add(c.Client(), ctx, DomainOverrideOpts, resource)
 }
 
 func (c *Controller) GetDomainOverride(ctx context.Context, id string) (*DomainOverride, error) {
-	get, err := api.MakeGetFunc(c, unboundDomainOverrideGetEndpoint,
-		&struct {
-			Domain DomainOverride `json:"domain"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Domain, nil
+	return api.Get(c.Client(), ctx, DomainOverrideOpts, &DomainOverride{}, id)
 }
 
 func (c *Controller) UpdateDomainOverride(ctx context.Context, id string, resource *DomainOverride) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", unboundDomainOverrideUpdateEndpoint, id),
-		unboundReconfigureEndpoint)(ctx,
-		map[string]*DomainOverride{
-			"domain": resource,
-		},
-	)
-	return err
+	return api.Update(c.Client(), ctx, DomainOverrideOpts, resource, id)
 }
 
 func (c *Controller) DeleteDomainOverride(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, unboundDomainOverrideDeleteEndpoint, unboundReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, DomainOverrideOpts, id)
 }
