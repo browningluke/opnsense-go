@@ -2,16 +2,17 @@ package unbound
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	unboundHostOverrideAddEndpoint    = "/unbound/settings/addHostOverride"
-	unboundHostOverrideGetEndpoint    = "/unbound/settings/getHostOverride"
-	unboundHostOverrideUpdateEndpoint = "/unbound/settings/setHostOverride"
-	unboundHostOverrideDeleteEndpoint = "/unbound/settings/delHostOverride"
-)
+var HostOverrideOpts = api.ReqOpts{
+	AddEndpoint:         "/unbound/settings/addHostOverride",
+	GetEndpoint:         "/unbound/settings/getHostOverride",
+	UpdateEndpoint:      "/unbound/settings/setHostOverride",
+	DeleteEndpoint:      "/unbound/settings/delHostOverride",
+	ReconfigureEndpoint: unboundReconfigureEndpoint,
+	Monad:               "host",
+}
 
 // Data structs
 
@@ -29,35 +30,17 @@ type HostOverride struct {
 // CRUD operations
 
 func (c *Controller) AddHostOverride(ctx context.Context, resource *HostOverride) (string, error) {
-	return api.MakeSetFunc(c, unboundHostOverrideAddEndpoint, unboundReconfigureEndpoint)(ctx,
-		map[string]*HostOverride{
-			"host": resource,
-		},
-	)
+	return api.Add(c.Client(), ctx, HostOverrideOpts, resource)
 }
 
 func (c *Controller) GetHostOverride(ctx context.Context, id string) (*HostOverride, error) {
-	get, err := api.MakeGetFunc(c, unboundHostOverrideGetEndpoint,
-		&struct {
-			Host HostOverride `json:"host"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Host, nil
+	return api.Get(c.Client(), ctx, HostOverrideOpts, &HostOverride{}, id)
 }
 
 func (c *Controller) UpdateHostOverride(ctx context.Context, id string, resource *HostOverride) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", unboundHostOverrideUpdateEndpoint, id),
-		unboundReconfigureEndpoint)(ctx,
-		map[string]*HostOverride{
-			"host": resource,
-		},
-	)
-	return err
+	return api.Update(c.Client(), ctx, HostOverrideOpts, resource, id)
 }
 
 func (c *Controller) DeleteHostOverride(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, unboundHostOverrideDeleteEndpoint, unboundReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, HostOverrideOpts, id)
 }

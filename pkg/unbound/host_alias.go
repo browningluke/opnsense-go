@@ -2,16 +2,17 @@ package unbound
 
 import (
 	"context"
-	"fmt"
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-const (
-	unboundHostAliasAddEndpoint    = "/unbound/settings/addHostAlias"
-	unboundHostAliasGetEndpoint    = "/unbound/settings/getHostAlias"
-	unboundHostAliasUpdateEndpoint = "/unbound/settings/setHostAlias"
-	unboundHostAliasDeleteEndpoint = "/unbound/settings/delHostAlias"
-)
+var HostAliasOpts = api.ReqOpts{
+	AddEndpoint:         "/unbound/settings/addHostAlias",
+	GetEndpoint:         "/unbound/settings/getHostAlias",
+	UpdateEndpoint:      "/unbound/settings/setHostAlias",
+	DeleteEndpoint:      "/unbound/settings/delHostAlias",
+	ReconfigureEndpoint: unboundReconfigureEndpoint,
+	Monad:               "alias",
+}
 
 // Data structs
 
@@ -26,35 +27,17 @@ type HostAlias struct {
 // CRUD operations
 
 func (c *Controller) AddHostAlias(ctx context.Context, resource *HostAlias) (string, error) {
-	return api.MakeSetFunc(c, unboundHostAliasAddEndpoint, unboundReconfigureEndpoint)(ctx,
-		map[string]*HostAlias{
-			"alias": resource,
-		},
-	)
+	return api.Add(c.Client(), ctx, HostAliasOpts, resource)
 }
 
 func (c *Controller) GetHostAlias(ctx context.Context, id string) (*HostAlias, error) {
-	get, err := api.MakeGetFunc(c, unboundHostAliasGetEndpoint,
-		&struct {
-			Alias HostAlias `json:"alias"`
-		}{},
-	)(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	return &get.Alias, nil
+	return api.Get(c.Client(), ctx, HostAliasOpts, &HostAlias{}, id)
 }
 
 func (c *Controller) UpdateHostAlias(ctx context.Context, id string, resource *HostAlias) error {
-	_, err := api.MakeSetFunc(c, fmt.Sprintf("%s/%s", unboundHostAliasUpdateEndpoint, id),
-		unboundReconfigureEndpoint)(ctx,
-		map[string]*HostAlias{
-			"alias": resource,
-		},
-	)
-	return err
+	return api.Update(c.Client(), ctx, HostAliasOpts, resource, id)
 }
 
 func (c *Controller) DeleteHostAlias(ctx context.Context, id string) error {
-	return api.MakeDeleteFunc(c, unboundHostAliasDeleteEndpoint, unboundReconfigureEndpoint)(ctx, id)
+	return api.Delete(c.Client(), ctx, HostAliasOpts, id)
 }
