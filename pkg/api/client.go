@@ -137,6 +137,11 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 
 // ReconfigureService defined at the endpoint.
 func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error {
+	// Handle services without a reconfigure endpoint
+	if endpoint == "" {
+		return nil
+	}
+
 	// Send reconfigure request to OPNsense
 	respJson := &struct {
 		Status string `json:"status"`

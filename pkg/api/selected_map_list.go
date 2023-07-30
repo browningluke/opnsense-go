@@ -34,35 +34,11 @@ import (
 type SelectedMapList []string
 
 func (s *SelectedMapList) UnmarshalJSON(data []byte) error {
-	var dataMap map[string]struct {
-		Value    string `json:"value"`
-		Selected any    `json:"selected"`
-	}
-
-	err := json.Unmarshal(data, &dataMap)
+	str, err := unmarshalJSON(data)
 	if err != nil {
 		return err
 	}
-
-	*s = SelectedMapList{}
-	// Find selected element
-	for k, v := range dataMap {
-		// If bool
-		if selectedBool, ok := v.Selected.(bool); ok {
-			if selectedBool {
-				*s = append(*s, k)
-			}
-		}
-
-		// If float64
-		if selectedInt, ok := v.Selected.(float64); ok {
-			if selectedInt == 1 {
-				*s = append(*s, k)
-			}
-		}
-	}
-	sort.Strings(*s)
-
+	*s = str
 	return nil
 }
 
@@ -75,4 +51,66 @@ func (s *SelectedMapList) MarshalJSON() ([]byte, error) {
 
 func (s *SelectedMapList) String() string {
 	return strings.Join(*s, ",")
+}
+
+/*
+	SelectedMapListNL (NewLine) allows the JSON library to unmarshal that map into a string containing only
+	the key(s) that is/are selected (i.e. "K2\nK3", in the example at the top of this file).
+*/
+
+type SelectedMapListNL []string
+
+func (s *SelectedMapListNL) UnmarshalJSON(data []byte) error {
+	str, err := unmarshalJSON(data)
+	if err != nil {
+		return err
+	}
+	*s = str
+	return nil
+}
+
+func (s *SelectedMapListNL) MarshalJSON() ([]byte, error) {
+	// Ensure list is sorted
+	sort.Strings(*s)
+	str := strings.Join(*s, "\n")
+	return json.Marshal(str)
+}
+
+func (s *SelectedMapListNL) String() string {
+	return strings.Join(*s, ",")
+}
+
+// Helpers
+
+func unmarshalJSON(data []byte) ([]string, error) {
+	var dataMap map[string]struct {
+		Value    string `json:"value"`
+		Selected any    `json:"selected"`
+	}
+
+	err := json.Unmarshal(data, &dataMap)
+	if err != nil {
+		return nil, err
+	}
+
+	var s []string
+	// Find selected element
+	for k, v := range dataMap {
+		// If bool
+		if selectedBool, ok := v.Selected.(bool); ok {
+			if selectedBool {
+				s = append(s, k)
+			}
+		}
+
+		// If float64
+		if selectedInt, ok := v.Selected.(float64); ok {
+			if selectedInt == 1 {
+				s = append(s, k)
+			}
+		}
+	}
+	sort.Strings(s)
+
+	return s, nil
 }
