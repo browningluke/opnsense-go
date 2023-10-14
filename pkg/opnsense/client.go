@@ -6,11 +6,13 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/routes"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
+	"github.com/browningluke/opnsense-go/pkg/wireguard"
 )
 
 // Client defines a client interface for the Proxmox Virtual Environment API.
 type Client interface {
 	Unbound() *unbound.Controller
+	Wireguard() *wireguard.Controller
 	Interfaces() *interfaces.Controller
 	Routes() *routes.Controller
 	Firewall() *firewall.Controller
@@ -27,6 +29,10 @@ func NewClient(a *api.Client) Client {
 
 func (c *client) Unbound() *unbound.Controller {
 	return &unbound.Controller{Api: c.a}
+}
+
+func (c *client) Wireguard() *wireguard.Controller {
+	return &wireguard.Controller{Api: c.a}
 }
 
 func (c *client) Interfaces() *interfaces.Controller {
