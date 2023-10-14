@@ -90,6 +90,13 @@ func unmarshalJSON(data []byte) ([]string, error) {
 
 	err := json.Unmarshal(data, &dataMap)
 	if err != nil {
+		// If we fail, it's very likely data contains [], so try that
+		var emptyList []string
+		if listErr := json.Unmarshal(data, &emptyList); listErr == nil {
+			// If we parsed without error, then assume list is empty
+			return []string{}, nil
+		}
+
 		return nil, err
 	}
 
