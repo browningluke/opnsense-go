@@ -4,6 +4,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/api"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
+	"github.com/browningluke/opnsense-go/pkg/quagga"
 	"github.com/browningluke/opnsense-go/pkg/routes"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
 	"github.com/browningluke/opnsense-go/pkg/wireguard"
@@ -13,6 +14,7 @@ import (
 type Client interface {
 	Unbound() *unbound.Controller
 	Wireguard() *wireguard.Controller
+	Quagga() *quagga.Controller
 	Interfaces() *interfaces.Controller
 	Routes() *routes.Controller
 	Firewall() *firewall.Controller
@@ -33,6 +35,10 @@ func (c *client) Unbound() *unbound.Controller {
 
 func (c *client) Wireguard() *wireguard.Controller {
 	return &wireguard.Controller{Api: c.a}
+}
+
+func (c *client) Quagga() *quagga.Controller {
+	return &quagga.Controller{Api: c.a}
 }
 
 func (c *client) Interfaces() *interfaces.Controller {
