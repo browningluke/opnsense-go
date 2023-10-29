@@ -1,0 +1,29 @@
+---
+name: interfaces
+reconfigureEndpoint: "" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  - name: Vlan
+    filename: vlan
+    monad: vlan
+    endpoints:
+      add: "/interfaces/vlan_settings/addItem"
+      get: "/interfaces/vlan_settings/getItem"
+      update: "/interfaces/vlan_settings/setItem"
+      delete: "/interfaces/vlan_settings/delItem"
+      reconfigure: "/interfaces/vlan_settings/reconfigure"
+    attrs:
+      - name: Description
+        type: string
+        key: descr
+      - name: Tag
+        type: string
+        key: tag
+      - name: Priority
+        type: SelectedMap
+        key: pcp
+      - name: Parent
+        type: SelectedMap
+        key: if
+      - name: Device
+        type: string
+        key: vlanif
