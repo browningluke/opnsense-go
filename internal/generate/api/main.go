@@ -34,6 +34,31 @@ func main() {
 	}
 
 	genController(c)
+
+	for _, resource := range c.Resources {
+		genResource(c, resource)
+	}
+}
+
+func genResource(controller *schema.ControllerData, resource schema.ResourceData) {
+	filename := fmt.Sprintf("%s.go", resource.Filename)
+
+	fmt.Printf("Generating internal/%s/%s\n", controller.Name, filename)
+	g := generator.NewGenerator(filename)
+
+	err := g.Render(resourceTmpl,
+		struct {
+			Controller schema.ControllerData
+			Resource   schema.ResourceData
+		}{*controller, resource},
+	)
+	if err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
+	}
+
+	if err := g.Write(); err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
+	}
 }
 
 func genController(data *schema.ControllerData) {
@@ -53,6 +78,9 @@ func genController(data *schema.ControllerData) {
 		log.Fatalf("generating file (%s): %s", filename, err)
 	}
 }
+
+//go:embed templates/resource.tmpl
+var resourceTmpl string
 
 //go:embed templates/controller.tmpl
 var controllerTmpl string
