@@ -1,0 +1,87 @@
+---
+name: wireguard
+reconfigureEndpoint: "/wireguard/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+
+  # wireguard-go resources
+
+  - name: Server
+    filename: server
+    monad: server
+    endpoints:
+      add: "/wireguard/server/addServer"
+      get: "/wireguard/server/getServer"
+      update: "/wireguard/server/setServer"
+      delete: "/wireguard/server/delServer"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Instance
+        type: string
+        key: instance
+        omitEmpty: true
+      - name: PublicKey
+        type: string
+        key: pubkey
+      - name: PrivateKey
+        type: string
+        key: privkey
+      - name: Port
+        type: string
+        key: port
+      - name: MTU
+        type: string
+        key: mtu
+      - name: DNS
+        type: SelectedMapList
+        key: dns
+      - name: TunnelAddress
+        type: SelectedMapList
+        key: tunneladdress
+      - name: DisableRoutes
+        type: string
+        key: disableroutes
+      - name: Gateway
+        type: string
+        key: gateway
+      - name: Peers
+        type: SelectedMapList
+        key: peers
+
+  - name: Client
+    filename: client
+    monad: client
+    endpoints:
+      add: "/wireguard/client/addClient"
+      get: "/wireguard/client/getClient"
+      update: "/wireguard/client/setClient"
+      delete: "/wireguard/client/delClient"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: PublicKey
+        type: string
+        key: pubkey
+      - name: PSK
+        type: string
+        key: psk
+      - name: TunnelAddress
+        type: SelectedMapList
+        key: tunneladdress
+      - name: ServerAddress
+        type: string
+        key: serveraddress
+      - name: ServerPort
+        type: string
+        key: serverport
+      - name: KeepAlive
+        type: string
+        key: keepalive
