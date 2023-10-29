@@ -15,28 +15,36 @@ import (
 
 var (
 	controller = flag.String("controller", "", "controller to generate; must be set if client is not")
+	client     = flag.Bool("client", false, "generate OPNsense client iface; must be set if controller is not")
 )
 
 func main() {
 	flag.Parse()
 
-	if len(*controller) == 0 {
+	if len(*controller) == 0 && !(*client) {
 		flag.Usage()
 		os.Exit(2)
 	}
 
-	// Generate controller + resources
-	// Try load controller schema first
-	c := schema.GetController(*controller)
-	if c == nil {
-		fmt.Printf("Schema %s.yml does not exist in schema folder", *controller)
-		os.Exit(2)
+	// Generate client
+	if *client {
+		genClientInterface()
 	}
 
-	genController(c)
+	// Generate controller + resources
+	if len(*controller) > 0 {
+		// Try load controller schema first
+		c := schema.GetController(*controller)
+		if c == nil {
+			fmt.Printf("Schema %s.yml does not exist in schema folder", *controller)
+			os.Exit(2)
+		}
 
-	for _, resource := range c.Resources {
-		genResource(c, resource)
+		genController(c)
+
+		for _, resource := range c.Resources {
+			genResource(c, resource)
+		}
 	}
 }
 
@@ -79,8 +87,32 @@ func genController(data *schema.ControllerData) {
 	}
 }
 
+func genClientInterface() {
+	const (
+		filename = `client.go`
+	)
+
+	fmt.Printf("Generating internal/opnsense/%s\n", filename)
+	g := generator.NewGenerator(filename)
+
+	// Get all controller names
+	cNames := schema.GetControllerNames()
+
+	err := g.Render(clientTmpl, cNames)
+	if err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
+	}
+
+	if err := g.Write(); err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
+	}
+}
+
 //go:embed templates/resource.tmpl
 var resourceTmpl string
 
 //go:embed templates/controller.tmpl
 var controllerTmpl string
+
+//go:embed templates/client.tmpl
+var clientTmpl string
