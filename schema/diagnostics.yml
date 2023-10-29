@@ -1,0 +1,88 @@
+---
+name: diagnostics
+reconfigureEndpoint: "" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  # diagnostics resources
+
+  - name: Interface
+    filename: interface
+    readOnly: true
+    endpoints:
+      get: "/diagnostics/interface/getInterfaceConfig"
+    getByFilter: true
+    attrs:
+      - name: Device
+        type: string
+        key: device
+      - name: Media
+        type: string
+        key: media
+      - name: MediaRaw
+        type: string
+        key: media_raw
+      - name: MacAddr
+        type: string
+        key: macaddr
+      - name: IsPhysical
+        type: bool
+        key: is_physical
+      - name: MTU
+        type: string
+        key: mtu
+      - name: Status
+        type: string
+        key: status
+      - name: Flags
+        type: "[]string"
+        key: flags
+      - name: Capabilities
+        type: "[]string"
+        key: capabilities
+      - name: Options
+        type: "[]string"
+        key: options
+      - name: SupportedMedia
+        type: "[]string"
+        key: supported_media
+      - name: Groups
+        type: "[]string"
+        key: groups
+      - name: Ipv4
+        type: "[]Ipv4Config"
+        key: ipv4
+      - name: Ipv6
+        type: "[]Ipv6Config"
+        key: ipv6
+    customTypes:
+      Ipv4Config:
+        - name: IpAddr
+          type: string
+          key: ipaddr
+        - name: SubnetBits
+          type: int64
+          key: subnetbits
+        - name: Tunnel
+          type: bool
+          key: tunnel
+      Ipv6Config:
+        - name: IpAddr
+          type: string
+          key: ipaddr
+        - name: SubnetBits
+          type: int64
+          key: subnetbits
+        - name: Tunnel
+          type: bool
+          key: tunnel
+        - name: Autoconf
+          type: bool
+          key: autoconf
+        - name: Deprecated
+          type: bool
+          key: deprecated
+        - name: LinkLocal
+          type: bool
+          key: "link-local"
+        - name: Tentative
+          type: bool
+          key: tentative

@@ -1,0 +1,25 @@
+---
+name: routes
+reconfigureEndpoint: "/routes/routes/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  - name: Route
+    filename: route
+    monad: route
+    endpoints:
+      add: "/routes/routes/addroute"
+      get: "/routes/routes/getroute"
+      update: "/routes/routes/setroute"
+      delete: "/routes/routes/delroute"
+    attrs:
+      - name: Disabled
+        type: string
+        key: disabled
+      - name: Description
+        type: string
+        key: descr
+      - name: Gateway
+        type: SelectedMap
+        key: gateway
+      - name: Network
+        type: string
+        key: network
