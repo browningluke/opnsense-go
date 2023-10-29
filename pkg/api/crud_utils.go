@@ -53,22 +53,12 @@ func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpo
 	return respJson.UUID, nil
 }
 
-func Add[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K) (string, error) {
-	return set(c, ctx, opts, resource, opts.AddEndpoint)
-}
-
-func Update[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) error {
-	_, err := set(c, ctx, opts, resource, fmt.Sprintf("%s/%s", opts.UpdateEndpoint, id))
-	return err
-}
-
-func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) (*K, error) {
+func get(c *Client, ctx context.Context, endpoint string) (map[string]json.RawMessage, error) {
 	// Get generic data
 	var reqData map[string]json.RawMessage
 
 	// Make request to OPNsense
-	err := c.doRequest(ctx, "GET",
-		fmt.Sprintf("%s/%s", opts.GetEndpoint, id), nil, &reqData)
+	err := c.doRequest(ctx, "GET", endpoint, nil, &reqData)
 
 	// Handle request errors
 	if err != nil {
@@ -80,18 +70,53 @@ func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id st
 		return nil, err
 	}
 
+	return reqData, err
+}
+
+func Add[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K) (string, error) {
+	return set(c, ctx, opts, resource, opts.AddEndpoint)
+}
+
+func Update[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) error {
+	_, err := set(c, ctx, opts, resource, fmt.Sprintf("%s/%s", opts.UpdateEndpoint, id))
+	return err
+}
+
+func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id string) (*K, error) {
+	// Get resource data
+	reqData, err := get(c, ctx, fmt.Sprintf("%s/%s", opts.GetEndpoint, id))
+	if err != nil {
+		return nil, err
+	}
+
 	// Unwrap json
 	err = resourceUnwrap(opts.Monad, resource, reqData)
 	if err != nil {
 		return nil, err
 	}
 
-	// Handle unwrap errors
+	return resource, nil
+}
+
+func GetFilter[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, key string) (*K, error) {
+	// Get resource data
+	reqData, err := get(c, ctx, opts.GetEndpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	return resource, nil
+	// Find key in returned list
+	for i, _ := range reqData {
+		if i == key {
+			if err := json.Unmarshal(reqData[i], resource); err != nil {
+				return nil, err
+			}
+			return resource, nil
+		}
+	}
+
+	// If loop exits without match, key doesn't exist in list
+	return nil, errs.NewNotFoundError()
 }
 
 func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
