@@ -1,0 +1,112 @@
+---
+name: unbound
+reconfigureEndpoint: "/unbound/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  - name: DomainOverride
+    filename: domain_override
+    monad: domain
+    endpoints:
+      add: "/unbound/settings/addDomainOverride"
+      get: "/unbound/settings/getDomainOverride"
+      update: "/unbound/settings/setDomainOverride"
+      delete: "/unbound/settings/delDomainOverride"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Domain
+        type: string
+        key: domain
+      - name: Server
+        type: string
+        key: server
+      - name: Description
+        type: string
+        key: description
+
+  - name: HostOverride
+    filename: host_override
+    monad: host
+    endpoints:
+      add: "/unbound/settings/addHostOverride"
+      get: "/unbound/settings/getHostOverride"
+      update: "/unbound/settings/setHostOverride"
+      delete: "/unbound/settings/delHostOverride"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Hostname
+        type: string
+        key: hostname
+      - name: Domain
+        type: string
+        key: domain
+      - name: Type
+        type: SelectedMap
+        key: rr
+      - name: Server
+        type: string
+        key: server
+      - name: MXPriority
+        type: string
+        key: mxprio
+      - name: MXDomain
+        type: string
+        key: mx
+      - name: Description
+        type: string
+        key: description
+
+  - name: HostAlias
+    filename: host_alias
+    monad: alias
+    endpoints:
+      add: "/unbound/settings/addHostAlias"
+      get: "/unbound/settings/getHostAlias"
+      update: "/unbound/settings/setHostAlias"
+      delete: "/unbound/settings/delHostAlias"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Host
+        type: SelectedMap
+        key: host
+      - name: Hostname
+        type: string
+        key: hostname
+      - name: Domain
+        type: string
+        key: domain
+      - name: Description
+        type: string
+        key: description
+
+  - name: Forward
+    filename: forward
+    monad: dot
+    endpoints:
+      add: "/unbound/settings/addDot"
+      get: "/unbound/settings/getDot"
+      update: "/unbound/settings/setDot"
+      delete: "/unbound/settings/delDot"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Domain
+        type: string
+        key: domain
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Server
+        type: string
+        key: server
+      - name: Port
+        type: string
+        key: port
+      - name: VerifyCN
+        type: string
+        key: verify
