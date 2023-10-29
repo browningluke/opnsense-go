@@ -1,0 +1,190 @@
+---
+name: firewall
+reconfigureEndpoint: "" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+
+  # os-firewall resources
+
+  - name: Filter
+    filename: filter
+    monad: rule
+    endpoints:
+      add: "/firewall/filter/addRule"
+      get: "/firewall/filter/getRule"
+      update: "/firewall/filter/setRule"
+      delete: "/firewall/filter/delRule"
+      reconfigure: "/firewall/filter/apply"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Quick
+        type: string
+        key: quick
+      - name: Interface
+        type: SelectedMapList
+        key: interface
+      - name: Direction
+        type: SelectedMap
+        key: direction
+      - name: IPProtocol
+        type: SelectedMap
+        key: ipprotocol
+      - name: Protocol
+        type: SelectedMap
+        key: protocol
+      - name: SourceNet
+        type: string
+        key: source_net
+      - name: SourcePort
+        type: string
+        key: source_port
+      - name: SourceInvert
+        type: string
+        key: source_not
+      - name: DestinationNet
+        type: string
+        key: destination_net
+      - name: DestinationPort
+        type: string
+        key: destination_port
+      - name: DestinationInvert
+        type: string
+        key: destination_not
+      - name: Gateway
+        type: SelectedMap
+        key: gateway
+      - name: Log
+        type: string
+        key: log
+      - name: Description
+        type: string
+        key: description
+
+  - name: NAT
+    filename: nat
+    monad: rule
+    endpoints:
+      add: "/firewall/source_nat/addRule"
+      get: "/firewall/source_nat/getRule"
+      update: "/firewall/source_nat/setRule"
+      delete: "/firewall/source_nat/delRule"
+      reconfigure: "/firewall/source_nat/apply"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: DisableNAT
+        type: string
+        key: nonat
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: IPProtocol
+        type: SelectedMap
+        key: ipprotocol
+      - name: Protocol
+        type: SelectedMap
+        key: protocol
+      - name: SourceNet
+        type: string
+        key: source_net
+      - name: SourcePort
+        type: string
+        key: source_port
+      - name: SourceInvert
+        type: string
+        key: source_not
+      - name: DestinationNet
+        type: string
+        key: destination_net
+      - name: DestinationPort
+        type: string
+        key: destination_port
+      - name: DestinationInvert
+        type: string
+        key: destination_not
+      - name: Target
+        type: string
+        key: target
+      - name: TargetPort
+        type: string
+        key: target_port
+      - name: Log
+        type: string
+        key: log
+      - name: Description
+        type: string
+        key: description
+
+  # core firewall resources
+
+  - name: Alias
+    filename: alias
+    monad: alias
+    endpoints:
+      add: "/firewall/alias/addItem"
+      get: "/firewall/alias/getItem"
+      update: "/firewall/alias/setItem"
+      delete: "/firewall/alias/delItem"
+      reconfigure: "/firewall/alias/reconfigure"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: IPProtocol # only when type = asn, geoip, external
+        type: SelectedMap
+        key: proto
+      - name: Interface # only when type = dynipv6host
+        type: SelectedMap
+        key: interface
+      - name: Content # NOT when type = external, ISO 3166-1 country code when type = geoip, __<int>_network when type = networkgroup, openvpn group when type = authgroup
+        type: SelectedMapListNL
+        key: content
+      - name: Categories
+        type: SelectedMapList
+        key: categories
+      - name: UpdateFreq # only when type = urltable
+        type: string
+        key: updatefreq
+      - name: Statistics # not when type = port
+        type: string
+        key: counters
+      - name: Description
+        type: string
+        key: description
+
+  - name: Category
+    filename: category
+    monad: category
+    endpoints:
+      add: "/firewall/category/addItem"
+      get: "/firewall/category/getItem"
+      update: "/firewall/category/setItem"
+      delete: "/firewall/category/delItem"
+      reconfigure: "null"
+    attrs:
+      - name: Automatic
+        type: string
+        key: auto
+      - name: Name
+        type: string
+        key: name
+      - name: Color
+        type: string
+        key: color
