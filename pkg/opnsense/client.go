@@ -2,6 +2,7 @@ package opnsense
 
 import (
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/diagnostics"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/quagga"
@@ -12,6 +13,7 @@ import (
 
 // Client defines a client interface for the Proxmox Virtual Environment API.
 type Client interface {
+	Diagnostics() *diagnostics.Controller
 	Unbound() *unbound.Controller
 	Wireguard() *wireguard.Controller
 	Quagga() *quagga.Controller
@@ -27,6 +29,10 @@ type client struct {
 // NewClient creates a new API client.
 func NewClient(a *api.Client) Client {
 	return &client{a: a}
+}
+
+func (c *client) Diagnostics() *diagnostics.Controller {
+	return &diagnostics.Controller{Api: c.a}
 }
 
 func (c *client) Unbound() *unbound.Controller {
