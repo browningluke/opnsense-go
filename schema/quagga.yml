@@ -1,0 +1,215 @@
+---
+name: quagga
+reconfigureEndpoint: "/quagga/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+
+  # quagga resources
+
+  - name: BGPNeighbor
+    filename: bgp_neighbor
+    monad: neighbor
+    endpoints:
+      add: "/quagga/bgp/addNeighbor"
+      get: "/quagga/bgp/getNeighbor"
+      update: "/quagga/bgp/setNeighbor"
+      delete: "/quagga/bgp/delNeighbor"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: PeerIP
+        type: string
+        key: address
+      - name: RemoteAS
+        type: string
+        key: remoteas
+      - name: Password
+        type: string
+        key: password
+      - name: Weight
+        type: string
+        key: weight
+      - name: LocalIP
+        type: string
+        key: localip
+      - name: UpdateSource
+        type: SelectedMap
+        key: updatesource
+      - name: LinkLocalInterface
+        type: SelectedMap
+        key: linklocalinterface
+      - name: NextHopSelf
+        type: string
+        key: nexthopself
+      - name: NextHopSelfAll
+        type: string
+        key: nexthopselfall
+      - name: MultiHop
+        type: string
+        key: multihop
+      - name: MultiProtocol
+        type: string
+        key: multiprotocol
+      - name: RRClient
+        type: string
+        key: rrclient
+      - name: BFD
+        type: string
+        key: bfd
+      - name: KeepAlive
+        type: string
+        key: keepalive
+      - name: HoldDown
+        type: string
+        key: holddown
+      - name: ConnectTimer
+        type: string
+        key: connecttimer
+      - name: DefaultRoute
+        type: string
+        key: defaultoriginate
+      - name: ASOverride
+        type: string
+        key: asoverride
+      - name: DisableConnectedCheck
+        type: string
+        key: disable_connected_check
+      - name: AttributeUnchanged
+        type: SelectedMap
+        key: attributeunchanged
+      - name: PrefixListIn
+        type: SelectedMap
+        key: linkedPrefixlistIn
+      - name: PrefixListOut
+        type: SelectedMap
+        key: linkedPrefixlistOut
+      - name: RouteMapIn
+        type: SelectedMap
+        key: linkedRoutemapIn
+      - name: RouteMapOut
+        type: SelectedMap
+        key: linkedRoutemapOut
+
+  - name: BGPASPath
+    filename: bgp_aspath
+    monad: aspath
+    endpoints:
+      add: "/quagga/bgp/addAspath"
+      get: "/quagga/bgp/getAspath"
+      update: "/quagga/bgp/setAspath"
+      delete: "/quagga/bgp/delAspath"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Number
+        type: string
+        key: number
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: AS
+        type: string
+        key: as
+
+  - name: BGPPrefixList
+    filename: bgp_prefixlist
+    monad: prefixlist
+    endpoints:
+      add: "/quagga/bgp/addPrefixlist"
+      get: "/quagga/bgp/getPrefixlist"
+      update: "/quagga/bgp/setPrefixlist"
+      delete: "/quagga/bgp/delPrefixlist"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Name
+        type: string
+        key: name
+      - name: IPVersion
+        type: SelectedMap
+        key: version
+      - name: SequenceNumber
+        type: string
+        key: seqnumber
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Network
+        type: string
+        key: network
+
+  - name: BGPCommunityList
+    filename: bgp_communitylist
+    monad: communitylist
+    endpoints:
+      add: "/quagga/bgp/addCommunitylist"
+      get: "/quagga/bgp/getCommunitylist"
+      update: "/quagga/bgp/setCommunitylist"
+      delete: "/quagga/bgp/delCommunitylist"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Number
+        type: string
+        key: number
+      - name: SequenceNumber
+        type: string
+        key: seqnumber
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Community
+        type: string
+        key: community
+
+  - name: BGPRouteMap
+    filename: bgp_routemap
+    monad: routemap
+    endpoints:
+      add: "/quagga/bgp/addRoutemap"
+      get: "/quagga/bgp/getRoutemap"
+      update: "/quagga/bgp/setRoutemap"
+      delete: "/quagga/bgp/delRoutemap"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Name
+        type: string
+        key: name
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: RouteMapID
+        type: string
+        key: id
+      - name: ASPathList
+        type: SelectedMapList
+        key: match
+      - name: PrefixList
+        type: SelectedMapList
+        key: match2
+      - name: CommunityList
+        type: SelectedMapList
+        key: match3
+      - name: Set
+        type: string
+        key: set
