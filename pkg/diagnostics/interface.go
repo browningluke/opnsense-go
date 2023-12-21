@@ -56,3 +56,7 @@ type Interface struct {
 func (c *Controller) GetInterface(ctx context.Context, id string) (*Interface, error) {
 	return api.GetFilter(c.Client(), ctx, InterfaceOpts, &Interface{}, id)
 }
+
+func (c *Controller) GetInterfaceAll(ctx context.Context) ([]Interface, error) {
+	return api.GetAll(c.Client(), ctx, InterfaceOpts, []Interface{})
+}
