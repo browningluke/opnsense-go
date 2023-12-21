@@ -119,6 +119,33 @@ func GetFilter[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K,
 	return nil, errs.NewNotFoundError()
 }
 
+func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) ([]K, error) {
+	// Get resource data
+	reqData, err := get(c, ctx, opts.GetEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	// Find key in returned list
+	i := 0
+	for key, _ := range reqData {
+		r := new(K)
+		if err := json.Unmarshal(reqData[key], r); err != nil {
+			return nil, err
+		}
+
+		resources = append(resources, *r)
+		i++
+	}
+
+	if len(resources) == 0 {
+		// If no resources returned, exit with NotFound error
+		return nil, errs.NewNotFoundError()
+	}
+
+	return resources, nil
+}
+
 func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.

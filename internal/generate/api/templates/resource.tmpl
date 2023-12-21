@@ -63,6 +63,12 @@ func (c *Controller) Get{{ .Resource.Name }}(ctx context.Context, id string) (*{
 	(c.Client(), ctx, {{ .Resource.Name }}Opts, &{{ .Resource.Name }}{}, id)
 }
 
+{{ if .Resource.GetAll }}
+func (c *Controller) Get{{ .Resource.Name }}All(ctx context.Context) ([]{{ .Resource.Name }}, error) {
+	return api.GetAll(c.Client(), ctx, {{ .Resource.Name }}Opts, []{{ .Resource.Name }}{})
+}
+{{ end }}
+
 {{ if not .Resource.ReadOnly }}
 func (c *Controller) Update{{ .Resource.Name }}(ctx context.Context, id string, resource *{{ .Resource.Name }}) error {
 	return api.Update(c.Client(), ctx, {{ .Resource.Name }}Opts, resource, id)
