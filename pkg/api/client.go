@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/hashicorp/go-retryablehttp"
 	"golang.org/x/text/cases"
@@ -144,16 +145,27 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 
 	// Send reconfigure request to OPNsense
 	respJson := &struct {
-		Status string `json:"status"`
+		Status string `json:"status,omitempty"`
+		Result string `json:"result,omitempty"`
 	}{}
 	err := c.doRequest(ctx, "POST", endpoint, nil, respJson)
 	if err != nil {
 		return err
 	}
 
+	// Since os-wireguard's reconfigure returns {"result":"ok"}, handle both cases
+	status := ""
+	if respJson.Status != "" {
+		status = respJson.Status
+	} else if respJson.Result != "" {
+		status = respJson.Result
+	} else {
+		panic(errors.New("reconfigure returned with unknown status response"))
+	}
+
 	// Validate service restarted correctly
-	status := cases.Lower(language.English).String(
-		strings.TrimSpace(respJson.Status),
+	status = cases.Lower(language.English).String(
+		strings.TrimSpace(status),
 	)
 	if status != "ok" {
 		return fmt.Errorf("reconfigure failed. status: %s", status)
