@@ -12,6 +12,7 @@ var {{ .Resource.Name }}Opts = api.ReqOpts{
 	GetEndpoint:         "{{ .Resource.Endpoints.Get }}",
 	UpdateEndpoint:      "{{ .Resource.Endpoints.Update }}",
 	DeleteEndpoint:      "{{ .Resource.Endpoints.Delete }}",
+    SearchEndpoint:      "{{ .Resource.Endpoints.Search }}",
 	ReconfigureEndpoint:
 	{{- if or (eq .Resource.Endpoints.Reconfigure "null") .Resource.ReadOnly -}}
     "",
@@ -78,3 +79,10 @@ func (c *Controller) Delete{{ .Resource.Name }}(ctx context.Context, id string) 
     return api.Delete(c.Client(), ctx, {{ .Resource.Name }}Opts, id)
 }
 {{ end }}
+
+{{ if .Resource.Endpoints.Search }}
+func (c *Controller) Search{{ .Resource.Name }}(ctx context.Context, filter string) ([]{{ .Resource.Name }}, error) {
+    return api.Search(c.Client(), ctx, {{ .Resource.Name }}Opts, []{{ .Resource.Name }}{}, filter)
+}
+{{ end }}
+

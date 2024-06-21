@@ -12,6 +12,7 @@ var AliasOpts = api.ReqOpts{
 	GetEndpoint:         "/firewall/alias/getItem",
 	UpdateEndpoint:      "/firewall/alias/setItem",
 	DeleteEndpoint:      "/firewall/alias/delItem",
+	SearchEndpoint:      "",
 	ReconfigureEndpoint: "/firewall/alias/reconfigure",
 	Monad:               "alias",
 }

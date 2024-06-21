@@ -12,6 +12,7 @@ var BGPCommunityListOpts = api.ReqOpts{
 	GetEndpoint:         "/quagga/bgp/getCommunitylist",
 	UpdateEndpoint:      "/quagga/bgp/setCommunitylist",
 	DeleteEndpoint:      "/quagga/bgp/delCommunitylist",
+	SearchEndpoint:      "",
 	ReconfigureEndpoint: quaggaReconfigureEndpoint,
 	Monad:               "communitylist",
 }

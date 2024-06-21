@@ -12,6 +12,7 @@ var InterfaceOpts = api.ReqOpts{
 	GetEndpoint:         "/diagnostics/interface/getInterfaceConfig",
 	UpdateEndpoint:      "",
 	DeleteEndpoint:      "",
+	SearchEndpoint:      "",
 	ReconfigureEndpoint: "",
 	Monad:               "",
 }

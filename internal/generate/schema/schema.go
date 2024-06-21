@@ -2,8 +2,9 @@ package schema
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
 type AttrData struct {
@@ -52,6 +53,7 @@ type ResourceData struct {
 		Get         string `yaml:"get"`
 		Update      string `yaml:"update"`
 		Delete      string `yaml:"delete"`
+		Search      string `yaml:"search"`
 		Reconfigure string `yaml:"reconfigure,omitempty"`
 	}
 	ReadOnly    bool `yaml:"readOnly"`

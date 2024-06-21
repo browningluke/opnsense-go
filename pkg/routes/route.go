@@ -12,6 +12,7 @@ var RouteOpts = api.ReqOpts{
 	GetEndpoint:         "/routes/routes/getroute",
 	UpdateEndpoint:      "/routes/routes/setroute",
 	DeleteEndpoint:      "/routes/routes/delroute",
+	SearchEndpoint:      "",
 	ReconfigureEndpoint: routesReconfigureEndpoint,
 	Monad:               "route",
 }

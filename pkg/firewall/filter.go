@@ -12,6 +12,7 @@ var FilterOpts = api.ReqOpts{
 	GetEndpoint:         "/firewall/filter/getRule",
 	UpdateEndpoint:      "/firewall/filter/setRule",
 	DeleteEndpoint:      "/firewall/filter/delRule",
+	SearchEndpoint:      "",
 	ReconfigureEndpoint: "/firewall/filter/apply",
 	Monad:               "rule",
 }
