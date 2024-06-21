@@ -10,5 +10,3 @@ There are two types of generated objects: individual `controllers` and the opnse
 ### Adding Components/Services
 
 Components can be added by creating a `{service}.yml` schema file describing the component/service API under the `schema` directory (for now use the existing schema as a reference) and then adding a `pkg/{service}/generate.go` file. The `generate.go` file can be copied from the existing servicess.  The package can then be regenerated using `make all` in the base directory. 
-
-
