@@ -14,12 +14,21 @@ resources:
       - name: Subnet  
         type: string
         key: subnet
+      - name: NextServer
+        type: string
+        key: next_server
       - name: Pools
         type: string
         key: pools
+      - name: OptionDataAutoCollect
+        type: string
+        key: option_data_autocollect
       - name: OptionData
         type: OptionData 
         key: option_data
+      - name: Description
+        type: string
+        key: description
     customTypes: 
       OptionData:
         - name: DomainNameServers
