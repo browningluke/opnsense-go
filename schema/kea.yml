@@ -1,0 +1,102 @@
+---
+name: kea
+reconfigureEndpoint: "/kea/service/reconfigure"
+resources:
+  - name: Subnet
+    filename: subnet
+    monad: subnet4
+    endpoints:
+      add: "/kea/dhcpv4/add_subnet"
+      get: "/kea/dhcpv4/get_subnet"
+      update: "/kea/dhcpv4/set_subnet"
+      delete: "/kea/dhcpv4/del_subnet"
+    attrs:
+      - name: Subnet  
+        type: string
+        key: subnet
+      - name: NextServer
+        type: string
+        key: next_server
+      - name: Pools
+        type: string
+        key: pools
+      - name: OptionDataAutoCollect
+        type: string
+        key: option_data_autocollect
+      - name: OptionData
+        type: OptionData 
+        key: option_data
+      - name: Description
+        type: string
+        key: description
+    customTypes: 
+      OptionData:
+        - name: DomainNameServers
+          type: SelectedMapList
+          key: domain_name_servers
+        - name: DomainSearch
+          type: SelectedMapList
+          key: domain_search
+        - name: Routers
+          type: SelectedMapList
+          key: routers
+        - name: StaticRoutes
+          type: string
+          key: static_routes
+        - name: DomainName
+          type: string
+          key: domain_name
+        - name: NtpServers
+          type: SelectedMapList
+          key: ntp_servers
+        - name: TimeServers
+          type: SelectedMapList
+          key: time_servers
+        - name: TftpServerName
+          type: string
+          key: tftp_server_name
+        - name: BootFileName
+          type: string
+          key: boot_file_name
+  - name: Reservation
+    filename: reservation
+    monad: reservation
+    endpoints:
+      add: "/kea/dhcpv4/add_reservation"
+      get: "/kea/dhcpv4/get_reservation"
+      update: "/kea/dhcpv4/set_reservation"
+      delete: "/kea/dhcpv4/del_reservation"
+    attrs:
+      - name: Subnet
+        type: SelectedMap
+        key: subnet
+      - name: IpAddress
+        type: string
+        key: ip_address
+      - name: HwAddress
+        type: string
+        key: hw_address
+      - name: Hostname
+        type: string
+        key: hostname
+      - name: Description
+        type: string
+        key: description
+  - name: Peer
+    filename: peer
+    monad: peer
+    endpoints:
+      add: "/kea/dhcpv4/add_peer"
+      get: "/kea/dhcpv4/get_peer"
+      update: "/kea/dhcpv4/set_peer"
+      delete: "/kea/dhcpv4/del_peer"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Url
+        type: string
+        key: url
+      - name: Role
+        type: SelectedMap
+        key: role
