@@ -1,43 +1,9 @@
 ---
 name: kea
 reconfigureEndpoint: "/kea/service/reconfigure"
-resources: 
-  - name: KeaConfig
-    filename: kea_config
-    monad: dhcpv4
-    endpoints:
-      get: "/kea/dhcpv4/get"
-      update: "/kea/dhcpv4/set"
-    attrs:
-      - name: General
-        type: GeneralSettings
-        key: general
-      - name: Ha
-        type: HaSettings
-        key: ha
-    customTypes:
-      GeneralSettings:
-        - name: Enabled
-          type: string
-          key: enabled
-        - name: Interfaces
-          type: SelectedMapList
-          key: interfaces
-        - name: ValidLifetime
-          type: string
-          key: valid_lifetime
-        - name: Fwrules
-          type: string
-          key: fwrules
-      HaSettings:
-        - name: Enabled
-          type: string
-          key: enabled
-        - name: ThisServerName
-          type: string
-          key: this_server_name
-  - name: KeaSubnet
-    filename: kea_subnet
+resources:
+  - name: Subnet
+    filename: subnet
     monad: subnet4
     endpoints:
       add: "/kea/dhcpv4/add_subnet"
