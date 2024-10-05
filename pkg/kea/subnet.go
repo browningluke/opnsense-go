@@ -7,12 +7,11 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-var KeaSubnetOpts = api.ReqOpts{
+var SubnetOpts = api.ReqOpts{
 	AddEndpoint:         "/kea/dhcpv4/add_subnet",
 	GetEndpoint:         "/kea/dhcpv4/get_subnet",
 	UpdateEndpoint:      "/kea/dhcpv4/set_subnet",
 	DeleteEndpoint:      "/kea/dhcpv4/del_subnet",
-	SearchEndpoint:      "/kea/dhcpv4/search_subnet",
 	ReconfigureEndpoint: keaReconfigureEndpoint,
 	Monad:               "subnet4",
 }
@@ -31,30 +30,29 @@ type OptionData struct {
 	BootFileName      string              `json:"boot_file_name"`
 }
 
-type KeaSubnet struct {
-	Subnet     string     `json:"subnet"`
-	Pools      string     `json:"pools"`
-	OptionData OptionData `json:"option_data"`
+type Subnet struct {
+	Subnet                string     `json:"subnet"`
+	NextServer            string     `json:"next_server"`
+	Pools                 string     `json:"pools"`
+	OptionDataAutoCollect string     `json:"option_data_autocollect"`
+	OptionData            OptionData `json:"option_data"`
+	Description           string     `json:"description"`
 }
 
 // CRUD operations
 
-func (c *Controller) AddKeaSubnet(ctx context.Context, resource *KeaSubnet) (string, error) {
-	return api.Add(c.Client(), ctx, KeaSubnetOpts, resource)
+func (c *Controller) AddSubnet(ctx context.Context, resource *Subnet) (string, error) {
+	return api.Add(c.Client(), ctx, SubnetOpts, resource)
 }
 
-func (c *Controller) GetKeaSubnet(ctx context.Context, id string) (*KeaSubnet, error) {
-	return api.Get(c.Client(), ctx, KeaSubnetOpts, &KeaSubnet{}, id)
+func (c *Controller) GetSubnet(ctx context.Context, id string) (*Subnet, error) {
+	return api.Get(c.Client(), ctx, SubnetOpts, &Subnet{}, id)
 }
 
-func (c *Controller) UpdateKeaSubnet(ctx context.Context, id string, resource *KeaSubnet) error {
-	return api.Update(c.Client(), ctx, KeaSubnetOpts, resource, id)
+func (c *Controller) UpdateSubnet(ctx context.Context, id string, resource *Subnet) error {
+	return api.Update(c.Client(), ctx, SubnetOpts, resource, id)
 }
 
-func (c *Controller) DeleteKeaSubnet(ctx context.Context, id string) error {
-	return api.Delete(c.Client(), ctx, KeaSubnetOpts, id)
-}
-
-func (c *Controller) SearchKeaSubnet(ctx context.Context, filter string) ([]KeaSubnet, error) {
-	return api.Search(c.Client(), ctx, KeaSubnetOpts, []KeaSubnet{}, filter)
+func (c *Controller) DeleteSubnet(ctx context.Context, id string) error {
+	return api.Delete(c.Client(), ctx, SubnetOpts, id)
 }
