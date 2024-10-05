@@ -12,7 +12,6 @@ var NATOpts = api.ReqOpts{
 	GetEndpoint:         "/firewall/source_nat/getRule",
 	UpdateEndpoint:      "/firewall/source_nat/setRule",
 	DeleteEndpoint:      "/firewall/source_nat/delRule",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: "/firewall/source_nat/apply",
 	Monad:               "rule",
 }

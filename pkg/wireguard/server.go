@@ -12,7 +12,6 @@ var ServerOpts = api.ReqOpts{
 	GetEndpoint:         "/wireguard/server/getServer",
 	UpdateEndpoint:      "/wireguard/server/setServer",
 	DeleteEndpoint:      "/wireguard/server/delServer",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: wireguardReconfigureEndpoint,
 	Monad:               "server",
 }

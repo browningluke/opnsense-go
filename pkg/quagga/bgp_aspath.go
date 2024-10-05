@@ -12,7 +12,6 @@ var BGPASPathOpts = api.ReqOpts{
 	GetEndpoint:         "/quagga/bgp/getAspath",
 	UpdateEndpoint:      "/quagga/bgp/setAspath",
 	DeleteEndpoint:      "/quagga/bgp/delAspath",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: quaggaReconfigureEndpoint,
 	Monad:               "aspath",
 }

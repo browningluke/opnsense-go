@@ -12,7 +12,6 @@ var BGPRouteMapOpts = api.ReqOpts{
 	GetEndpoint:         "/quagga/bgp/getRoutemap",
 	UpdateEndpoint:      "/quagga/bgp/setRoutemap",
 	DeleteEndpoint:      "/quagga/bgp/delRoutemap",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: quaggaReconfigureEndpoint,
 	Monad:               "routemap",
 }

@@ -12,7 +12,6 @@ var BGPNeighborOpts = api.ReqOpts{
 	GetEndpoint:         "/quagga/bgp/getNeighbor",
 	UpdateEndpoint:      "/quagga/bgp/setNeighbor",
 	DeleteEndpoint:      "/quagga/bgp/delNeighbor",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: quaggaReconfigureEndpoint,
 	Monad:               "neighbor",
 }

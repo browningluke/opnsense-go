@@ -12,7 +12,6 @@ var HostAliasOpts = api.ReqOpts{
 	GetEndpoint:         "/unbound/settings/getHostAlias",
 	UpdateEndpoint:      "/unbound/settings/setHostAlias",
 	DeleteEndpoint:      "/unbound/settings/delHostAlias",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: unboundReconfigureEndpoint,
 	Monad:               "alias",
 }

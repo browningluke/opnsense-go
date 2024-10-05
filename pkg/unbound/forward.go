@@ -12,7 +12,6 @@ var ForwardOpts = api.ReqOpts{
 	GetEndpoint:         "/unbound/settings/getDot",
 	UpdateEndpoint:      "/unbound/settings/setDot",
 	DeleteEndpoint:      "/unbound/settings/delDot",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: unboundReconfigureEndpoint,
 	Monad:               "dot",
 }

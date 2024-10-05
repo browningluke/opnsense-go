@@ -12,7 +12,6 @@ var HostOverrideOpts = api.ReqOpts{
 	GetEndpoint:         "/unbound/settings/getHostOverride",
 	UpdateEndpoint:      "/unbound/settings/setHostOverride",
 	DeleteEndpoint:      "/unbound/settings/delHostOverride",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: unboundReconfigureEndpoint,
 	Monad:               "host",
 }

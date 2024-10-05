@@ -12,7 +12,6 @@ var CategoryOpts = api.ReqOpts{
 	GetEndpoint:         "/firewall/category/getItem",
 	UpdateEndpoint:      "/firewall/category/setItem",
 	DeleteEndpoint:      "/firewall/category/delItem",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: "",
 	Monad:               "category",
 }

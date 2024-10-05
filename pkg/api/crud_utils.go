@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
 	"github.com/browningluke/opnsense-go/pkg/errs"
 )
 
@@ -73,27 +72,6 @@ func get(c *Client, ctx context.Context, endpoint string) (map[string]json.RawMe
 
 	return reqData, err
 }
-func search(c *Client, ctx context.Context, endpoint string, search_value string) (map[string]json.RawMessage, error) {
-	// Get generic data
-	var reqData map[string]json.RawMessage
-
-	searchReq := searchReq{Current: 1, RowCount: -1, SearchPhrase: search_value}
-
-	// Make request to OPNsense
-	err := c.doRequest(ctx, "POST", endpoint, searchReq, &reqData)
-
-	// Handle request errors
-	if err != nil {
-		switch err.(type) {
-		case *json.UnmarshalTypeError:
-			// Handle unmarshal error (means ID is invalid, or was deleted upstream)
-			return nil, errs.NewNotFoundError()
-		}
-		return nil, err
-	}
-
-	return reqData, err
-}
 
 func Add[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K) (string, error) {
 	return set(c, ctx, opts, resource, opts.AddEndpoint)
@@ -118,20 +96,6 @@ func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id st
 	}
 
 	return resource, nil
-}
-
-func Search[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K, search_value string) ([]K, error) {
-	// Get resource data
-	reqData, err := search(c, ctx, opts.GetEndpoint, search_value)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(reqData["rows"], &resources)
-
-	if err != nil {
-		return nil, err
-	}
-	return resources, nil
 }
 
 func GetFilter[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, key string) (*K, error) {

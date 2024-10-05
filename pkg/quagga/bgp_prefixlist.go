@@ -12,7 +12,6 @@ var BGPPrefixListOpts = api.ReqOpts{
 	GetEndpoint:         "/quagga/bgp/getPrefixlist",
 	UpdateEndpoint:      "/quagga/bgp/setPrefixlist",
 	DeleteEndpoint:      "/quagga/bgp/delPrefixlist",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: quaggaReconfigureEndpoint,
 	Monad:               "prefixlist",
 }

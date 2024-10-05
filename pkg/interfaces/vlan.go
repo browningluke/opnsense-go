@@ -12,7 +12,6 @@ var VlanOpts = api.ReqOpts{
 	GetEndpoint:         "/interfaces/vlan_settings/getItem",
 	UpdateEndpoint:      "/interfaces/vlan_settings/setItem",
 	DeleteEndpoint:      "/interfaces/vlan_settings/delItem",
-	SearchEndpoint:      "",
 	ReconfigureEndpoint: "/interfaces/vlan_settings/reconfigure",
 	Monad:               "vlan",
 }
