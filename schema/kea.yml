@@ -49,8 +49,8 @@ resources:
         - name: BootFileName
           type: string
           key: boot_file_name
-  - name: KeaReservation
-    filename: kea_reservation
+  - name: Reservation
+    filename: reservation
     monad: reservation
     endpoints:
       add: "/kea/dhcpv4/add_reservation"
@@ -73,8 +73,8 @@ resources:
       - name: Description
         type: string
         key: description
-  - name: KeaPeers
-    filename: kea_peer
+  - name: Peer
+    filename: peer
     monad: peer
     endpoints:
       add: "/kea/dhcpv4/add_peer"
