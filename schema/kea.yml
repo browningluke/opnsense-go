@@ -68,7 +68,7 @@ resources:
       delete: "/kea/dhcpv4/del_reservation"
     attrs:
       - name: Subnet
-        type: SelectedMapList
+        type: SelectedMap
         key: subnet
       - name: IpAddress
         type: string
@@ -98,5 +98,5 @@ resources:
         type: string
         key: url
       - name: Role
-        type: SelectedMapList
+        type: SelectedMap
         key: role
