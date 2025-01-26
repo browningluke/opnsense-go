@@ -64,3 +64,28 @@ resources:
       - name: DnsServer
         type: string
         key: dnsserver
+
+  - name: Record
+    filename: record
+    monad: record
+    endpoints:
+      add: "/bind/record/add_record"
+      get: "/bind/record/get_record"
+      update: "/bind/record/set_record"
+      delete: "/bind/record/del_record"
+    attrs:
+      - name: Domain
+        type: SelectedMap
+        key: domain
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Value
+        type: string
+        key: value
