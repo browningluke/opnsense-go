@@ -21,3 +21,46 @@ resources:
       - name: Networks
         type: SelectedMapList
         key: networks
+
+  - name: PrimaryDomain
+    filename: primary_domain
+    monad: domain
+    endpoints:
+      add: "/bind/domain/add_primary_domain"
+      get: "/bind/domain/get_domain"
+      update: "/bind/domain/set_domain"
+      delete: "/bind/domain/del_domain"
+    attrs:
+      - name: DomainName
+        type: string
+        key: domainname
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: AllowTransfer
+        type: SelectedMapList
+        key: allowtransfer
+      - name: AllowQuery
+        type: SelectedMapList
+        key: allowquery
+      - name: TimeToLive
+        type: string
+        key: ttl
+      - name: Refresh
+        type: string
+        key: refresh
+      - name: Retry
+        type: string
+        key: retry
+      - name: Expire
+        type: string
+        key: expire
+      - name: Negative
+        type: string
+        key: negative
+      - name: MailAdmin
+        type: string
+        key: mailadmin
+      - name: DnsServer
+        type: string
+        key: dnsserver
