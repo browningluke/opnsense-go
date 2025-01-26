@@ -1,0 +1,23 @@
+---
+# see https://docs.opnsense.org/development/api/plugins/bind.html
+name: bind
+reconfigureEndpoint: "/bind/service/reconfigure"
+resources:
+  - name: Acl
+    filename: acl
+    monad: acl
+    endpoints:
+      add: "/bind/acl/add_acl"
+      get: "/bind/acl/get_acl"
+      update: "/bind/acl/set_acl"
+      delete: "/bind/acl/del_acl"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Networks
+        type: SelectedMapList
+        key: networks
