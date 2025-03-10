@@ -27,3 +27,62 @@ resources:
       - name: Device
         type: string
         key: vlanif
+
+  - name: Vip
+    filename: vip
+    monad: vip
+    endpoints:
+      add: "/interfaces/vip_settings/addItem"
+      get: "/interfaces/vip_settings/getItem"
+      update: "/interfaces/vip_settings/setItem"
+      delete: "/interfaces/vip_settings/delItem"
+      reconfigure: "/interfaces/vip_settings/reconfigure"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: Address
+        type: string
+        key: address
+      - name: Subnet
+        type: string
+        key: subnet
+      - name: SubnetBit
+        type: string
+        key: subnet_bits
+      - name: Description
+        type: string
+        key: descr
+      - name: Gateway
+        type: string
+        key: gateway
+      - name: NoExpand
+        type: string
+        key: noexpand
+      - name: NoBind
+        type: string
+        key: nobind
+      - name: Password
+        type: string
+        key: password
+      - name: Vhid
+        type: string
+        key: vhid
+      - name: AdvBase
+        type: string
+        key: advbase
+      - name: AdvSkew
+        type: string
+        key: advskew
+      - name: Peer
+        type: string
+        key: peer
+      - name: Peer6
+        type: string
+        key: peer6
+      - name: NoSync
+        type: string
+        key: nosync
