@@ -21,20 +21,9 @@ var VipOpts = api.ReqOpts{
 type Vip struct {
 	Interface   api.SelectedMap `json:"interface"`
 	Mode        api.SelectedMap `json:"mode"`
-	Address     string          `json:"address"`
-	Subnet      string          `json:"subnet"`
-	SubnetBit   string          `json:"subnet_bits"`
+	Network     string          `json:"network"`
 	Description string          `json:"descr"`
 	Gateway     string          `json:"gateway"`
-	NoExpand    string          `json:"noexpand"`
-	NoBind      string          `json:"nobind"`
-	Password    string          `json:"password"`
-	Vhid        string          `json:"vhid"`
-	AdvBase     string          `json:"advbase"`
-	AdvSkew     string          `json:"advskew"`
-	Peer        string          `json:"peer"`
-	Peer6       string          `json:"peer6"`
-	NoSync      string          `json:"nosync"`
 }
 
 // CRUD operations
