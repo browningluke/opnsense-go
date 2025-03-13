@@ -54,3 +54,38 @@ resources:
         type: string
         key: gateway
 
+  - name: Assign
+    filename: assign
+    monad: assign
+    endpoints:
+      add: "/interfaces/assign_settings/addItem"
+      get: "/interfaces/assign_settings/getItem"
+      update: "/interfaces/assign_settings/setItem"
+      delete: "/interfaces/assign_settings/delItem"
+      reconfigure: "/interfaces/assign_settings/reconfigure"
+    attrs:
+      - name: Interface
+        type: string
+        key: interface
+      - name: Device
+        type: string
+        key: device
+      - name: Ip
+        type: string
+        key: ipaddr
+      - name: Subnet
+        type: string
+        key: subnet
+      - name: Gateway
+        type: string
+        key: gateway
+      - name: GatewayInterface
+        type: string
+        key: gateway_interface
+      - name: Enable
+        type: string
+        key: enable
+      - name: Description
+        type: string
+        key: descr
+      
