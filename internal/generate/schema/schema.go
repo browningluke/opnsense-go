@@ -65,10 +65,32 @@ type ResourceData struct {
 	CustomTypes map[string][]AttrData `yaml:"customTypes"`
 }
 
+type RPCData struct {
+	Name        string                `yaml:"name"`
+	Filename    string                `yaml:"filename"`
+	RPCCalls    []RPCCallData         `yaml:"rpc_calls"`
+	CustomTypes map[string][]AttrData `yaml:"customTypes"`
+}
+
+type Parameter struct {
+	Name     string `yaml:"name"`
+	Optional bool   `yaml:"optional"`
+	IsBodyParameter bool `yaml:"bodyParameter"`
+}
+
+type RPCCallData struct {
+	Name       string      `yaml:"name"`
+	Endpoint   string      `yaml:"endpoint"`
+	Method     string      `yaml:"method"`
+	Parameters []Parameter `yaml:"params"`
+	ResultType string      `yaml:"result_type"`
+}
+
 type ControllerData struct {
 	Name                string         `yaml:"name"`
 	ReconfigureEndpoint string         `yaml:"reconfigureEndpoint"`
 	Resources           []ResourceData `yaml:"resources"`
+	RPC                 []RPCData      `yaml:"rpc"`
 }
 
 func newController(file string) *ControllerData {
