@@ -102,7 +102,7 @@ resources:
 
   - name: IPsecAuthLocal
     filename: ipsec_auth_local
-    monad: connection
+    monad: local
     endpoints:
       add: "/ipsec/connections/add_local"
       get: "/ipsec/connections/get_local"
@@ -113,13 +113,13 @@ resources:
         type: string
         key: enabled
       - name: Connection
-        type: string
+        type: SelectedMap
         key: connection
       - name: Round
         type: string
         key: round
       - name: Authentication
-        type: string
+        type: SelectedMap
         key: auth
       - name: Id
         type: string

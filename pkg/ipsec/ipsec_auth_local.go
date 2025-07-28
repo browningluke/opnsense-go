@@ -13,16 +13,16 @@ var IPsecAuthLocalOpts = api.ReqOpts{
 	UpdateEndpoint:      "/ipsec/connections/set_local",
 	DeleteEndpoint:      "/ipsec/connections/del_local",
 	ReconfigureEndpoint: ipsecReconfigureEndpoint,
-	Monad:               "connection",
+	Monad:               "local",
 }
 
 // Data structs
 
 type IPsecAuthLocal struct {
 	Enabled        string              `json:"enabled"`
-	Connection     string              `json:"connection"`
+	Connection     api.SelectedMap     `json:"connection"`
 	Round          string              `json:"round"`
-	Authentication string              `json:"auth"`
+	Authentication api.SelectedMap     `json:"auth"`
 	Id             string              `json:"id"`
 	EAPId          string              `json:"eap_id"`
 	Certificates   api.SelectedMapList `json:"certs"`
