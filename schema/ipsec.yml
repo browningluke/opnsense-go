@@ -227,3 +227,39 @@ resources:
         type: string
         key: description
 
+  - name: IPsecVTI
+    filename: ipsec_vti
+    monad: vti
+    endpoints:
+      add: "/ipsec/vti/add"
+      get: "/ipsec/vti/get"
+      update: "/ipsec/vti/set"
+      delete: "/ipsec/vti/del"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: RequestID
+        type: string
+        key: reqid
+      - name: LocalIP
+        type: string
+        key: local
+      - name: RemoteIP
+        type: string
+        key: remote
+      - name: TunnelLocalIP
+        type: string
+        key: tunnel_local
+      - name: TunnelRemoteIP
+        type: string
+        key: tunnel_remote
+      - name: TunnelLocalIP2
+        type: string
+        key: tunnel_local2
+      - name: TunnelRemoteIP2
+        type: string
+        key: tunnel_remote2
+      - name: Description
+        type: string
+        key: description
