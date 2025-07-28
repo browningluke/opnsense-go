@@ -26,3 +26,76 @@ resources:
       - name: Description
         type: string
         key: description
+
+  - name: IPsecConnection
+    filename: ipsec_connection
+    monad: connection
+    endpoints:
+      add: "/ipsec/connections/add_connection"
+      get: "/ipsec/connections/get_connection"
+      update: "/ipsec/connections/set_connection"
+      delete: "/ipsec/connections/del_connection"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Proposals
+        type: SelectedMapList
+        key: proposals
+      - name: Unique
+        type: SelectedMap
+        key: unique
+      - name: Aggressive
+        type: string
+        key: aggressive
+      - name: Version
+        type: SelectedMap
+        key: version
+      - name: Mobike
+        type: string
+        key: mobike
+      - name: LocalAddresses
+        type: SelectedMapList
+        key: local_addrs
+      - name: RemoteAddresses
+        type: SelectedMapList
+        key: remote_addrs
+      - name: LocalPort
+        type: SelectedMap
+        key: local_port
+      - name: RemotePort
+        type: SelectedMap
+        key: remote_port
+      - name:  UDPEncapsulation
+        type: string
+        key: encap
+      - name: ReauthenticationTime
+        type: string
+        key: reauth_time
+      - name: RekeyTime
+        type: string
+        key: rekey_time
+      - name: IKELifetime
+        type: string
+        key: over_time
+      - name: DPDDelay
+        type: string
+        key: dpd_delay
+      - name: DPDTimeout
+        type: string
+        key: dpd_timeout
+      - name: IPPools
+        type: SelectedMapList
+        key: pools
+      - name: SendCertificateRequest
+        type: string
+        key: send_certreq
+      - name: SendCertificate
+        type: SelectedMap
+        key: send_cert
+      - name: KeyingTries
+        type: string
+        key: keyingtries
+      - name: Description
+        type: string
+        key: description

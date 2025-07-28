@@ -1,6 +1,8 @@
 package api
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 /*
 	OPNsense responses to some queries with json data that looks like:
@@ -29,6 +31,22 @@ func (s *SelectedMap) UnmarshalJSON(data []byte) error {
 
 	err := json.Unmarshal(data, &dataMap)
 	if err != nil {
+		// some responses return a list of selected items instead of a map
+		var listValues []struct {
+			Value    string `json:"value"`
+			Selected any    `json:"selected"`
+		}
+		listErr := json.Unmarshal(data, &listValues)
+		if listErr == nil {
+			for _, v := range listValues {
+				if selectedBool, ok := v.Selected.(bool); ok {
+					if selectedBool {
+						*s = SelectedMap(v.Value)
+					}
+				}
+			}
+			return nil
+		}
 		return err
 	}
 
