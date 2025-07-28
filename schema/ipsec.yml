@@ -1,0 +1,28 @@
+---
+name: ipsec
+reconfigureEndpoint: "/ipsec/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  - name: IPsecPSK
+    filename: ipsec_psk
+    monad: preSharedKey
+    endpoints:
+      add: "/ipsec/pre_shared_keys/add_item"
+      get: "/ipsec/pre_shared_keys/get_item"
+      update: "/ipsec/pre_shared_keys/set_item"
+      delete: "/ipsec/pre_shared_keys/del_item"
+    attrs:
+      - name: IdentityLocal
+        type: string
+        key: ident
+      - name: IdentityRemote
+        type: string
+        key: remote_ident
+      - name: PreSharedKey
+        type: string
+        key: Key
+      - name: Type
+        type: SelectedMap
+        key: keyType
+      - name: Description
+        type: string
+        key: description
