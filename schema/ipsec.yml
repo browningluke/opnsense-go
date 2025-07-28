@@ -174,3 +174,56 @@ resources:
       - name: Description
         type: string
         key: description
+
+  - name: IPsecChild
+    filename: ipsec_child
+    monad: child
+    endpoints:
+      add: "/ipsec/connections/add_child"
+      get: "/ipsec/connections/get_child"
+      update: "/ipsec/connections/set_child"
+      delete: "/ipsec/connections/del_child"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: SelectedMap
+        key: connection
+      - name: Proposals
+        type: SelectedMapList
+        key: esp_proposals
+      - name: SHA256_96
+        type: string
+        key: sha256_96
+      - name: StartAction
+        type: SelectedMap
+        key: start_action
+      - name: CloseAction
+        type: SelectedMap
+        key: close_action
+      - name: DPDAction
+        type: SelectedMap
+        key: dpd_action
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: InstallPolicies
+        type: string
+        key: policies
+      - name: LocalNetworks
+        type: SelectedMapList
+        key: local_ts
+      - name: RemoteNetworks
+        type: SelectedMapList
+        key: remote_ts
+      - name: RequestID
+        type: string
+        key: reqid
+      - name: RekeyTime
+        type: string
+        key: rekey_time
+      - name: Description
+        type: string
+        key: description
+
