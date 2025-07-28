@@ -99,3 +99,40 @@ resources:
       - name: Description
         type: string
         key: description
+
+  - name: IPsecAuthLocal
+    filename: ipsec_auth_local
+    monad: connection
+    endpoints:
+      add: "/ipsec/connections/add_local"
+      get: "/ipsec/connections/get_local"
+      update: "/ipsec/connections/set_local"
+      delete: "/ipsec/connections/del_local"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: string
+        key: connection
+      - name: Round
+        type: string
+        key: round
+      - name: Authentication
+        type: string
+        key: auth
+      - name: Id
+        type: string
+        key: id
+      - name: EAPId
+        type: string
+        key: eap_id
+      - name: Certificates
+        type: SelectedMapList
+        key: certs
+      - name: PublicKeys
+        type: SelectedMapList
+        key: public_keys
+      - name: Description
+        type: string
+        key: description
