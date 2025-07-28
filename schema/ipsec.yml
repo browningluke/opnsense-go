@@ -136,3 +136,41 @@ resources:
       - name: Description
         type: string
         key: description
+
+
+  - name: IPsecAuthRemote
+    filename: ipsec_auth_remote
+    monad: remote
+    endpoints:
+      add: "/ipsec/connections/add_remote"
+      get: "/ipsec/connections/get_remote"
+      update: "/ipsec/connections/set_remote"
+      delete: "/ipsec/connections/del_remote"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: SelectedMap
+        key: connection
+      - name: Round
+        type: string
+        key: round
+      - name: Authentication
+        type: SelectedMap
+        key: auth
+      - name: Id
+        type: string
+        key: id
+      - name: EAPId
+        type: string
+        key: eap_id
+      - name: Certificates
+        type: SelectedMapList
+        key: certs
+      - name: PublicKeys
+        type: SelectedMapList
+        key: public_keys
+      - name: Description
+        type: string
+        key: description

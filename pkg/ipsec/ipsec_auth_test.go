@@ -86,42 +86,40 @@ func TestIPsecAuth(t *testing.T) {
 	}
 	t.Logf("Added IPsec Auth Local with ID: %s", local_auth_key)
 
-	retrieved_auth, err := controller.GetIPsecAuthLocal(ctx, local_auth_key)
+	retrieved_auth_local, err := controller.GetIPsecAuthLocal(ctx, local_auth_key)
 	if err != nil {
 		t.Fatalf("Failed to get IPsec Auth Local: %v", err)
 	}
-	t.Logf("Retrieved IPsec Auth Local: %+v", retrieved_auth)
+	t.Logf("Retrieved IPsec Auth Local: %+v", retrieved_auth_local)
 
-	// check all values to see if the retrieved auth matches the original
-	if retrieved_auth.Id != ipsec_auth_local.Id {
-		t.Errorf("Retrieved ID %s does not match original ID %s", retrieved_auth.Id, ipsec_auth_local.Id)
+	if retrieved_auth_local.Id != ipsec_auth_local.Id {
+		t.Errorf("Retrieved ID %s does not match original ID %s", retrieved_auth_local.Id, ipsec_auth_local.Id)
 	}
-	if retrieved_auth.Description != ipsec_auth_local.Description {
-		t.Errorf("Retrieved Description %s does not match original Description %s", retrieved_auth.Description, ipsec_auth_local.Description)
+	if retrieved_auth_local.Description != ipsec_auth_local.Description {
+		t.Errorf("Retrieved Description %s does not match original Description %s", retrieved_auth_local.Description, ipsec_auth_local.Description)
 	}
-	if retrieved_auth.Enabled != ipsec_auth_local.Enabled {
-		t.Errorf("Retrieved Enabled %s does not match original Enabled %s", retrieved_auth.Enabled, ipsec_auth_local.Enabled)
+	if retrieved_auth_local.Enabled != ipsec_auth_local.Enabled {
+		t.Errorf("Retrieved Enabled %s does not match original Enabled %s", retrieved_auth_local.Enabled, ipsec_auth_local.Enabled)
 	}
-	if retrieved_auth.Round != ipsec_auth_local.Round {
-		t.Errorf("Retrieved Round %s does not match original Round %s", retrieved_auth.Round, ipsec_auth_local.Round)
+	if retrieved_auth_local.Round != ipsec_auth_local.Round {
+		t.Errorf("Retrieved Round %s does not match original Round %s", retrieved_auth_local.Round, ipsec_auth_local.Round)
 	}
-	if retrieved_auth.Authentication != ipsec_auth_local.Authentication {
-		t.Errorf("Retrieved Authentication %s does not match original Authentication %s", retrieved_auth.Authentication, ipsec_auth_local.Authentication)
+	if retrieved_auth_local.Authentication != ipsec_auth_local.Authentication {
+		t.Errorf("Retrieved Authentication %s does not match original Authentication %s", retrieved_auth_local.Authentication, ipsec_auth_local.Authentication)
 	}
-	if retrieved_auth.Connection != ipsec_auth_local.Connection {
-		t.Errorf("Retrieved Connection %s does not match original Connection %s", retrieved_auth.Connection, ipsec_auth_local.Connection)
+	if retrieved_auth_local.Connection != ipsec_auth_local.Connection {
+		t.Errorf("Retrieved Connection %s does not match original Connection %s", retrieved_auth_local.Connection, ipsec_auth_local.Connection)
 	}
-	if !sliceEqual(retrieved_auth.Certificates, ipsec_auth_local.Certificates) {
-		t.Errorf("Retrieved Certificates %v does not match original Certificates %v", retrieved_auth.Certificates, ipsec_auth_local.Certificates)
+	if !sliceEqual(retrieved_auth_local.Certificates, ipsec_auth_local.Certificates) {
+		t.Errorf("Retrieved Certificates %v does not match original Certificates %v", retrieved_auth_local.Certificates, ipsec_auth_local.Certificates)
 	}
-	if !sliceEqual(retrieved_auth.PublicKeys, ipsec_auth_local.PublicKeys) {
-		t.Errorf("Retrieved PublicKeys %v does not match original PublicKeys %v", retrieved_auth.PublicKeys, ipsec_auth_local.PublicKeys)
+	if !sliceEqual(retrieved_auth_local.PublicKeys, ipsec_auth_local.PublicKeys) {
+		t.Errorf("Retrieved PublicKeys %v does not match original PublicKeys %v", retrieved_auth_local.PublicKeys, ipsec_auth_local.PublicKeys)
 	}
-	if retrieved_auth.EAPId != ipsec_auth_local.EAPId {
-		t.Errorf("Retrieved EAPId %s does not match original EAPId %s", retrieved_auth.EAPId, ipsec_auth_local.EAPId)
+	if retrieved_auth_local.EAPId != ipsec_auth_local.EAPId {
+		t.Errorf("Retrieved EAPId %s does not match original EAPId %s", retrieved_auth_local.EAPId, ipsec_auth_local.EAPId)
 	}
 
-	// Update the IPsec Auth Local
 	ipsec_auth_local.Description = "Updated Test IPsec Auth Local"
 	err = controller.UpdateIPsecAuthLocal(ctx, local_auth_key, ipsec_auth_local)
 	if err != nil {
@@ -132,6 +130,70 @@ func TestIPsecAuth(t *testing.T) {
 	err = controller.DeleteIPsecAuthLocal(ctx, local_auth_key)
 	if err != nil {
 		t.Fatalf("Failed to delete IPsec Auth Local: %v", err)
+	}
+
+	ipsec_auth_remote := &IPsecAuthRemote{
+		Enabled:        "1",
+		Connection:     connection,
+		Round:          "1",
+		Authentication: "psk",
+		Id:             "test-auth-remote",
+		EAPId:          "",
+		Certificates:   api.SelectedMapList{},
+		PublicKeys:     api.SelectedMapList{},
+		Description:    "Test IPsec Auth Remote",
+	}
+
+	remote_auth_key, err := controller.AddIPsecAuthRemote(ctx, ipsec_auth_remote)
+	if err != nil {
+		t.Fatalf("Failed to add IPsec Auth Remote: %v", err)
+	}
+	t.Logf("Added IPsec Auth Remote with ID: %s", remote_auth_key)
+
+	retrieved_auth_remote, err := controller.GetIPsecAuthRemote(ctx, remote_auth_key)
+	if err != nil {
+		t.Fatalf("Failed to get IPsec Auth Local: %v", err)
+	}
+	t.Logf("Retrieved IPsec Auth Local: %+v", retrieved_auth_remote)
+
+	if retrieved_auth_remote.Id != ipsec_auth_remote.Id {
+		t.Errorf("Retrieved ID %s does not match original ID %s", retrieved_auth_remote.Id, ipsec_auth_remote.Id)
+	}
+	if retrieved_auth_remote.Description != ipsec_auth_remote.Description {
+		t.Errorf("Retrieved Description %s does not match original Description %s", retrieved_auth_remote.Description, ipsec_auth_remote.Description)
+	}
+	if retrieved_auth_remote.Enabled != ipsec_auth_remote.Enabled {
+		t.Errorf("Retrieved Enabled %s does not match original Enabled %s", retrieved_auth_remote.Enabled, ipsec_auth_remote.Enabled)
+	}
+	if retrieved_auth_remote.Round != ipsec_auth_remote.Round {
+		t.Errorf("Retrieved Round %s does not match original Round %s", retrieved_auth_remote.Round, ipsec_auth_remote.Round)
+	}
+	if retrieved_auth_remote.Authentication != ipsec_auth_remote.Authentication {
+		t.Errorf("Retrieved Authentication %s does not match original Authentication %s", retrieved_auth_remote.Authentication, ipsec_auth_remote.Authentication)
+	}
+	if retrieved_auth_remote.Connection != ipsec_auth_remote.Connection {
+		t.Errorf("Retrieved Connection %s does not match original Connection %s", retrieved_auth_remote.Connection, ipsec_auth_remote.Connection)
+	}
+	if !sliceEqual(retrieved_auth_remote.Certificates, ipsec_auth_remote.Certificates) {
+		t.Errorf("Retrieved Certificates %v does not match original Certificates %v", retrieved_auth_remote.Certificates, ipsec_auth_remote.Certificates)
+	}
+	if !sliceEqual(retrieved_auth_remote.PublicKeys, ipsec_auth_remote.PublicKeys) {
+		t.Errorf("Retrieved PublicKeys %v does not match original PublicKeys %v", retrieved_auth_remote.PublicKeys, ipsec_auth_remote.PublicKeys)
+	}
+	if retrieved_auth_remote.EAPId != ipsec_auth_remote.EAPId {
+		t.Errorf("Retrieved EAPId %s does not match original EAPId %s", retrieved_auth_remote.EAPId, ipsec_auth_remote.EAPId)
+	}
+
+	ipsec_auth_remote.Description = "Updated Test IPsec Auth Remote"
+	err = controller.UpdateIPsecAuthRemote(ctx, remote_auth_key, ipsec_auth_remote)
+	if err != nil {
+		t.Fatalf("Failed to update IPsec Auth Remote: %v", err)
+	}
+	t.Logf("Updated IPsec Auth Remote with ID: %s", remote_auth_key)
+
+	err = controller.DeleteIPsecAuthRemote(ctx, remote_auth_key)
+	if err != nil {
+		t.Fatalf("Failed to delete IPsec Auth Remote: %v", err)
 	}
 
 	err = controller.DeleteIPsecConnection(ctx, conn_key)
