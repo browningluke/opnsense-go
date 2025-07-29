@@ -12,6 +12,7 @@ env:
   OPNSENSE_VERSION: "25.7"
   OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-25.7.qcow2"
   OPNSENSE_SHA1: f38521ea26311e6395615b5e8c3289c9965e0ac6
+  OPNSENSE_SSH_PORT: 45391
 
 jobs:
   test:
@@ -49,3 +50,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-system-x86
+      - name: Start opnsense VM
+        id: start-vm
+        run: |
+          qemu-system-x86_64 -m 3072 -smp 2 -hda opnsense-images/opnsense.qcow2 \
+          -netdev user,id=user.0,hostfwd=tcp::${{ env.OPNSENSE_SSH_PORT }}-:22 \
+          -device virtio-net,netdev=user.0 \
+          -chardev socket,path=/var/run/qemu-ga.sock,server,nowait,id=qga0 \
+          -device isa-serial,chardev=qga0 \
+          -device virtio-serial \
+          -chardev socket,path=/var/run/qemu-virtconsole.sock,server,nowait,id=qvt0 \
+          -device virtconsole,chardev=qvt0 \
+          -nographic &
+          echo "qemu_pid=$!" >> $GITHUB_OUTPUT
+          sleep 50 # Wait for the VM to boot
