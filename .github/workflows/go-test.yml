@@ -1,0 +1,37 @@
+name: Run go tests
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  OPNSENSE_VERSION: "25.7"
+  OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-25.7.qcow2"
+  OPNSENSE_SHA1: f38521ea26311e6395615b5e8c3289c9965e0ac6
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Create opnsense image directory
+        run: |
+          mkdir -p opnsense-images
+      - name: Cache opnsense image
+        uses: actions/cache@v4
+        with:
+          path: opnsense-images
+          key: ${{ runner.os }}-opnsense-${{ github.env.OPNSENSE_SHA1 }}
+      - name: Download OPNsense image
+        run: |
+          curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
+          echo "$OPNSENSE_SHA1  opnsense-images/opnsense.qcow2" | sha1sum -c -
