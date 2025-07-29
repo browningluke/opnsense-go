@@ -28,10 +28,12 @@ jobs:
           mkdir -p opnsense-images
       - name: Cache opnsense image
         uses: actions/cache@v4
+        id: image-cache
         with:
           path: opnsense-images
           key: ${{ runner.os }}-opnsense-${{ github.env.OPNSENSE_SHA1 }}
       - name: Download OPNsense image
+        if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
           curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
           echo "$OPNSENSE_SHA1  opnsense-images/opnsense.qcow2" | sha1sum -c -
