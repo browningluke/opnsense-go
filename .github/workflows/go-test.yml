@@ -31,7 +31,7 @@ jobs:
         id: image-cache
         with:
           path: opnsense-images
-          key: ${{ runner.os }}-opnsense-${{ github.env.OPNSENSE_SHA1 }}
+          key: ${{ runner.os }}-opnsense-${{ env.OPNSENSE_SHA1 }}
       - name: Download OPNsense image
         if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
