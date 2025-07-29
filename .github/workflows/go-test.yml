@@ -37,3 +37,15 @@ jobs:
         run: |
           curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
           echo "$OPNSENSE_SHA1  opnsense-images/opnsense.qcow2" | sha1sum -c -
+      - name: Disable triggers
+        run: |
+          mkdir -p /etc/dpkg/dpkg.cfg.d
+          sudo tee /etc/dpkg/dpkg.cfg.d/01_nodoc > /dev/null << 'EOF'
+          path-exclude /usr/share/doc/*
+          path-exclude /usr/share/man/*
+          path-exclude /usr/share/info/*
+          EOF
+      - name: Install qemu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86
