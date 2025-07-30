@@ -38,6 +38,8 @@ jobs:
         if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
           curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
+      - name: Verify OPNsense image
+        run: |
           echo "$OPNSENSE_SHA1  opnsense-images/opnsense.qcow2" | sha1sum -c -
       - name: Disable triggers
         run: |
