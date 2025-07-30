@@ -67,9 +67,10 @@ jobs:
           -chardev socket,path=/tmp/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0 \
           -device virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0 \
           -nographic &
-          echo "qemu-pid=$!" >> $GITHUB_OUTPUT
+          QEMU_PID=$!
+          echo "qemu-pid=${QEMU_PID}" >> $GITHUB_OUTPUT
           sleep 180 # Wait for the VM to boot
-          [ -d "/proc/${kpid}" ] || (echo "QEMU process not found" && exit 1)
+          [ -d "/proc/${QEMU_PID}" ] || (echo "QEMU process not found" && exit 1)
       - name: Create API key
         id: apikey
         run: |
