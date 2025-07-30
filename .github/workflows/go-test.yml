@@ -1,20 +1,17 @@
 name: Run go tests
-
-on: 
+on:
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
-
 env:
   OPNSENSE_VERSION: "25.7"
   OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-25.7.qcow2"
   OPNSENSE_SHA1: edba9015951e68438fb6b0c0e1de21383bfaa399
   OPNSENSE_SSH_PORT: 8022
   OPNSENSE_WEB_PORT: 8443
-
 jobs:
   test:
     runs-on: ubuntu-latest
