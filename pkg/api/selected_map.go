@@ -16,8 +16,19 @@ import (
 			"value": "...",
 		},
 	}
+	Some responses may return a list of dictionaries instead of a map, like:
+	"some_key" : [
+		{
+			"selected": 0 (or false),
+			"value": "...",
+		},
+		{
+			"selected": 1 (or true),
+			"value": "...",
+		},
+	]
 
-	SelectedMap allows the JSON library to unmarshal that map into a string containing only
+	SelectedMap allows the JSON library to unmarshal that response into a string containing only
 	the key that is selected (i.e. "K2", in the example above).
 */
 

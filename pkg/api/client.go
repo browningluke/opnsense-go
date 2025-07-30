@@ -8,15 +8,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/hashicorp/go-retryablehttp"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -109,7 +110,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 
 	// Log request
 	dReq, _ := httputil.DumpRequest(req.Request, true)
-	log.Println(fmt.Sprintf("\n%s\n", string(dReq)))
+	log.Printf("\n%s\n", string(dReq))
 
 	// Do request
 	res, err := c.client.Do(req)
