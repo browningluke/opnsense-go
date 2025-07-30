@@ -4,6 +4,7 @@ import base64
 import socket
 import json
 import select
+import sys
 from time import sleep
 
 QEMU_GA_SOCKET = '/Users/atammy/qemu-ga2.sock'
@@ -62,4 +63,4 @@ output = send_qemu_command(command_status, QEMU_GA_SOCKET).strip()
 outdata = json.loads(output).get('return').get('out-data')  # base64 encoded output
 decoded_outdata = base64.b64decode(outdata).decode('utf-8').strip()
 
-print(decoded_outdata)
+print(decoded_outdata, file=sys.stderr)

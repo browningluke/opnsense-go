@@ -73,7 +73,7 @@ jobs:
       - name: Create API key
         id: apikey
         run: |
-          python3 scripts/create-apikey.py > $GITHUB_OUTPUT
+          python3 scripts/create-apikey.py 2> $GITHUB_OUTPUT
       - name: Stop opnsense VM
         run: |
           kill -9 ${{ steps.start-vm.outputs.qemu-pid }}
