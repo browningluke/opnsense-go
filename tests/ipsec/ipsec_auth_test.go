@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/ipsec"
 )
 
 func TestIPsecAuth(t *testing.T) {
@@ -23,7 +24,7 @@ func TestIPsecAuth(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := Controller{
+	controller := ipsec.Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
@@ -37,7 +38,7 @@ func TestIPsecAuth(t *testing.T) {
 	remote_addresses := api.SelectedMapList{
 		"192.168.1.2",
 	}
-	ipsec_connection := &IPsecConnection{
+	ipsec_connection := &ipsec.IPsecConnection{
 		Enabled:                "1",
 		Proposals:              proposals,
 		Unique:                 "no",
@@ -68,7 +69,7 @@ func TestIPsecAuth(t *testing.T) {
 
 	connection := api.SelectedMap(conn_key)
 
-	ipsec_auth_local := &IPsecAuthLocal{
+	ipsec_auth_local := &ipsec.IPsecAuthLocal{
 		Enabled:        "1",
 		Connection:     connection,
 		Round:          "1",
@@ -132,7 +133,7 @@ func TestIPsecAuth(t *testing.T) {
 		t.Fatalf("Failed to delete IPsec Auth Local: %v", err)
 	}
 
-	ipsec_auth_remote := &IPsecAuthRemote{
+	ipsec_auth_remote := &ipsec.IPsecAuthRemote{
 		Enabled:        "1",
 		Connection:     connection,
 		Round:          "1",

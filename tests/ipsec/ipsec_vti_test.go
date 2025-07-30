@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/ipsec"
 )
 
 func TestIPsecVTI(t *testing.T) {
@@ -23,7 +24,7 @@ func TestIPsecVTI(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := Controller{
+	controller := ipsec.Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
@@ -37,7 +38,7 @@ func TestIPsecVTI(t *testing.T) {
 	remote_addresses := api.SelectedMapList{
 		"192.168.1.2",
 	}
-	ipsec_connection := &IPsecConnection{
+	ipsec_connection := &ipsec.IPsecConnection{
 		Enabled:                "1",
 		Proposals:              proposals,
 		Unique:                 "no",
@@ -66,7 +67,7 @@ func TestIPsecVTI(t *testing.T) {
 	}
 	t.Logf("Added IPsec Connection with key: %s", conn_key)
 
-	ipsec_vti := &IPsecVTI{
+	ipsec_vti := &ipsec.IPsecVTI{
 		Enabled:         "1",
 		RequestID:       "1234",
 		LocalIP:         "2.3.4.5",

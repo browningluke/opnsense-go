@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/ipsec"
 )
 
 func sliceEqual(a, b []string) bool {
@@ -35,7 +36,7 @@ func TestIPsecConnection(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := Controller{
+	controller := ipsec.Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
@@ -49,7 +50,7 @@ func TestIPsecConnection(t *testing.T) {
 	remote_addresses := api.SelectedMapList{
 		"192.168.1.2",
 	}
-	ipsec_connection := &IPsecConnection{
+	ipsec_connection := &ipsec.IPsecConnection{
 		Enabled:                "1",
 		Proposals:              proposals,
 		Unique:                 "no",
