@@ -25,12 +25,14 @@ jobs:
       - name: Create opnsense image directory
         run: |
           mkdir -p opnsense-images
-      - name: Cache opnsense image
-        uses: actions/cache@v4
-        id: image-cache
-        with:
-          path: opnsense-images
-          key: ${{ runner.os }}-opnsense-${{ env.OPNSENSE_SHA1 }}
+      # TODO: Figure out why this keeps failing
+      # https://github.com/commure/opnsense-go/actions/runs/16612534152/job/46999157318
+      # - name: Cache opnsense image
+      #   uses: actions/cache@v4
+      #   id: image-cache
+      #   with:
+      #     path: opnsense-images
+      #     key: ${{ runner.os }}-opnsense-${{ env.OPNSENSE_SHA1 }}
       - name: Download OPNsense image
         if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
