@@ -1,20 +1,17 @@
 name: Run go tests
-
-on: 
+on:
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
-
 env:
   OPNSENSE_VERSION: "25.7"
   OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-25.7.qcow2"
   OPNSENSE_SHA1: edba9015951e68438fb6b0c0e1de21383bfaa399
   OPNSENSE_SSH_PORT: 8022
   OPNSENSE_WEB_PORT: 8443
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -67,9 +64,10 @@ jobs:
           -chardev socket,path=/tmp/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0 \
           -device virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0 \
           -nographic &
-          echo "qemu-pid=$!" >> $GITHUB_OUTPUT
+          QEMU_PID=$!
+          echo "qemu-pid=${QEMU_PID}" >> $GITHUB_OUTPUT
           sleep 180 # Wait for the VM to boot
-          [ -d "/proc/${kpid}" ] || (echo "QEMU process not found" && exit 1)
+          [ -d "/proc/${QEMU_PID}" ] || (echo "QEMU process not found" && exit 1)
       - name: Create API key
         id: apikey
         run: |
