@@ -34,7 +34,6 @@ jobs:
       #     path: opnsense-images
       #     key: ${{ runner.os }}-opnsense-${{ env.OPNSENSE_SHA1 }}
       - name: Download OPNsense image
-        if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
           curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
       - name: Verify OPNsense image
