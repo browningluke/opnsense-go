@@ -68,14 +68,20 @@ jobs:
           -device virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0 \
           -nographic &
           echo "qemu-pid=$!" >> $GITHUB_OUTPUT
-          sleep 120 # Wait for the VM to boot
+          sleep 180 # Wait for the VM to boot
           [ -d "/proc/${kpid}" ] || (echo "QEMU process not found" && exit 1)
-      - name: Setup tmate
-        uses: mxschmitt/action-tmate@v3
       - name: Create API key
         id: apikey
         run: |
           python3 scripts/create-apikey.py 2> $GITHUB_OUTPUT
+      - name: Setup env vars for tests
+        run: |
+          echo "OPNSENSE_API_KEY=${{ steps.apikey.outputs.key }}" >> $GITHUB_ENV
+          echo "OPNSENSE_API_SECRET=${{ steps.apikey.outputs.secret }}" >> $GITHUB_ENV
+          echo "OPNSENSE_URI=https://localhost:${{ env.OPNSENSE_WEB_PORT }}" >> $GITHUB_ENV
+      - name: Run tests
+        run: |
+          go test -v ./...
       - name: Stop opnsense VM
         run: |
           kill -9 ${{ steps.start-vm.outputs.qemu-pid }}
