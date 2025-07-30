@@ -59,12 +59,12 @@ jobs:
           qemu-system-x86_64 -m 6144 -smp 2 -hda opnsense-images/opnsense.qcow2 \
           -netdev user,id=user.0,hostfwd=tcp::${{ env.OPNSENSE_SSH_PORT }}-:22,hostfwd=tcp::${{ env.OPNSENSE_WEB_PORT }}-:443 \
           -device virtio-net,netdev=user.0 \
-          -chardev socket,path=/tmp/qemu-isa-serial.sock,server,nowait,id=qga0 \
+          -chardev socket,path=/tmp/qemu-isa-serial.sock,server=on,wait=off,id=qga0 \
           -device isa-serial,chardev=qga0 \
           -device virtio-serial \
-          -chardev socket,path=/tmp/qemu-virtconsole.sock,server,nowait,id=qvt0 \
+          -chardev socket,path=/tmp/qemu-virtconsole.sock,server=on,wait=off,id=qvt0 \
           -device virtconsole,chardev=qvt0 \
-          -chardev socket,path=/tmp/qemu-virtserialport.sock,server,nowait,id=qvsp0 \
+          -chardev socket,path=/tmp/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0 \
           -device virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0 \
           -nographic &
           echo "qemu-pid=$!" >> $GITHUB_OUTPUT
