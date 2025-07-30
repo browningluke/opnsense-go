@@ -69,7 +69,9 @@ jobs:
           -nographic &
           echo "qemu-pid=$!" >> $GITHUB_OUTPUT
           sleep 120 # Wait for the VM to boot
-          [ -d "/proc/${kpid}" ] || (echo "QEMU process not found" && exit 1)        
+          [ -d "/proc/${kpid}" ] || (echo "QEMU process not found" && exit 1)
+      - name: Setup tmate
+        uses: mxschmitt/action-tmate@v3
       - name: Create API key
         id: apikey
         run: |
