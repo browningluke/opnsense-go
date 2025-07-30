@@ -3,11 +3,12 @@
 import base64
 import socket
 import json
+import os
 import select
 import sys
 from time import sleep
 
-QEMU_GA_SOCKET = '/Users/atammy/qemu-ga2.sock'
+QEMU_GA_SOCKET = os.environ.get("QEMU_GA_SOCKET", "/tmp/qemu-virtserialport.sock")
 
 
 def send_qemu_command(command, socket_path, timeout=5):
