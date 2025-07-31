@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/browningluke/opnsense-go/pkg/errs"
 )
 
@@ -34,7 +35,7 @@ func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpo
 
 	// Make request to OPNsense
 	respJson := &addResp{}
-	err := c.doRequest(ctx, "POST", endpoint, wrapped, respJson)
+	err := c.APIRequest(ctx, "POST", endpoint, wrapped, respJson)
 	if err != nil {
 		return "", err
 	}
@@ -58,7 +59,7 @@ func get(c *Client, ctx context.Context, endpoint string) (map[string]json.RawMe
 	var reqData map[string]json.RawMessage
 
 	// Make request to OPNsense
-	err := c.doRequest(ctx, "GET", endpoint, nil, &reqData)
+	err := c.APIRequest(ctx, "GET", endpoint, nil, &reqData)
 
 	// Handle request errors
 	if err != nil {
@@ -153,7 +154,7 @@ func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
 	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 	respJson := &deleteResp{}
-	err := c.doRequest(ctx, "POST", fmt.Sprintf("%s/%s", opts.DeleteEndpoint, id), nil, respJson)
+	err := c.APIRequest(ctx, "POST", fmt.Sprintf("%s/%s", opts.DeleteEndpoint, id), nil, respJson)
 	if err != nil {
 		return err
 	}

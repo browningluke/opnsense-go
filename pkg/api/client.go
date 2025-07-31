@@ -82,7 +82,7 @@ func (c *Client) getAuth() string {
 	return base64.StdEncoding.EncodeToString([]byte(auth))
 }
 
-func (c *Client) doRequest(ctx context.Context, method, endpoint string, body any, resp any) error {
+func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, body any, resp any) error {
 	// Create IO readers
 	var bodyReader io.Reader
 	if body != nil {
@@ -97,7 +97,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	}
 
 	// Create request
-	req, err := retryablehttp.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/api%s", c.opts.Uri, endpoint), bodyReader)
+	req, err := retryablehttp.NewRequestWithContext(ctx, method, fmt.Sprintf("%s%s", c.opts.Uri, endpoint), bodyReader)
 	if err != nil {
 		return err
 	}
@@ -137,6 +137,18 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	return nil
 }
 
+func (c *Client) APIRequest(ctx context.Context, method string, endpoint string, body any, resp any) error {
+	// Create request
+	apiEndpoint := fmt.Sprintf("/api%s", endpoint)
+	log.Printf("API Request: %s %s", method, apiEndpoint)
+	err := c.DoRequest(ctx, method, apiEndpoint, body, resp)
+	if err != nil {
+		return fmt.Errorf("failed to %s %s: %w", method, apiEndpoint, err)
+	}
+
+	return nil
+}
+
 // ReconfigureService defined at the endpoint.
 func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error {
 	// Handle services without a reconfigure endpoint
@@ -149,7 +161,7 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 		Status string `json:"status,omitempty"`
 		Result string `json:"result,omitempty"`
 	}{}
-	err := c.doRequest(ctx, "POST", endpoint, nil, respJson)
+	err := c.APIRequest(ctx, "POST", endpoint, nil, respJson)
 	if err != nil {
 		return err
 	}
