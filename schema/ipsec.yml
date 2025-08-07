@@ -1,0 +1,265 @@
+---
+name: ipsec
+reconfigureEndpoint: "/ipsec/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+resources:
+  - name: IPsecPSK
+    filename: ipsec_psk
+    monad: preSharedKey
+    endpoints:
+      add: "/ipsec/pre_shared_keys/add_item"
+      get: "/ipsec/pre_shared_keys/get_item"
+      update: "/ipsec/pre_shared_keys/set_item"
+      delete: "/ipsec/pre_shared_keys/del_item"
+    attrs:
+      - name: IdentityLocal
+        type: string
+        key: ident
+      - name: IdentityRemote
+        type: string
+        key: remote_ident
+      - name: PreSharedKey
+        type: string
+        key: Key
+      - name: Type
+        type: SelectedMap
+        key: keyType
+      - name: Description
+        type: string
+        key: description
+
+  - name: IPsecConnection
+    filename: ipsec_connection
+    monad: connection
+    endpoints:
+      add: "/ipsec/connections/add_connection"
+      get: "/ipsec/connections/get_connection"
+      update: "/ipsec/connections/set_connection"
+      delete: "/ipsec/connections/del_connection"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Proposals
+        type: SelectedMapList
+        key: proposals
+      - name: Unique
+        type: SelectedMap
+        key: unique
+      - name: Aggressive
+        type: string
+        key: aggressive
+      - name: Version
+        type: SelectedMap
+        key: version
+      - name: Mobike
+        type: string
+        key: mobike
+      - name: LocalAddresses
+        type: SelectedMapList
+        key: local_addrs
+      - name: RemoteAddresses
+        type: SelectedMapList
+        key: remote_addrs
+      - name: LocalPort
+        type: SelectedMap
+        key: local_port
+      - name: RemotePort
+        type: SelectedMap
+        key: remote_port
+      - name:  UDPEncapsulation
+        type: string
+        key: encap
+      - name: ReauthenticationTime
+        type: string
+        key: reauth_time
+      - name: RekeyTime
+        type: string
+        key: rekey_time
+      - name: IKELifetime
+        type: string
+        key: over_time
+      - name: DPDDelay
+        type: string
+        key: dpd_delay
+      - name: DPDTimeout
+        type: string
+        key: dpd_timeout
+      - name: IPPools
+        type: SelectedMapList
+        key: pools
+      - name: SendCertificateRequest
+        type: string
+        key: send_certreq
+      - name: SendCertificate
+        type: SelectedMap
+        key: send_cert
+      - name: KeyingTries
+        type: string
+        key: keyingtries
+      - name: Description
+        type: string
+        key: description
+
+  - name: IPsecAuthLocal
+    filename: ipsec_auth_local
+    monad: local
+    endpoints:
+      add: "/ipsec/connections/add_local"
+      get: "/ipsec/connections/get_local"
+      update: "/ipsec/connections/set_local"
+      delete: "/ipsec/connections/del_local"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: SelectedMap
+        key: connection
+      - name: Round
+        type: string
+        key: round
+      - name: Authentication
+        type: SelectedMap
+        key: auth
+      - name: Id
+        type: string
+        key: id
+      - name: EAPId
+        type: string
+        key: eap_id
+      - name: Certificates
+        type: SelectedMapList
+        key: certs
+      - name: PublicKeys
+        type: SelectedMapList
+        key: public_keys
+      - name: Description
+        type: string
+        key: description
+
+
+  - name: IPsecAuthRemote
+    filename: ipsec_auth_remote
+    monad: remote
+    endpoints:
+      add: "/ipsec/connections/add_remote"
+      get: "/ipsec/connections/get_remote"
+      update: "/ipsec/connections/set_remote"
+      delete: "/ipsec/connections/del_remote"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: SelectedMap
+        key: connection
+      - name: Round
+        type: string
+        key: round
+      - name: Authentication
+        type: SelectedMap
+        key: auth
+      - name: Id
+        type: string
+        key: id
+      - name: EAPId
+        type: string
+        key: eap_id
+      - name: Certificates
+        type: SelectedMapList
+        key: certs
+      - name: PublicKeys
+        type: SelectedMapList
+        key: public_keys
+      - name: Description
+        type: string
+        key: description
+
+  - name: IPsecChild
+    filename: ipsec_child
+    monad: child
+    endpoints:
+      add: "/ipsec/connections/add_child"
+      get: "/ipsec/connections/get_child"
+      update: "/ipsec/connections/set_child"
+      delete: "/ipsec/connections/del_child"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Connection
+        type: SelectedMap
+        key: connection
+      - name: Proposals
+        type: SelectedMapList
+        key: esp_proposals
+      - name: SHA256_96
+        type: string
+        key: sha256_96
+      - name: StartAction
+        type: SelectedMap
+        key: start_action
+      - name: CloseAction
+        type: SelectedMap
+        key: close_action
+      - name: DPDAction
+        type: SelectedMap
+        key: dpd_action
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: InstallPolicies
+        type: string
+        key: policies
+      - name: LocalNetworks
+        type: SelectedMapList
+        key: local_ts
+      - name: RemoteNetworks
+        type: SelectedMapList
+        key: remote_ts
+      - name: RequestID
+        type: string
+        key: reqid
+      - name: RekeyTime
+        type: string
+        key: rekey_time
+      - name: Description
+        type: string
+        key: description
+
+  - name: IPsecVTI
+    filename: ipsec_vti
+    monad: vti
+    endpoints:
+      add: "/ipsec/vti/add"
+      get: "/ipsec/vti/get"
+      update: "/ipsec/vti/set"
+      delete: "/ipsec/vti/del"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: RequestID
+        type: string
+        key: reqid
+      - name: LocalIP
+        type: string
+        key: local
+      - name: RemoteIP
+        type: string
+        key: remote
+      - name: TunnelLocalIP
+        type: string
+        key: tunnel_local
+      - name: TunnelRemoteIP
+        type: string
+        key: tunnel_remote
+      - name: TunnelLocalIP2
+        type: string
+        key: tunnel_local2
+      - name: TunnelRemoteIP2
+        type: string
+        key: tunnel_remote2
+      - name: Description
+        type: string
+        key: description
