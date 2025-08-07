@@ -16,10 +16,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         parallelism: 
           - "1"
-          - "$(nprocs)"
+          - "$(nproc)"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
