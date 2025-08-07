@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/interfaces"
 )
 
 func TestVLAN(t *testing.T) {
@@ -24,12 +23,12 @@ func TestVLAN(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := interfaces.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
 
-	vlan := &interfaces.Vlan{
+	vlan := &Vlan{
 		Priority:    "1",
 		Description: "Test VLAN",
 		Parent:      "vtnet0",
