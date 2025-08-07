@@ -27,3 +27,65 @@ resources:
       - name: Device
         type: string
         key: vlanif
+
+  - name: Vip
+    filename: vip
+    monad: vip
+    endpoints:
+      add: "/interfaces/vip_settings/addItem"
+      get: "/interfaces/vip_settings/getItem"
+      update: "/interfaces/vip_settings/setItem"
+      delete: "/interfaces/vip_settings/delItem"
+      reconfigure: "/interfaces/vip_settings/reconfigure"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: Network
+        type: string
+        key: network
+      - name: Description
+        type: string
+        key: descr
+      - name: Gateway
+        type: string
+        key: gateway
+
+  - name: Assign
+    filename: assign
+    monad: assign
+    endpoints:
+      add: "/interfaces/assign_settings/addItem"
+      get: "/interfaces/assign_settings/getItem"
+      update: "/interfaces/assign_settings/setItem"
+      delete: "/interfaces/assign_settings/delItem"
+      reconfigure: "/interfaces/assign_settings/reconfigure"
+    attrs:
+      - name: Interface
+        type: string
+        key: interface
+      - name: Device
+        type: string
+        key: device
+      - name: Ip
+        type: string
+        key: ipaddr
+      - name: Subnet
+        type: string
+        key: subnet
+      - name: Gateway
+        type: string
+        key: gateway
+      - name: GatewayInterface
+        type: string
+        key: gateway_interface
+      - name: Enable
+        type: string
+        key: enable
+      - name: Description
+        type: string
+        key: descr
+      
