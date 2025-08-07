@@ -8,15 +8,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/hashicorp/go-retryablehttp"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -42,11 +43,17 @@ type Options struct {
 	MaxBackoff int64
 	MinBackoff int64
 	MaxRetries int64
+
+	Logger *log.Logger
 }
 
 func NewClient(options Options) *Client {
+	httpClient := retryablehttp.NewClient()
+	if options.Logger != nil {
+		httpClient.Logger = options.Logger
+	}
 	client := &Client{
-		client: retryablehttp.NewClient(),
+		client: httpClient,
 		opts:   options,
 	}
 
@@ -82,6 +89,15 @@ func (c *Client) getAuth() string {
 }
 
 func (c *Client) doRequest(ctx context.Context, method, endpoint string, body any, resp any) error {
+
+	// set logger
+	var logger *log.Logger
+	if c.opts.Logger != nil {
+		logger = c.opts.Logger
+	} else {
+		logger = log.Default()
+	}
+
 	// Create IO readers
 	var bodyReader io.Reader
 	if body != nil {
@@ -109,7 +125,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 
 	// Log request
 	dReq, _ := httputil.DumpRequest(req.Request, true)
-	log.Println(fmt.Sprintf("\n%s\n", string(dReq)))
+	logger.Println(fmt.Sprintf("\n%s\n", string(dReq)))
 
 	// Do request
 	res, err := c.client.Do(req)
@@ -120,7 +136,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 
 	// Log response
 	dRes, _ := httputil.DumpResponse(res, true)
-	log.Println(ctx, fmt.Sprintf("\n%s\n", string(dRes)))
+	logger.Println(ctx, fmt.Sprintf("\n%s\n", string(dRes)))
 
 	// Check for 200
 	if res.StatusCode != http.StatusOK {

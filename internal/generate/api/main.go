@@ -7,10 +7,11 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"github.com/browningluke/opnsense-go/internal/generate/generator"
-	"github.com/browningluke/opnsense-go/internal/generate/schema"
 	"log"
 	"os"
+
+	"github.com/browningluke/opnsense-go/internal/generate/generator"
+	"github.com/browningluke/opnsense-go/internal/generate/schema"
 )
 
 var (
@@ -45,6 +46,31 @@ func main() {
 		for _, resource := range c.Resources {
 			genResource(c, resource)
 		}
+
+		for _, rpc := range c.RPC {
+			genRPC(c, rpc)
+		}
+	}
+}
+
+func genRPC(controller *schema.ControllerData, rpc schema.RPCData) {
+	filename := fmt.Sprintf("%s.go", rpc.Filename)
+
+	fmt.Printf("Generating internal/%s/%s\n", controller.Name, filename)
+	g := generator.NewGenerator(filename)
+
+	err := g.Render(rpcTmpl,
+		struct {
+			Controller schema.ControllerData
+			RPC        schema.RPCData
+		}{*controller, rpc},
+	)
+	if err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
+	}
+
+	if err := g.Write(); err != nil {
+		log.Fatalf("generating file (%s): %s", filename, err)
 	}
 }
 
@@ -107,6 +133,9 @@ func genClientInterface() {
 		log.Fatalf("generating file (%s): %s", filename, err)
 	}
 }
+
+//go:embed templates/rpc.tmpl
+var rpcTmpl string
 
 //go:embed templates/resource.tmpl
 var resourceTmpl string
