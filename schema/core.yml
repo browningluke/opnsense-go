@@ -1,0 +1,115 @@
+---
+name: core
+rpc:
+  - name: "System"
+    filename: system
+    customTypes: 
+      SystemStatus:
+        - name: CrashReporter
+          type: Status
+          key: CrashReporter   
+        - name: Firewall
+          type: Status
+          key: Firewall   
+        - name: System
+          type: Status
+          key: System   
+      Status:
+        - name: StatusCode
+          type: int
+          key: statusCode
+        - name: Message
+          type: string
+          key: message
+        - name: LogLocation
+          type: string
+          key: logLocation
+        - name: Timestamp
+          type: string
+          key: timestamp
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: "Halt"
+        method: "POST"
+        endpoint: "/core/system/halt"
+        result_type: "api.ActionResult"
+      - name: "Reboot"
+        method: "POST"
+        endpoint: "/core/system/reboot"
+        result_type: "api.ActionResult"
+      - name: "Status"
+        method: "GET"
+        endpoint: "/core/system/status"
+        result_type: "SystemStatus"
+      - name: "DismissStatus"
+        method: "POST"
+        endpoint: "/core/system/dismiss_status"
+        params:
+          - name: "subject"
+            optional: false
+            bodyParameter: true
+        result_type: "api.ActionResult"  
+  - name: "Service"
+    filename: service
+    customTypes:
+      ServiceItem:
+        - name: ID
+          type: string
+          key: id
+        - name: Locked
+          type: int
+          key: locked
+        - name: Running
+          type: int
+          key: running
+        - name: Description
+          type: string
+          key: description
+        - name: Name
+          type: string
+          key: name
+      SearchServicesResponse:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: '[]ServiceItem'
+          key: rows
+      ServiceActionResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: "Search"
+        method: "POST"
+        endpoint: "/core/service/search"
+        result_type: "SearchServicesResponse"
+      - name: "Start"
+        method: "POST"
+        endpoint: "/core/service/start"
+        params:
+          - name: "id"
+            optional: false
+        result_type: "ServiceActionResult"
+      - name: "Stop"
+        method: "POST"
+        endpoint: "/core/service/stop"
+        params:
+          - name: "id" # Path parameter
+            optional: false
+        result_type: "ServiceActionResult"
+      - name: "Restart"
+        method: "POST"
+        endpoint: "/core/service/restart"
+        params:
+          - name: "id"
+            optional: false
+        result_type: "ServiceActionResult"
