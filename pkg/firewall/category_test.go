@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/firewall"
 )
 
 func TestCategory(t *testing.T) {
@@ -24,12 +23,12 @@ func TestCategory(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := firewall.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
 
-	category := &firewall.Category{
+	category := &Category{
 		Automatic: "0",
 		Name:      "test-category",
 		Color:     "FF0000",

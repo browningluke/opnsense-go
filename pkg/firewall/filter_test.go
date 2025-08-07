@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/firewall"
 )
 
 func TestFilter(t *testing.T) {
@@ -26,11 +25,11 @@ func TestFilter(t *testing.T) {
 
 	ctx := context.Background()
 
-	controller := firewall.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 
-	filter := &firewall.Filter{
+	filter := &Filter{
 		Enabled:           "1",
 		Sequence:          "1",
 		Action:            api.SelectedMap("pass"),

@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/firewall"
 )
 
 func TestNAT(t *testing.T) {
@@ -24,12 +23,12 @@ func TestNAT(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := firewall.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
 
-	nat := &firewall.NAT{
+	nat := &NAT{
 		Enabled:           "1",
 		DisableNAT:        "0",
 		Sequence:          "1",

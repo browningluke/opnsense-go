@@ -3,15 +3,13 @@ package api
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
 func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected api.SelectedMapList
+		expected SelectedMapList
 		wantErr  bool
 	}{
 		{
@@ -22,19 +20,19 @@ func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 				"K3": {"selected": 1, "value": "value3"},
 				"K4": {"selected": 0, "value": "value4"}
 			}`,
-			expected: api.SelectedMapList{"K2", "K3"},
+			expected: SelectedMapList{"K2", "K3"},
 			wantErr:  false,
 		},
 		{
 			name:     "empty map",
 			input:    `{}`,
-			expected: api.SelectedMapList{},
+			expected: SelectedMapList{},
 			wantErr:  false,
 		},
 		{
 			name:     "empty array fallback",
 			input:    `[]`,
-			expected: api.SelectedMapList{},
+			expected: SelectedMapList{},
 			wantErr:  false,
 		},
 		{
@@ -43,7 +41,7 @@ func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 				"K1": {"selected": false, "value": "value1"},
 				"K2": {"selected": 0, "value": "value2"}
 			}`,
-			expected: api.SelectedMapList{},
+			expected: SelectedMapList{},
 			wantErr:  false,
 		},
 		{
@@ -53,7 +51,7 @@ func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 				"alpha": {"selected": 1, "value": "a"},
 				"beta": {"selected": true, "value": "b"}
 			}`,
-			expected: api.SelectedMapList{"alpha", "beta", "zebra"},
+			expected: SelectedMapList{"alpha", "beta", "zebra"},
 			wantErr:  false,
 		},
 		{
@@ -65,7 +63,7 @@ func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var s api.SelectedMapList
+			var s SelectedMapList
 			err := json.Unmarshal([]byte(tt.input), &s)
 
 			if tt.wantErr {
@@ -97,22 +95,22 @@ func TestSelectedMapList_UnmarshalJSON(t *testing.T) {
 func TestSelectedMapList_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    api.SelectedMapList
+		input    SelectedMapList
 		expected string
 	}{
 		{
 			name:     "multiple items",
-			input:    api.SelectedMapList{"zebra", "alpha", "beta"},
+			input:    SelectedMapList{"zebra", "alpha", "beta"},
 			expected: "alpha,beta,zebra",
 		},
 		{
 			name:     "single item",
-			input:    api.SelectedMapList{"single"},
+			input:    SelectedMapList{"single"},
 			expected: "single",
 		},
 		{
 			name:     "empty list",
-			input:    api.SelectedMapList{},
+			input:    SelectedMapList{},
 			expected: "",
 		},
 	}
@@ -143,22 +141,22 @@ func TestSelectedMapList_MarshalJSON(t *testing.T) {
 func TestSelectedMapList_String(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    api.SelectedMapList
+		input    SelectedMapList
 		expected string
 	}{
 		{
 			name:     "multiple items",
-			input:    api.SelectedMapList{"alpha", "beta", "gamma"},
+			input:    SelectedMapList{"alpha", "beta", "gamma"},
 			expected: "alpha,beta,gamma",
 		},
 		{
 			name:     "single item",
-			input:    api.SelectedMapList{"single"},
+			input:    SelectedMapList{"single"},
 			expected: "single",
 		},
 		{
 			name:     "empty list",
-			input:    api.SelectedMapList{},
+			input:    SelectedMapList{},
 			expected: "",
 		},
 	}
@@ -177,7 +175,7 @@ func TestSelectedMapListNL_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected api.SelectedMapListNL
+		expected SelectedMapListNL
 		wantErr  bool
 	}{
 		{
@@ -187,20 +185,20 @@ func TestSelectedMapListNL_UnmarshalJSON(t *testing.T) {
 				"K2": {"selected": true, "value": "value2"},
 				"K3": {"selected": 1, "value": "value3"}
 			}`,
-			expected: api.SelectedMapListNL{"K2", "K3"},
+			expected: SelectedMapListNL{"K2", "K3"},
 			wantErr:  false,
 		},
 		{
 			name:     "empty array fallback",
 			input:    `[]`,
-			expected: api.SelectedMapListNL{},
+			expected: SelectedMapListNL{},
 			wantErr:  false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var s api.SelectedMapListNL
+			var s SelectedMapListNL
 			err := json.Unmarshal([]byte(tt.input), &s)
 
 			if tt.wantErr {
@@ -232,22 +230,22 @@ func TestSelectedMapListNL_UnmarshalJSON(t *testing.T) {
 func TestSelectedMapListNL_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    api.SelectedMapListNL
+		input    SelectedMapListNL
 		expected string
 	}{
 		{
 			name:     "multiple items with newlines",
-			input:    api.SelectedMapListNL{"zebra", "alpha", "beta"},
+			input:    SelectedMapListNL{"zebra", "alpha", "beta"},
 			expected: "alpha\nbeta\nzebra",
 		},
 		{
 			name:     "single item",
-			input:    api.SelectedMapListNL{"single"},
+			input:    SelectedMapListNL{"single"},
 			expected: "single",
 		},
 		{
 			name:     "empty list",
-			input:    api.SelectedMapListNL{},
+			input:    SelectedMapListNL{},
 			expected: "",
 		},
 	}
@@ -278,22 +276,22 @@ func TestSelectedMapListNL_MarshalJSON(t *testing.T) {
 func TestSelectedMapListNL_String(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    api.SelectedMapListNL
+		input    SelectedMapListNL
 		expected string
 	}{
 		{
 			name:     "multiple items with commas",
-			input:    api.SelectedMapListNL{"alpha", "beta", "gamma"},
+			input:    SelectedMapListNL{"alpha", "beta", "gamma"},
 			expected: "alpha,beta,gamma",
 		},
 		{
 			name:     "single item",
-			input:    api.SelectedMapListNL{"single"},
+			input:    SelectedMapListNL{"single"},
 			expected: "single",
 		},
 		{
 			name:     "empty list",
-			input:    api.SelectedMapListNL{},
+			input:    SelectedMapListNL{},
 			expected: "",
 		},
 	}

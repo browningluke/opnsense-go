@@ -3,15 +3,13 @@ package api
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
 func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
-		expected api.SelectedMap
+		expected SelectedMap
 		wantErr  bool
 	}{
 		{
@@ -21,7 +19,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				"K2": {"selected": true, "value": "value2"},
 				"K3": {"selected": false, "value": "value3"}
 			}`,
-			expected: api.SelectedMap("K2"),
+			expected: SelectedMap("K2"),
 			wantErr:  false,
 		},
 		{
@@ -31,7 +29,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				"K2": {"selected": 1, "value": "value2"},
 				"K3": {"selected": 0, "value": "value3"}
 			}`,
-			expected: api.SelectedMap("K2"),
+			expected: SelectedMap("K2"),
 			wantErr:  false,
 		},
 		{
@@ -41,7 +39,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				{"selected": true, "value": "value2"},
 				{"selected": false, "value": "value3"}
 			]`,
-			expected: api.SelectedMap("value2"),
+			expected: SelectedMap("value2"),
 			wantErr:  false,
 		},
 		{
@@ -50,7 +48,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				"K1": {"selected": true, "value": "value1"},
 				"K2": {"selected": true, "value": "value2"}
 			}`,
-			expected: api.SelectedMap(""), // We'll check that it's non-empty instead
+			expected: SelectedMap(""), // We'll check that it's non-empty instead
 			wantErr:  false,
 		},
 		{
@@ -59,7 +57,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				"K1": {"selected": false, "value": "value1"},
 				"K2": {"selected": 0, "value": "value2"}
 			}`,
-			expected: api.SelectedMap(""),
+			expected: SelectedMap(""),
 			wantErr:  false,
 		},
 		{
@@ -68,19 +66,19 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				{"selected": false, "value": "value1"},
 				{"selected": false, "value": "value2"}
 			]`,
-			expected: api.SelectedMap(""),
+			expected: SelectedMap(""),
 			wantErr:  false,
 		},
 		{
 			name:     "empty map",
 			input:    `{}`,
-			expected: api.SelectedMap(""),
+			expected: SelectedMap(""),
 			wantErr:  false,
 		},
 		{
 			name:     "empty list",
 			input:    `[]`,
-			expected: api.SelectedMap(""),
+			expected: SelectedMap(""),
 			wantErr:  false,
 		},
 		{
@@ -95,14 +93,14 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				"K2": {"selected": 1, "value": "value2"},
 				"K3": {"selected": true, "value": "value3"}
 			}`,
-			expected: api.SelectedMap(""), // We'll check that it's non-empty instead
+			expected: SelectedMap(""), // We'll check that it's non-empty instead
 			wantErr:  false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var s api.SelectedMap
+			var s SelectedMap
 			err := json.Unmarshal([]byte(tt.input), &s)
 
 			if tt.wantErr {
@@ -150,22 +148,22 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 func TestSelectedMap_String(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    api.SelectedMap
+		input    SelectedMap
 		expected string
 	}{
 		{
 			name:     "non-empty string",
-			input:    api.SelectedMap("test-value"),
+			input:    SelectedMap("test-value"),
 			expected: "test-value",
 		},
 		{
 			name:     "empty string",
-			input:    api.SelectedMap(""),
+			input:    SelectedMap(""),
 			expected: "",
 		},
 		{
 			name:     "string with special characters",
-			input:    api.SelectedMap("test-value_123"),
+			input:    SelectedMap("test-value_123"),
 			expected: "test-value_123",
 		},
 	}
@@ -181,9 +179,9 @@ func TestSelectedMap_String(t *testing.T) {
 }
 
 func TestSelectedMap_RoundTrip(t *testing.T) {
-	// Test that we can create a api.SelectedMap and convert it to string properly
+	// Test that we can create a SelectedMap and convert it to string properly
 	original := "test-key"
-	selected := api.SelectedMap(original)
+	selected := SelectedMap(original)
 
 	result := selected.String()
 	if result != original {

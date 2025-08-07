@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/firewall"
 )
 
 func TestAlias(t *testing.T) {
@@ -24,17 +23,17 @@ func TestAlias(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := firewall.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
 
-	alias := &firewall.Alias{
-		Enabled: "1",
-		Name:    "testalias",
-		Type:       api.SelectedMap("host"),
-		IPProtocol: api.SelectedMap("IPv4"),
-		Content:    api.SelectedMapListNL{"192.168.1.1"},
+	alias := &Alias{
+		Enabled:     "1",
+		Name:        "testalias",
+		Type:        api.SelectedMap("host"),
+		IPProtocol:  api.SelectedMap("IPv4"),
+		Content:     api.SelectedMapListNL{"192.168.1.1"},
 		Description: "Test alias",
 	}
 
