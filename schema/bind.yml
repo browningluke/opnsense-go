@@ -1,0 +1,91 @@
+---
+# see https://docs.opnsense.org/development/api/plugins/bind.html
+name: bind
+reconfigureEndpoint: "/bind/service/reconfigure"
+resources:
+  - name: Acl
+    filename: acl
+    monad: acl
+    endpoints:
+      add: "/bind/acl/add_acl"
+      get: "/bind/acl/get_acl"
+      update: "/bind/acl/set_acl"
+      delete: "/bind/acl/del_acl"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Networks
+        type: SelectedMapList
+        key: networks
+
+  - name: PrimaryDomain
+    filename: primary_domain
+    monad: domain
+    endpoints:
+      add: "/bind/domain/add_primary_domain"
+      get: "/bind/domain/get_domain"
+      update: "/bind/domain/set_domain"
+      delete: "/bind/domain/del_domain"
+    attrs:
+      - name: DomainName
+        type: string
+        key: domainname
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: AllowTransfer
+        type: SelectedMapList
+        key: allowtransfer
+      - name: AllowQuery
+        type: SelectedMapList
+        key: allowquery
+      - name: TimeToLive
+        type: string
+        key: ttl
+      - name: Refresh
+        type: string
+        key: refresh
+      - name: Retry
+        type: string
+        key: retry
+      - name: Expire
+        type: string
+        key: expire
+      - name: Negative
+        type: string
+        key: negative
+      - name: MailAdmin
+        type: string
+        key: mailadmin
+      - name: DnsServer
+        type: string
+        key: dnsserver
+
+  - name: Record
+    filename: record
+    monad: record
+    endpoints:
+      add: "/bind/record/add_record"
+      get: "/bind/record/get_record"
+      update: "/bind/record/set_record"
+      delete: "/bind/record/del_record"
+    attrs:
+      - name: Domain
+        type: SelectedMap
+        key: domain
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Value
+        type: string
+        key: value
