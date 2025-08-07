@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/ipsec"
 )
 
 func TestPSK(t *testing.T) {
@@ -24,12 +23,12 @@ func TestPSK(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := ipsec.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
 
-	ipsec_psk := &ipsec.IPsecPSK{
+	ipsec_psk := &IPsecPSK{
 		IdentityLocal:  "my-test-uuid",
 		IdentityRemote: "my-test-remote-uuid",
 		PreSharedKey:   "my-test-psk",

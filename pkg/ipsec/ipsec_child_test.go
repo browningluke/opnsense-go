@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
-	"github.com/browningluke/opnsense-go/pkg/ipsec"
 )
 
 func TestIPsecChild(t *testing.T) {
@@ -24,7 +23,7 @@ func TestIPsecChild(t *testing.T) {
 		MaxRetries:    4,
 	})
 
-	controller := ipsec.Controller{
+	controller := Controller{
 		Api: api_client,
 	}
 	ctx := context.Background()
@@ -38,7 +37,7 @@ func TestIPsecChild(t *testing.T) {
 	remote_addresses := api.SelectedMapList{
 		"192.168.1.2",
 	}
-	ipsec_connection := &ipsec.IPsecConnection{
+	ipsec_connection := &IPsecConnection{
 		Enabled:                "1",
 		Proposals:              proposals,
 		Unique:                 "no",
@@ -69,7 +68,7 @@ func TestIPsecChild(t *testing.T) {
 
 	connection := api.SelectedMap(conn_key)
 
-	ipsec_child := &ipsec.IPsecChild{
+	ipsec_child := &IPsecChild{
 		Enabled:         "1",
 		Connection:      connection,
 		Proposals:       proposals,
