@@ -15,6 +15,12 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        parallelism: 
+          - "1"
+          - "$(nproc)"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,14 +31,6 @@ jobs:
       - name: Create opnsense image directory
         run: |
           mkdir -p opnsense-images
-      # TODO: Figure out why this keeps failing
-      # https://github.com/commure/opnsense-go/actions/runs/16612534152/job/46999157318
-      # - name: Cache opnsense image
-      #   uses: actions/cache@v4
-      #   id: image-cache
-      #   with:
-      #     path: opnsense-images
-      #     key: ${{ runner.os }}-opnsense-${{ env.OPNSENSE_SHA1 }}
       - name: Download OPNsense image
         run: |
           curl -L $OPNSENSE_URL -o opnsense-images/opnsense.qcow2
@@ -80,7 +78,7 @@ jobs:
           echo "OPNSENSE_URI=https://localhost:${{ env.OPNSENSE_WEB_PORT }}" >> $GITHUB_ENV
       - name: Run tests
         run: |
-          go test -v ./...
+          go test -p "${{ matrix.parallelism }}" -v ./...
       - name: Stop opnsense VM
         run: |
           kill -9 ${{ steps.start-vm.outputs.qemu-pid }}

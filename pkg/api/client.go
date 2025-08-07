@@ -43,11 +43,17 @@ type Options struct {
 	MaxBackoff int64
 	MinBackoff int64
 	MaxRetries int64
+
+	Logger *log.Logger
 }
 
 func NewClient(options Options) *Client {
+	httpClient := retryablehttp.NewClient()
+	if options.Logger != nil {
+		httpClient.Logger = options.Logger
+	}
 	client := &Client{
-		client: retryablehttp.NewClient(),
+		client: httpClient,
 		opts:   options,
 	}
 
@@ -82,7 +88,16 @@ func (c *Client) getAuth() string {
 	return base64.StdEncoding.EncodeToString([]byte(auth))
 }
 
-func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, body any, resp any) error {
+func (c *Client) doRequest(ctx context.Context, method, endpoint string, body any, resp any) error {
+
+	// set logger
+	var logger *log.Logger
+	if c.opts.Logger != nil {
+		logger = c.opts.Logger
+	} else {
+		logger = log.Default()
+	}
+
 	// Create IO readers
 	var bodyReader io.Reader
 	if body != nil {
@@ -97,7 +112,7 @@ func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, 
 	}
 
 	// Create request
-	req, err := retryablehttp.NewRequestWithContext(ctx, method, fmt.Sprintf("%s%s", c.opts.Uri, endpoint), bodyReader)
+	req, err := retryablehttp.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/api%s", c.opts.Uri, endpoint), bodyReader)
 	if err != nil {
 		return err
 	}
@@ -110,7 +125,7 @@ func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, 
 
 	// Log request
 	dReq, _ := httputil.DumpRequest(req.Request, true)
-	log.Printf("\n%s\n", string(dReq))
+	logger.Println(fmt.Sprintf("\n%s\n", string(dReq)))
 
 	// Do request
 	res, err := c.client.Do(req)
@@ -121,7 +136,7 @@ func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, 
 
 	// Log response
 	dRes, _ := httputil.DumpResponse(res, true)
-	log.Println(ctx, fmt.Sprintf("\n%s\n", string(dRes)))
+	logger.Println(ctx, fmt.Sprintf("\n%s\n", string(dRes)))
 
 	// Check for 200
 	if res.StatusCode != http.StatusOK {
@@ -132,18 +147,6 @@ func (c *Client) DoRequest(ctx context.Context, method string, endpoint string, 
 	err = json.NewDecoder(res.Body).Decode(resp)
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (c *Client) APIRequest(ctx context.Context, method string, endpoint string, body any, resp any) error {
-	// Create request
-	apiEndpoint := fmt.Sprintf("/api%s", endpoint)
-	log.Printf("API Request: %s %s", method, apiEndpoint)
-	err := c.DoRequest(ctx, method, apiEndpoint, body, resp)
-	if err != nil {
-		return fmt.Errorf("failed to %s %s: %w", method, apiEndpoint, err)
 	}
 
 	return nil
@@ -161,7 +164,7 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 		Status string `json:"status,omitempty"`
 		Result string `json:"result,omitempty"`
 	}{}
-	err := c.APIRequest(ctx, "POST", endpoint, nil, respJson)
+	err := c.doRequest(ctx, "POST", endpoint, nil, respJson)
 	if err != nil {
 		return err
 	}
