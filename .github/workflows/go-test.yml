@@ -20,7 +20,7 @@ jobs:
       matrix:
         parallelism: 
           - "1"
-          - "$(nproc)"
+          # - "$(nproc)"  # 'go test' creates processes which don't work with the mutex
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
