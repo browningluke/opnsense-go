@@ -1,10 +1,12 @@
 module github.com/browningluke/opnsense-go
 
-go 1.20
+go 1.23.0
+
+toolchain go1.24.5
 
 require (
-	github.com/hashicorp/go-retryablehttp v0.7.7
-	golang.org/x/text v0.11.0
+	github.com/hashicorp/go-retryablehttp v0.7.8
+	golang.org/x/text v0.28.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 

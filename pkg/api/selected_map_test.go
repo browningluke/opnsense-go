@@ -39,7 +39,7 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				{"selected": true, "value": "value2"},
 				{"selected": false, "value": "value3"}
 			]`,
-			expected: SelectedMap("value2"),
+			expected: SelectedMap("1"),
 			wantErr:  false,
 		},
 		{
@@ -49,7 +49,17 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 				{"value": "IKEv1", "selected": 0},
 				{"value": "IKEv2", "selected": 1}
 			]`,
-			expected: SelectedMap("IKEv2"),
+			expected: SelectedMap("2"),
+			wantErr:  false,
+		},
+		{
+			name: "list format with a different int selected",
+			input: `[
+				{"value": "IKEv1+IKEv2", "selected": 1},
+				{"value": "IKEv1", "selected": 0},
+				{"value": "IKEv2", "selected": 0}
+			]`,
+			expected: SelectedMap("0"),
 			wantErr:  false,
 		},
 		{
