@@ -103,7 +103,7 @@ func TestIPsecConnection(t *testing.T) {
 		t.Errorf("Expected aggressive '%s', got '%s'", ipsec_connection.Aggressive, retrieved_connection.Aggressive)
 	}
 
-	if retrieved_connection.Version == ipsec_connection.Version {
+	if retrieved_connection.Version != ipsec_connection.Version {
 		t.Errorf("Expected version '%v', got '%v'", ipsec_connection.Version, retrieved_connection.Version)
 	}
 
