@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"strconv"
 )
 
 /*
@@ -38,10 +39,15 @@ func (s *SelectedMap) UnmarshalJSON(data []byte) error {
 		}
 		listErr := json.Unmarshal(data, &listValues)
 		if listErr == nil {
-			for _, v := range listValues {
+			for idx, v := range listValues {
 				if selectedBool, ok := v.Selected.(bool); ok {
 					if selectedBool {
-						*s = SelectedMap(v.Value)
+						*s = SelectedMap(strconv.Itoa(idx))
+					}
+				}
+				if selectedInt, ok := v.Selected.(float64); ok {
+					if selectedInt == 1 {
+						*s = SelectedMap(strconv.Itoa(idx))
 					}
 				}
 			}
