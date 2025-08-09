@@ -43,6 +43,16 @@ func TestSelectedMap_UnmarshalJSON(t *testing.T) {
 			wantErr:  false,
 		},
 		{
+			name: "list format with int selected",
+			input: `[
+				{"value": "IKEv1+IKEv2", "selected": 0},
+				{"value": "IKEv1", "selected": 0},
+				{"value": "IKEv2", "selected": 1}
+			]`,
+			expected: SelectedMap("IKEv2"),
+			wantErr:  false,
+		},
+		{
 			name: "multiple selected items in map (one will be selected)",
 			input: `{
 				"K1": {"selected": true, "value": "value1"},

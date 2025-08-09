@@ -44,6 +44,11 @@ func (s *SelectedMap) UnmarshalJSON(data []byte) error {
 						*s = SelectedMap(v.Value)
 					}
 				}
+				if selectedInt, ok := v.Selected.(float64); ok {
+					if selectedInt == 1 {
+						*s = SelectedMap(v.Value)
+					}
+				}
 			}
 			return nil
 		}
