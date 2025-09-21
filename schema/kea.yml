@@ -20,6 +20,9 @@ resources:
       - name: Pools
         type: string
         key: pools
+      - name: MatchClientId
+        type: string
+        key: match-client-id
       - name: OptionDataAutoCollect
         type: string
         key: option_data_autocollect

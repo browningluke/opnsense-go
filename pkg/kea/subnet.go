@@ -34,6 +34,7 @@ type Subnet struct {
 	Subnet                string     `json:"subnet"`
 	NextServer            string     `json:"next_server"`
 	Pools                 string     `json:"pools"`
+	MatchClientId         string     `json:"match-client-id"`
 	OptionDataAutoCollect string     `json:"option_data_autocollect"`
 	OptionData            OptionData `json:"option_data"`
 	Description           string     `json:"description"`
