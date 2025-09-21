@@ -126,6 +126,57 @@ resources:
         type: string
         key: description
 
+  - name: NatOneToOne
+    filename: nat_one_to_one
+    monad: rule
+    endpoints:
+      add: "/firewall/one_to_one/addRule"
+      get: "/firewall/one_to_one/getRule"
+      update: "/firewall/one_to_one/setRule"
+      delete: "/firewall/one_to_one/delRule"
+      reconfigure: "/firewall/one_to_one/apply"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Log
+        type: string
+        key: log
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: SourceNet
+        type: string
+        key: source_net
+      - name: SourceInvert
+        type: string
+        key: source_not
+      - name: DestinationNet
+        type: string
+        key: destination_net
+      - name: DestinationInvert
+        type: string
+        key: destination_not
+      - name: ExternalNet
+        type: string
+        key: external
+      - name: NatReflection
+        type: SelectedMap
+        key: natreflection
+      - name: Categories
+        type: SelectedMapList
+        key: categories
+      - name: Description
+        type: string
+        key: description
+      
+
   # core firewall resources
 
   - name: Alias
