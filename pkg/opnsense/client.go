@@ -4,7 +4,7 @@ package opnsense
 
 import (
 	"github.com/browningluke/opnsense-go/pkg/api"
-  "github.com/browningluke/opnsense-go/pkg/bind"
+	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
@@ -20,7 +20,7 @@ import (
 // Client defines a client interface for the Proxmox Virtual Environment API.
 type Client interface {
 	Bind() *bind.Controller
-  Core() *core.Controller
+	Core() *core.Controller
 	Diagnostics() *diagnostics.Controller
 	Firewall() *firewall.Controller
 	Interfaces() *interfaces.Controller
