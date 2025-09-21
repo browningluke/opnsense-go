@@ -22,7 +22,7 @@ resources:
         key: pools
       - name: MatchClientId
         type: string
-        key: match_client_id
+        key: match-client-id
       - name: OptionDataAutoCollect
         type: string
         key: option_data_autocollect
