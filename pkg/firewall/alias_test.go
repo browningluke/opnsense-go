@@ -32,7 +32,7 @@ func TestAlias(t *testing.T) {
 		Enabled:     "1",
 		Name:        "testalias",
 		Type:        api.SelectedMap("host"),
-		IPProtocol:  api.SelectedMap("IPv4"),
+		IPProtocol:  api.SelectedMapList([]string{"IPv4"}),
 		Content:     api.SelectedMapListNL{"192.168.1.1"},
 		Description: "Test alias",
 	}

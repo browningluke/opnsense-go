@@ -199,7 +199,7 @@ resources:
         type: SelectedMap
         key: type
       - name: IPProtocol # only when type = asn, geoip, external
-        type: SelectedMap
+        type: SelectedMapList
         key: proto
       - name: Interface # only when type = dynipv6host
         type: SelectedMap
