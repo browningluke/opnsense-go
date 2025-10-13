@@ -22,7 +22,7 @@ type Alias struct {
 	Enabled     string                `json:"enabled"`
 	Name        string                `json:"name"`
 	Type        api.SelectedMap       `json:"type"`
-	IPProtocol  api.SelectedMap       `json:"proto"`
+	IPProtocol  api.SelectedMapList   `json:"proto"`
 	Interface   api.SelectedMap       `json:"interface"`
 	Content     api.SelectedMapListNL `json:"content"`
 	Categories  api.SelectedMapList   `json:"categories"`
