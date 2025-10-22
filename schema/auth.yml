@@ -1,0 +1,22 @@
+---
+name: auth
+filename: auth
+resources:
+  - name: Group
+    filename: group
+    monad: group
+    endpoints:
+      add: "/auth/group/add"
+      get: "/auth/group/get"
+      update: "/auth/group/set"
+      delete: "/auth/group/del"
+
+rpc:
+  - name: Priviledge
+    filename: priviledge
+    rpc_calls:    
+      - name: Get
+        endpoint: /auth/priv/get
+        method: GET
+        result_type: api.ActionResult
+
