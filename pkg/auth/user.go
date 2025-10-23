@@ -19,6 +19,7 @@ var UserOpts = api.ReqOpts{
 // Data structs
 
 type User struct {
+	UserId            string              `json:"uid"`
 	Name              string              `json:"name"`
 	Disabled          string              `json:"disabled"`
 	Scope             string              `json:"scope,omitempty"`
@@ -36,7 +37,7 @@ type User struct {
 	Priviledge        api.SelectedMapList `json:"priv"`
 	Language          api.SelectedMap     `json:"language"`
 	GroupMemberships  api.SelectedMapList `json:"group_memberships"`
-	Description       string              `json:"descr"`
+	Fullname          string              `json:"descr"`
 	Dashboard         string              `json:"dashboard"`
 }
 

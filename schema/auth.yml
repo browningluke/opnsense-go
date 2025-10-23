@@ -48,12 +48,16 @@ resources:
       delete: "/auth/user/del"
       reconfigure: "null"
     attrs:
+      - name: UserId
+        type: string
+        key: uid
       - name: Name
         type: string
         key: name
       - name: Disabled
         type: string
         key: disabled
+        # As of 25.7, should always be 'user'. If omitted, gets 'user' by default.
       - name: Scope
         type: string
         key: scope
@@ -100,7 +104,7 @@ resources:
       - name: GroupMemberships
         type: SelectedMapList
         key: group_memberships
-      - name: Description
+      - name: Fullname
         type: string
         key: descr
       - name: Dashboard

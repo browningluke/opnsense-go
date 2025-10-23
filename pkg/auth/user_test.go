@@ -35,7 +35,7 @@ func TestUser(t *testing.T) {
 		ScrambledPassword: "0",
 		Comment:           "Test comment",
 		Email:             "test@test.nl",
-		Description:       "Test description full name",
+		Fullname:          "Test description full name",
 	}
 
 	key, err := controller.AddUser(ctx, user)
@@ -44,41 +44,38 @@ func TestUser(t *testing.T) {
 	}
 	t.Logf("Added user with key: %s", key)
 
-	// retrievedGroup, err := controller.GetGroup(ctx, key)
-	// if err != nil {
-	// 	t.Fatalf("Failed to get group: %v", err)
-	// }
-	// t.Logf("Retrieved group: %+v", retrievedGroup)
-	// if retrievedGroup.Name != group.Name {
-	// 	t.Fatalf("Retrieved group name does not match: got %s, want %s", retrievedGroup.Name, group.Name)
-	// }
-	// if retrievedGroup.Description != group.Description {
-	// 	t.Fatalf("Retrieved group description does not match: got %s, want %s", retrievedGroup.Description, group.Description)
-	// }
+	respUser, err := controller.GetUser(ctx, key)
+	if err != nil {
+		t.Fatalf("Failed to get user: %v", err)
+	}
+	t.Logf("Retrieved user: %+v", respUser)
+	if respUser.Name != user.Name {
+		t.Fatalf("Retrieved user name does not match: got %s, want %s", respUser.Name, user.Name)
+	}
 
-	// group.Name = "test-group-updated"
-	// group.Priviledge = api.SelectedMapList([]string{"page-diagnostics-authentication"})
-	// group.Member = api.SelectedMap("0")
-	// err = controller.UpdateGroup(ctx, key, group)
-	// if err != nil {
-	// 	t.Fatalf("Failed to update group: %v", err)
-	// }
-	// t.Logf("Updated group with key: %s", key)
+	user.Name = "test-username"
+	user.Disabled = "1"
+	user.Shell = api.SelectedMap("/bin/csh")
+	user.Priviledge = api.SelectedMapList([]string{"page-diagnostics-authentication"})
+	user.GroupMemberships = api.SelectedMapList([]string{"1999"})
+	user.OtpSeed = "Z2A3Y4EERVKCG24W6Q3VQUUKTK7HZFVM"
+	user.AuthorizedKeys = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINYqRfv6UauTujjdiwZAUALv38Z0OXII20h9q6KdvbyZ mike@mike-desktop-pc"
 
-	// retrievedGroup, err = controller.GetGroup(ctx, key)
-	// if err != nil {
-	// 	t.Fatalf("Failed to get updated group: %v", err)
-	// }
-	// if retrievedGroup.Name != group.Name {
-	// 	t.Fatalf("Retrieved group name does not match updated name: got %s, want %s", retrievedGroup.Name, group.Name)
-	// }
-	// if retrievedGroup.Priviledge.String() != group.Priviledge.String() {
-	// 	t.Fatalf("Retrieved group priviledges does not match updated priviledges: got %s, want %s", retrievedGroup.Priviledge.String(), group.Priviledge.String())
-	// }
+	err = controller.UpdateUser(ctx, key, user)
+	if err != nil {
+		t.Fatalf("Failed to update user: %v", err)
+	}
+	t.Logf("Updated user with key: %s", key)
 
-	// err = controller.DeleteGroup(ctx, key)
-	// if err != nil {
-	// 	t.Fatalf("Failed to delete group: %v", err)
-	// }
-	// t.Logf("Deleted group with key: %s", key)
+	respUser, err = controller.GetUser(ctx, key)
+	if err != nil {
+		t.Fatalf("Failed to get user: %v", err)
+	}
+	t.Logf("Retrieved user: %+v", respUser)
+
+	err = controller.DeleteUser(ctx, key)
+	if err != nil {
+		t.Fatalf("Failed to delete user: %v", err)
+	}
+	t.Logf("Deleted user with key: %s", key)
 }
