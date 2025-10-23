@@ -188,3 +188,87 @@ rpc:
         - name: OtpQrUri
           type: string
           key: otp_uri_template
+
+  - name: Privilege
+    filename: privilege
+    rpc_calls:
+      - name: GetItem
+        endpoint: /auth/priv/get_item
+        method: GET
+        params: 
+          - name: id
+            optional: false
+            bodyParameter: false
+        result_type: GetItemPrivilegeWrapper
+      # - name: SetItem
+      #   endpoint: /auth/priv/set_item
+      #   method: POST
+      #   params:
+      #     - name: id
+      #       optional: false
+      #       bodyParameter: false
+      #   result_type: SetItemPrivilegeWrapper
+    customTypes:
+      GetItemPrivilege:
+        - name: Id
+          type: string
+          key: id
+        - name: Users
+          type: SelectedMapList
+          key: users
+        - name: Groups
+          type: SelectedMapList
+          key: groups
+      GetItemPrivilegeWrapper:
+        - name: Item
+          type: GetItemPrivilege
+          key: priv
+      # SetItemPrivilege:
+      #   - name: Users
+      #     type: string
+      #     key: users
+      #   - name: Groups
+      #     type: string
+      #     key: groups
+      # SetItemPrivilegeWrapper:
+      #   - name: Item
+      #     type: SetItemPrivilege
+      #     key: priv
+
+  - name: Privilege
+    filename: privilege_search
+    rpc_calls:
+      - name: GetAll
+        endpoint: /auth/priv/search
+        method: GET
+        result_type: PrivilegeGetAllResult
+    customTypes:
+      PrivilegeGetAllItemResult:
+        - name: Id
+          type: string
+          key: id
+        - name: Name
+          type: string
+          key: name
+        - name: Match
+          type: string
+          key: match
+        - name: Users
+          type: "[]string"
+          key: users
+        - name: Groups
+          type: "[]string"
+          key: groups
+      PrivilegeGetAllResult:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: "[]PrivilegeGetAllItemResult"
+          key: rows
