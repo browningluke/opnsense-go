@@ -111,12 +111,80 @@ resources:
         type: string
         key: dashboard
 
-# rpc:
-#   - name: Priviledge
-#     filename: priviledge
-#     rpc_calls:    
-#       - name: Get
-#         endpoint: /auth/priv/get
-#         method: GET
-#         result_type: api.ActionResult
+rpc:
+  - name: User
+    filename: user_api_key
+    rpc_calls:
+      - name: AddApiKey
+        endpoint: /auth/user/add_api_key
+        method: POST
+        params: 
+          - name: username
+            optional: false
+            bodyParameter: false
+        result_type: AddApiKeyResult
+      - name: DeleteApiKey
+        endpoint: /auth/user/del_api_key
+        method: POST
+        params:
+          - name: id
+            optional: false
+            bodyParameter: false
+        result_type: api.ActionResult
+      - name: GetAllApiKeys
+        endpoint: /auth/user/search_api_key
+        method: GET
+        result_type: GetAllApiKeysResult
+    customTypes:
+      AddApiKeyResult:
+        - name: Result
+          type: string
+          key: result
+        - name: Hostname
+          type: string
+          key: hostname
+        - name: Key
+          type: string
+          key: key
+        - name: Secret
+          type: string
+          key: secret
+      ApiKeyResult:
+        - name: Username
+          type: string
+          key: username
+        - name: Key
+          type: string
+          key: key
+        - name: Id
+          type: string
+          key: id
+      GetAllApiKeysResult:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: "[]ApiKeyResult"
+          key: rows
 
+  - name: User
+    filename: user_otp
+    rpc_calls:
+      - name: NewOtpSeed
+        endpoint: /auth/user/new_otp_seed
+        method: GET
+        result_type: NewOtpSeedResult
+    customTypes:
+      NewOtpSeedResult:
+        - name: Seed
+          type: string
+          key: seed
+        - name: OtpQrUri
+          type: string
+          key: otp_uri_template
