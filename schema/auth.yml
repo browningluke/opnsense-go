@@ -14,6 +14,9 @@ resources:
       delete: "/auth/group/del"
       reconfigure: "null"
     attrs:
+      - name: GroupId
+        type: string
+        key: gid
       - name: Name
         type: string
         key: name

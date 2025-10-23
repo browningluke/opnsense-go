@@ -19,6 +19,7 @@ var GroupOpts = api.ReqOpts{
 // Data structs
 
 type Group struct {
+	GroupId        string              `json:"gid"`
 	Name           string              `json:"name"`
 	Scope          string              `json:"scope,omitempty"`
 	Description    string              `json:"description"`
