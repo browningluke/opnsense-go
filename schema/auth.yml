@@ -1,22 +1,46 @@
 ---
 name: auth
 filename: auth
+reconfigureEndpoint: ""
 resources:
   - name: Group
     filename: group
     monad: group
+    ReconfigureEndpointVariable: ""
     endpoints:
       add: "/auth/group/add"
       get: "/auth/group/get"
       update: "/auth/group/set"
       delete: "/auth/group/del"
+      reconfigure: "null"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Scope
+        type: string
+        key: scope
+        omitEmpty: true
+      - name: Description
+        type: string
+        key: description
+      - name: Priviledge
+        type: SelectedMapList
+        key: priv
+      - name: Member
+        type: SelectedMap
+        key: member
+      - name: SourceNetworks
+        type: SelectedMap
+        key: source_networks
 
-rpc:
-  - name: Priviledge
-    filename: priviledge
-    rpc_calls:    
-      - name: Get
-        endpoint: /auth/priv/get
-        method: GET
-        result_type: api.ActionResult
+
+# rpc:
+#   - name: Priviledge
+#     filename: priviledge
+#     rpc_calls:    
+#       - name: Get
+#         endpoint: /auth/priv/get
+#         method: GET
+#         result_type: api.ActionResult
 

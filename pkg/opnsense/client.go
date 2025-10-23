@@ -4,6 +4,7 @@ package opnsense
 
 import (
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/auth"
 	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
@@ -19,6 +20,7 @@ import (
 
 // Client defines a client interface for the Proxmox Virtual Environment API.
 type Client interface {
+	Auth() *auth.Controller
 	Bind() *bind.Controller
 	Core() *core.Controller
 	Diagnostics() *diagnostics.Controller
@@ -39,6 +41,10 @@ type client struct {
 // NewClient creates a new API client.
 func NewClient(a *api.Client) Client {
 	return &client{a: a}
+}
+
+func (c *client) Auth() *auth.Controller {
+	return &auth.Controller{Api: c.a}
 }
 
 func (c *client) Bind() *bind.Controller {
