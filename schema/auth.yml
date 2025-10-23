@@ -34,6 +34,75 @@ resources:
         type: SelectedMap
         key: source_networks
 
+  - name: User
+    filename: user
+    monad: user
+    ReconfigureEndpointVariable: ""
+    endpoints:
+      add: "/auth/user/add"
+      get: "/auth/user/get"
+      update: "/auth/user/set"
+      delete: "/auth/user/del"
+      reconfigure: "null"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Disabled
+        type: string
+        key: disabled
+      - name: Scope
+        type: string
+        key: scope
+        omitEmpty: true
+      - name: Expires
+        type: string
+        key: expires
+      - name: AuthorizedKeys
+        type: string
+        key: authorizedkeys
+      - name: OtpSeed
+        type: string
+        key: otp_seed
+      - name: Shell
+        type: SelectedMap
+        key: shell
+      - name: Password
+        type: string
+        key: password
+      - name: ScrambledPassword
+        type: string
+        key: scrambled_password
+      - name: PasswordChangedAt
+        type: string
+        key: pwd_changed_at
+      - name: LandingPage
+        type: string
+        key: landing_page
+      - name: Comment
+        type: string
+        key: comment
+      - name: Email
+        type: string
+        key: email
+      - name: ApiKeys
+        type: string
+        key: apikeys
+      - name: Priviledge
+        type: SelectedMapList
+        key: priv
+      - name: Language
+        type: SelectedMap
+        key: language
+      - name: GroupMemberships
+        type: SelectedMapList
+        key: group_memberships
+      - name: Description
+        type: string
+        key: descr
+      - name: Dashboard
+        type: string
+        key: dashboard
 
 # rpc:
 #   - name: Priviledge
