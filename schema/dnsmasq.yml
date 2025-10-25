@@ -87,6 +87,35 @@ resources:
         type: string
         key: description
 
+  - name: Boot
+    filename: boot
+    monad: boot
+    endpoints:
+      add: "/dnsmasq/settings/add_boot"
+      get: "/dnsmasq/settings/get_boot"
+      update: "/dnsmasq/settings/set_boot"
+      delete: "/dnsmasq/settings/del_boot"
+      reconfigure: "null"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Tag
+        type: SelectedMapList
+        key: tag
+      - name: Filename
+        type: string
+        key: filename
+      - name: Servername
+        type: string
+        key: servername
+      - name: Serveraddress
+        type: string
+        key: address
+      - name: Description
+        type: string
+        key: description
+
   - name: Tag
     filename: tag
     monad: tag
