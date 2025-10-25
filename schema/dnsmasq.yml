@@ -3,51 +3,51 @@ name: dnsmasq
 filename: dnsmasq
 reconfigureEndpoint: "/dnsmasq/service/reconfigure"
 resources:
-  # - name: Host
-  #   filename: host
-  #   monad: host
-  #   endpoints:
-  #     add: "/dnsmasq/settings/add_host"
-  #     get: "/dnsmasq/settings/get_host"
-  #     update: "/dnsmasq/settings/set_host"
-  #     delete: "/dnsmasq/settings/del_host"
-  #   attrs:
-  #     - name: Hostname
-  #       type: string
-  #       key: host
-  #     - name: Domain
-  #       type: string
-  #       key: domain
-  #     - name: IsLocalDomain
-  #       type: string
-  #       key: local
-  #     - name: IpAddresses
-  #       type: SelectedMapList
-  #       key: ip
-  #     - name: AliasRecords
-  #       type: SelectedMapList
-  #       key: aliases
-  #     - name: CnameRecords
-  #       type: SelectedMapList
-  #       key: cnames
-  #     - name: ClientId
-  #       type: string
-  #       key: client_id
-  #     - name: HardwareAddresses
-  #       type: SelectedMapList
-  #       key: hwaddr
-  #     - name: Tagset
-  #       type: SelectedMap
-  #       key: set_tag
-  #     - name: IsIgnored
-  #       type: string
-  #       key: ignore
-  #     - name: Description
-  #       type: string
-  #       key: descr
-  #     - name: Comments
-  #       type: string
-  #       key: comments
+  - name: Host
+    filename: host
+    monad: host
+    endpoints:
+      add: "/dnsmasq/settings/add_host"
+      get: "/dnsmasq/settings/get_host"
+      update: "/dnsmasq/settings/set_host"
+      delete: "/dnsmasq/settings/del_host"
+    attrs:
+      - name: Hostname
+        type: string
+        key: host
+      - name: Domain
+        type: string
+        key: domain
+      - name: IsLocalDomain
+        type: string
+        key: local
+      - name: IpAddresses
+        type: SelectedMapList
+        key: ip
+      - name: AliasRecords
+        type: SelectedMapList
+        key: aliases
+      - name: CnameRecords
+        type: SelectedMapList
+        key: cnames
+      - name: ClientId
+        type: string
+        key: client_id
+      - name: HardwareAddresses
+        type: SelectedMapList
+        key: hwaddr
+      - name: Tagset
+        type: SelectedMap
+        key: set_tag
+      - name: IsIgnored
+        type: string
+        key: ignore
+      - name: Description
+        type: string
+        key: descr
+      - name: Comments
+        type: string
+        key: comments
     
   - name: Tag
     filename: tag
