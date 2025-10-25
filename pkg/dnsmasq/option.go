@@ -12,7 +12,7 @@ var OptionOpts = api.ReqOpts{
 	GetEndpoint:         "/dnsmasq/settings/get_option",
 	UpdateEndpoint:      "/dnsmasq/settings/set_option",
 	DeleteEndpoint:      "/dnsmasq/settings/del_option",
-	ReconfigureEndpoint: "",
+	ReconfigureEndpoint: dnsmasqReconfigureEndpoint,
 	Monad:               "option",
 }
 

@@ -57,7 +57,7 @@ resources:
       get: "/dnsmasq/settings/get_option"
       update: "/dnsmasq/settings/set_option"
       delete: "/dnsmasq/settings/del_option"
-      reconfigure: "null"
+      # reconfigure: "null"
     attrs:
       - name: Type
         type: SelectedMap
