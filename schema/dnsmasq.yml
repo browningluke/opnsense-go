@@ -48,7 +48,45 @@ resources:
       - name: Comments
         type: string
         key: comments
-    
+
+  - name: Option
+    filename: option
+    monad: option
+    endpoints:
+      add: "/dnsmasq/settings/add_option"
+      get: "/dnsmasq/settings/get_option"
+      update: "/dnsmasq/settings/set_option"
+      delete: "/dnsmasq/settings/del_option"
+      reconfigure: "null"
+    attrs:
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: OptionV4
+        type: SelectedMap
+        key: option
+      - name: OptionV6
+        type: SelectedMap
+        key: option6
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Tag
+        type: SelectedMapList
+        key: tag
+      - name: TagSet
+        type: SelectedMap
+        key: set_tag
+      - name: Value
+        type: string
+        key: value
+      - name: Force
+        type: string
+        key: force
+      - name: Description
+        type: string
+        key: description
+
   - name: Tag
     filename: tag
     monad: tag
