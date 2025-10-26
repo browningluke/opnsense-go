@@ -50,6 +50,38 @@ resources:
         type: string
         key: comments
 
+  - name: Domain
+    filename: domain
+    monad: domainoverride
+    endpoints:
+      add: "/dnsmasq/settings/add_domain"
+      get: "/dnsmasq/settings/get_domain"
+      update: "/dnsmasq/settings/set_domain"
+      delete: "/dnsmasq/settings/del_domain"
+      # reconfigure: "null"
+    attrs:
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: Domain
+        type: string
+        key: domain
+      - name: FirewallAlias
+        type: SelectedMap
+        key: ipset
+      - name: SourceIp
+        type: string
+        key: srcip
+      - name: Port
+        type: string
+        key: port
+      - name: Ip
+        type: string
+        key: ip
+      - name: Description
+        type: string
+        key: descr
+
   - name: Range
     filename: range
     monad: range
