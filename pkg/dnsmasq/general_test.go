@@ -34,5 +34,26 @@ func TestGeneral(t *testing.T) {
 	}
 	t.Logf("GeneralSettingsGet: %+v", respGet)
 
-	// respSet, err := controller.GeneralSettingsSet(ctx, )
+	reqObj := &GeneralSettings{
+		IsEnabled:   "1",
+		DNS_Port:    "0",
+		DNS_NoIdent: "1",
+		DHCPSettings: GeneralDHCPSettings{
+			FQDN:                  "1",
+			RegisterFirewallRules: "1",
+			DisableHASync:         "1",
+		},
+	}
+
+	respSet, err := controller.GeneralSettingsSet(ctx, reqObj)
+	if err != nil {
+		t.Fatalf("Failed to set general settings: %v", err)
+	}
+	t.Logf("GeneralSettingsSet: %+v", respSet)
+
+	respGet, err = controller.GeneralSettingsGet(ctx)
+	if err != nil {
+		t.Fatalf("Failed to get general settings: %v", err)
+	}
+	t.Logf("GeneralSettingsGet: %+v", respGet)
 }

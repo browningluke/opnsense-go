@@ -74,10 +74,12 @@ func (c *Controller) GeneralSettingsGet(ctx context.Context) (*GeneralSettingsWr
 }
 
 // GeneralSettingsSet executes the Set RPC call of the GeneralSettings controller
-func (c *Controller) GeneralSettingsSet(ctx context.Context) (*api.ActionResult, error) {
+func (c *Controller) GeneralSettingsSet(ctx context.Context, dnsmasq *GeneralSettings) (*api.ActionResult, error) {
 
 	callParams := []string{}
 	bodyParams := make(map[string]interface{})
+
+	bodyParams["dnsmasq"] = dnsmasq
 
 	callOpts := api.RPCOpts{
 		BaseEndpoint:   "/dnsmasq/settings/set",
