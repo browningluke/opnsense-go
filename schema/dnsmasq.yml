@@ -50,6 +50,71 @@ resources:
         type: string
         key: comments
 
+  - name: Range
+    filename: range
+    monad: range
+    endpoints:
+      add: "/dnsmasq/settings/add_range"
+      get: "/dnsmasq/settings/get_range"
+      update: "/dnsmasq/settings/set_range"
+      delete: "/dnsmasq/settings/del_range"
+      # reconfigure: "null"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Tags
+        type: SelectedMap
+        key: set_tag
+      - name: StartAddress
+        type: string
+        key: start_addr
+      - name: EndAddress
+        type: string
+        key: end_addr
+      - name: SubnetMask
+        type: string
+        key: subnet_mask
+      - name: Constructor
+        type: SelectedMap
+        key: constructor
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: PrefixLength
+        type: string
+        key: prefix_len
+      - name: LeaseTime
+        type: string
+        key: lease_time
+      - name: DomainType
+        type: SelectedMap
+        key: domain_type
+      - name: Domain
+        type: string
+        key: domain
+      - name: NoSync
+        type: string
+        key: nosync
+      - name: RaMode
+        type: SelectedMap
+        key: ra_mode
+      - name: RaPriority
+        type: SelectedMap
+        key: ra_priority
+      - name: RaMTU
+        type: string
+        key: ra_mtu
+      - name: RaInterval
+        type: string
+        key: ra_interval
+      - name: RaRouterLifetime
+        type: string
+        key: ra_router_lifetime
+      - name: Description
+        type: string
+        key: description
+
   - name: Option
     filename: option
     monad: option
