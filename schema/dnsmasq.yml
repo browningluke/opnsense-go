@@ -227,3 +227,129 @@ resources:
       - name: Tag
         type: string
         key: tag
+
+rpc:
+  - name: GeneralSettings
+    filename: general
+    rpc_calls:
+      - name: Get
+        endpoint: /dnsmasq/settings/get
+        method: GET
+        result_type: GeneralSettingsWrapper
+      - name: Set
+        endpoint: /dnsmasq/settings/set
+        method: POST
+        result_type: api.ActionResult
+    customTypes:
+      GeneralSettingsWrapper:
+      - name: Dnsmasq
+        type: GeneralSettings
+        key: dnsmasq
+
+      GeneralSettings:
+      - name: IsEnabled
+        type: string
+        key: enable
+      - name: Interface
+        type: SelectedMapList
+        key: interface
+      - name: StrictInterfaceBinding
+        type: string
+        key: strictbind
+
+      - name: DNS_Port
+        type: string
+        key: port
+      - name: DNS_DNSSEC
+        type: string
+        key: dnssec
+      - name: DNS_NoHostLookup
+        type: string
+        key: no_hosts
+      - name: DNS_LogDnsQueries
+        type: string
+        key: log_queries
+      - name: DNS_MaxConcurrentQueries
+        type: string
+        key: dns_forward_max
+      - name: DNS_CacheSize
+        type: string
+        key: cache_size
+      - name: DNS_LocalEntryTTL
+        type: string
+        key: local_ttl
+      - name: DNS_NoIdent
+        type: string
+        key: no_ident
+
+      - name: DNS_QF_QuerySequentially
+        type: string
+        key: strict_order
+      - name: DNS_QF_RequireDomain
+        type: string
+        key: domain_needed
+      - name: DNS_QF_DoNotForwardSystemDNS
+        type: string
+        key: no_resolv
+      - name: DNS_QF_DoNotForwardPrivateReverseLookup
+        type: string
+        key: no_private_reverse
+      - name: DNS_QF_AddMac
+        type: SelectedMap
+        key: add_mac
+      - name: DNS_QF_AddSubnet
+        type: string
+        key: add_subnet
+      - name: DNS_QF_StripSubnet
+        type: string
+        key: strip_subnet
+
+      - name: DHCPSettings
+        type: GeneralDHCPSettings
+        key: dhcp
+
+      - name: Legacy_RegisterISCDhcp4Leases
+        type: string
+        key: regdhcp
+      - name: Legacy_DhcpDomainOverride
+        type: string
+        key: regdhcpdomain
+      - name: Legacy_RegisterDhcpStaticMappings
+        type: string
+        key: regdhcpstatic
+      - name: Legacy_PreferDhcp
+        type: string
+        key: dhcpfirst
+
+      # - name: Hosts
+      #   type: map[string][]dnsmasq.Host
+      #   key: hosts
+
+      GeneralDHCPSettings:
+      - name: InterfaceNoDhcp
+        type: SelectedMapList
+        key: no_interface
+      - name: FQDN
+        type: string
+        key: fqdn
+      - name: DefaultDomain
+        type: string
+        key: domain
+      - name: MaxLeases
+        type: string
+        key: lease_max
+      - name: Authoritative
+        type: string
+        key: authoritative
+      - name: ReplyDelay
+        type: string
+        key: reply_delay
+      - name: RegisterFirewallRules
+        type: string
+        key: default_fw_rules
+      - name: RouterAdvertisements
+        type: string
+        key: enable_ra
+      - name: DisableHASync
+        type: string
+        key: nosync
