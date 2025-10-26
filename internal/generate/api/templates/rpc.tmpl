@@ -4,8 +4,8 @@ package {{ .Controller.Name }}
 
 import (
 	"context"
+    "fmt"    
 	"github.com/browningluke/opnsense-go/pkg/api"
-    "fmt"
 )
 
 // Data structs
@@ -27,7 +27,12 @@ type {{ $key }} struct {
 // {{ $rpcContext.Name }}{{ .Name }} executes the {{ .Name }} RPC call of the {{ $rpcContext.Name }} controller 
 func (c *Controller) {{ $rpcContext.Name }}{{ .Name }}(ctx context.Context
     {{- range .Parameters -}}
-        , {{ .Name }} {{ if .Optional }}*{{ end }}string
+        , {{ .Name }} 
+        {{- if .CustomType -}}
+            *{{ .CustomType }}
+        {{- else }}
+            {{- if .Optional }}*{{ end }} string
+        {{- end }}
     {{- end -}}
     ) (*{{ .ResultType }},error) {
 
@@ -35,17 +40,17 @@ func (c *Controller) {{ $rpcContext.Name }}{{ .Name }}(ctx context.Context
     bodyParams := make(map[string]interface{})
 
     {{ range .Parameters }}
-    {{- if not .IsBodyParameter }}
-    {{- if .Optional }}
-    if {{ .Name }} != nil {
-    callParams = append(callParams,*{{ .Name }})
-    }
-    {{- else }}
-    callParams = append(callParams,{{ .Name }}) 
-    {{- end }}
-    {{- else }}
-    bodyParams["{{ .Name }}"]={{ .Name }}
-    {{- end }}
+        {{- if and (not .IsBodyParameter) (not .CustomType) }}
+            {{- if .Optional }}
+            if {{ .Name }} != nil {
+            callParams = append(callParams,*{{ .Name }})
+            }
+            {{- else }}
+            callParams = append(callParams,{{ .Name }}) 
+            {{- end }}
+        {{- else }}
+            bodyParams["{{ .Name }}"]={{ .Name }}
+        {{- end }}
     {{ end }}
 
     callOpts := api.RPCOpts{

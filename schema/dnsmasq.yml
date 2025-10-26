@@ -239,6 +239,11 @@ rpc:
       - name: Set
         endpoint: /dnsmasq/settings/set
         method: POST
+        params:
+          - name: dnsmasq
+            optional: true
+            bodyParameter: false
+            customType: GeneralSettings
         result_type: api.ActionResult
     customTypes:
       GeneralSettingsWrapper:
