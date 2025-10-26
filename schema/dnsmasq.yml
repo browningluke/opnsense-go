@@ -11,6 +11,7 @@ resources:
       get: "/dnsmasq/settings/get_host"
       update: "/dnsmasq/settings/set_host"
       delete: "/dnsmasq/settings/del_host"
+      # reconfigure: "null"
     attrs:
       - name: Hostname
         type: string
@@ -95,7 +96,7 @@ resources:
       get: "/dnsmasq/settings/get_boot"
       update: "/dnsmasq/settings/set_boot"
       delete: "/dnsmasq/settings/del_boot"
-      reconfigure: "null"
+      # reconfigure: "null"
     attrs:
       - name: Interface
         type: SelectedMap
@@ -124,6 +125,7 @@ resources:
       get: "/dnsmasq/settings/get_tag"
       update: "/dnsmasq/settings/set_tag"
       delete: "/dnsmasq/settings/del_tag"
+      # reconfigure: "null"
     attrs:     
       - name: Tag
         type: string

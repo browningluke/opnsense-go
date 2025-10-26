@@ -12,7 +12,7 @@ var BootOpts = api.ReqOpts{
 	GetEndpoint:         "/dnsmasq/settings/get_boot",
 	UpdateEndpoint:      "/dnsmasq/settings/set_boot",
 	DeleteEndpoint:      "/dnsmasq/settings/del_boot",
-	ReconfigureEndpoint: "",
+	ReconfigureEndpoint: dnsmasqReconfigureEndpoint,
 	Monad:               "boot",
 }
 
