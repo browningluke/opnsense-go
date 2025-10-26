@@ -28,7 +28,14 @@ func TestBoot(t *testing.T) {
 	}
 	ctx := context.Background()
 
-	boot := &Boot{}
+	boot := &Boot{
+		Interface: api.SelectedMap("lan"),
+		// Tag:           api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee", "d594fa8a-1a76-44e7-afab-adb6c5bdb69e"}),
+		Filename:      "test",
+		Servername:    "test-servername",
+		Serveraddress: "test-serveraddress",
+		Description:   "test-description",
+	}
 
 	respAdd, err := controller.AddBoot(ctx, boot)
 	if err != nil {
@@ -42,6 +49,12 @@ func TestBoot(t *testing.T) {
 	}
 	t.Logf("GetBoot: %+v", respGet)
 
+	boot.Interface = api.SelectedMap("wan")
+	// boot.Tag = api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee"})
+	boot.Filename = "test-updated"
+	boot.Servername = "test-servername-updated"
+	boot.Serveraddress = "test-serveraddress-updated"
+	boot.Description = "test-description-updated"
 	err = controller.UpdateBoot(ctx, respAdd, boot)
 	if err != nil {
 		t.Fatalf("Failed to update boot: %v", err)
