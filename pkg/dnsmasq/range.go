@@ -30,7 +30,7 @@ type Range struct {
 	LeaseTime        string          `json:"lease_time"`
 	DomainType       api.SelectedMap `json:"domain_type"`
 	Domain           string          `json:"domain"`
-	NoSync           string          `json:"nosync"`
+	DisableHASync    string          `json:"nosync"`
 	RaMode           api.SelectedMap `json:"ra_mode"`
 	RaPriority       api.SelectedMap `json:"ra_priority"`
 	RaMTU            string          `json:"ra_mtu"`

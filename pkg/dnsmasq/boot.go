@@ -23,7 +23,7 @@ type Boot struct {
 	Tag           api.SelectedMapList `json:"tag"`
 	Filename      string              `json:"filename"`
 	Servername    string              `json:"servername"`
-	Serveraddress string              `json:"address"`
+	ServerAddress string              `json:"address"`
 	Description   string              `json:"description"`
 }
 

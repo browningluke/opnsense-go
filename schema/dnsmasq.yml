@@ -125,7 +125,7 @@ resources:
       - name: Domain
         type: string
         key: domain
-      - name: NoSync
+      - name: DisableHASync
         type: string
         key: nosync
       - name: RaMode
@@ -207,7 +207,7 @@ resources:
       - name: Servername
         type: string
         key: servername
-      - name: Serveraddress
+      - name: ServerAddress
         type: string
         key: address
       - name: Description
@@ -285,7 +285,7 @@ rpc:
         - name: Id
           type: string
           key: uuid
-        - name: Host
+        - name: Hostname
           type: string
           key: host
         - name: Domain
@@ -294,19 +294,19 @@ rpc:
         - name: IsLocal
           type: string
           key: local
-        - name: IPs
+        - name: IpAddresses
           type: string
           key: ip
-        - name: Aliases
+        - name: AliasRecords
           type: string
           key: aliases
-        - name: Cnames
+        - name: CnameRecords
           type: string
           key: cnames
         - name: ClientId
           type: string
           key: client_id
-        - name: MacAddresses
+        - name: HardwareAddresses
           type: string
           key: hwaddr
         - name: LeaseTime
@@ -431,7 +431,7 @@ rpc:
           key: domain
         - name: DisableHASync
           type: string
-          key: nosycn
+          key: nosync
         - name: Description
           type: string
           key: description

@@ -49,21 +49,21 @@ type SearchDomainResponse struct {
 }
 
 type SearchHostItem struct {
-	Id           string `json:"uuid"`
-	Host         string `json:"host"`
-	Domain       string `json:"domain"`
-	IsLocal      string `json:"local"`
-	IPs          string `json:"ip"`
-	Aliases      string `json:"aliases"`
-	Cnames       string `json:"cnames"`
-	ClientId     string `json:"client_id"`
-	MacAddresses string `json:"hwaddr"`
-	LeaseTime    string `json:"lease_time"`
-	TagId        string `json:"set_tag"`
-	Tag          string `json:"%set_tag"`
-	IsIgnored    string `json:"ignore"`
-	Description  string `json:"descr"`
-	Comments     string `json:"comments"`
+	Id                string `json:"uuid"`
+	Hostname          string `json:"host"`
+	Domain            string `json:"domain"`
+	IsLocal           string `json:"local"`
+	IpAddresses       string `json:"ip"`
+	AliasRecords      string `json:"aliases"`
+	CnameRecords      string `json:"cnames"`
+	ClientId          string `json:"client_id"`
+	HardwareAddresses string `json:"hwaddr"`
+	LeaseTime         string `json:"lease_time"`
+	TagId             string `json:"set_tag"`
+	Tag               string `json:"%set_tag"`
+	IsIgnored         string `json:"ignore"`
+	Description       string `json:"descr"`
+	Comments          string `json:"comments"`
 }
 
 type SearchHostResponse struct {
@@ -114,7 +114,7 @@ type SearchRangeItem struct {
 	DomainTypeId     string `json:"domain_type"`
 	DomainType       string `json:"%domain_type"`
 	Domain           string `json:"domain"`
-	DisableHASync    string `json:"nosycn"`
+	DisableHASync    string `json:"nosync"`
 	Description      string `json:"description"`
 	RaPriorityId     string `json:"ra_priority"`
 	RaPriority       string `json:"%ra_priority"`
