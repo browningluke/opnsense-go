@@ -34,6 +34,7 @@ func TestGeneral(t *testing.T) {
 	}
 	t.Logf("GeneralSettingsGet: %+v", respGet)
 
+	// Default settings from out-of-box install opnsense 25.7
 	reqObj := &GeneralSettings{
 		IsEnabled:   "1",
 		DNS_Port:    "0",
@@ -41,7 +42,7 @@ func TestGeneral(t *testing.T) {
 		DHCPSettings: GeneralDHCPSettings{
 			FQDN:                  "1",
 			RegisterFirewallRules: "1",
-			DisableHASync:         "1",
+			DisableHASync:         "1", // New setting to set without breaking anything
 		},
 	}
 
@@ -56,4 +57,27 @@ func TestGeneral(t *testing.T) {
 		t.Fatalf("Failed to get general settings: %v", err)
 	}
 	t.Logf("GeneralSettingsGet: %+v", respGet)
+
+	if respGet.Dnsmasq.DHCPSettings.DisableHASync != reqObj.DHCPSettings.DisableHASync {
+		t.Fatalf("Failed to set DisableHASync")
+	}
+
+	// Resetting
+	// Default settings from out-of-box install opnsense 25.7
+	reqObj = &GeneralSettings{
+		IsEnabled:   "1",
+		DNS_Port:    "0",
+		DNS_NoIdent: "1",
+		DHCPSettings: GeneralDHCPSettings{
+			FQDN:                  "1",
+			RegisterFirewallRules: "1",
+			DisableHASync:         "0", // New setting to set without breaking anything
+		},
+	}
+
+	respSet, err = controller.GeneralSettingsSet(ctx, reqObj)
+	if err != nil {
+		t.Fatalf("Failed to set general settings: %v", err)
+	}
+	t.Logf("GeneralSettingsSet: %+v", respSet)
 }

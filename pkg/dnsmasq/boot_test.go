@@ -33,7 +33,7 @@ func TestBoot(t *testing.T) {
 		// Tag:           api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee", "d594fa8a-1a76-44e7-afab-adb6c5bdb69e"}),
 		Filename:      "test",
 		Servername:    "test-servername",
-		Serveraddress: "test-serveraddress",
+		ServerAddress: "test-serveraddress",
 		Description:   "test-description",
 	}
 
@@ -53,7 +53,7 @@ func TestBoot(t *testing.T) {
 	// boot.Tag = api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee"})
 	boot.Filename = "test-updated"
 	boot.Servername = "test-servername-updated"
-	boot.Serveraddress = "test-serveraddress-updated"
+	boot.ServerAddress = "test-serveraddress-updated"
 	boot.Description = "test-description-updated"
 	err = controller.UpdateBoot(ctx, respAdd, boot)
 	if err != nil {
@@ -61,11 +61,38 @@ func TestBoot(t *testing.T) {
 	}
 	t.Logf("UpdateBoot: %+v", boot)
 
-	respGet, err = controller.GetBoot(ctx, respAdd)
+	respSearch, err := controller.SearchBoot(ctx, "-1")
 	if err != nil {
-		t.Fatalf("Failed to get boot: %v", err)
+		t.Fatalf("Failed to search Boots: %v", err)
 	}
-	t.Logf("GetBoot: %+v", respGet)
+	t.Logf("SearchBoot: %+v", respSearch)
+	noRowFound := true
+	lastId := ""
+	for _, v := range respSearch.Rows {
+		lastId = v.Id
+		if v.Id != respAdd {
+			continue
+		}
+		noRowFound = false
+		if v.InterfaceId != boot.Interface.String() {
+			t.Fatalf("Interface not updated; Got: %s Expected: %s", v.Interface, boot.Interface.String())
+		}
+		if v.Filename != boot.Filename {
+			t.Fatalf("Port not updated; Got: %s Expected: %s", v.Filename, boot.Filename)
+		}
+		if v.Servername != boot.Servername {
+			t.Fatalf("Servername not updated; Got: %s Expected: %s", v.Servername, boot.Servername)
+		}
+		if v.ServerAddress != boot.ServerAddress {
+			t.Fatalf("ServerAddress not updated; Got: %s Expected: %s", v.ServerAddress, boot.ServerAddress)
+		}
+		if v.Description != boot.Description {
+			t.Fatalf("Description not updated; Got: %s Expected: %s", v.Description, boot.Description)
+		}
+	}
+	if noRowFound {
+		t.Fatalf("Row not found that was added; Got: %s Expected: %s", lastId, respAdd)
+	}
 
 	err = controller.DeleteBoot(ctx, respAdd)
 	if err != nil {

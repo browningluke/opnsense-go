@@ -32,7 +32,7 @@ func TestOption(t *testing.T) {
 		Type:     api.SelectedMap("set"),
 		OptionV4: api.SelectedMap("1"),
 		// OptionV6: api.SelectedMap("23"),
-		Interface: api.SelectedMap("lan"),
+		Interface: api.SelectedMap(""),
 		// Tag:         api.SelectedMapList([]string{"3dff7e13-68e6-4d37-a9ac-35944c1cc116"}),
 		Value:       "255.255.255.0",
 		Description: "test subnetmask",
@@ -64,11 +64,35 @@ func TestOption(t *testing.T) {
 	}
 	t.Logf("UpdateOption: %+v", option)
 
-	respGet, err = controller.GetOption(ctx, respAdd)
+	respSearch, err := controller.SearchOption(ctx, "-1")
 	if err != nil {
-		t.Fatalf("Failed to get Option: %v", err)
+		t.Fatalf("Failed to search Options: %v", err)
 	}
-	t.Logf("GetOption: %+v", respGet)
+	t.Logf("SearchOption: %+v", respSearch)
+	noRowFound := true
+	lastId := ""
+	for _, v := range respSearch.Rows {
+		lastId = v.Id
+		if v.Id != respAdd {
+			continue
+		}
+		noRowFound = false
+		if v.OptionV4Id != option.OptionV4.String() {
+			t.Fatalf("OptionV4 not updated; Got: %s Expected: %s", v.OptionV4Id, option.OptionV4.String())
+		}
+		if v.OptionV6Id != option.OptionV6.String() {
+			t.Fatalf("OptionV6 not updated; Got: %s Expected: %s", v.OptionV6Id, option.OptionV4.String())
+		}
+		if v.Value != option.Value {
+			t.Fatalf("Value not updated; Got: %s Expected: %s", v.Value, option.Value)
+		}
+		if v.Description != option.Description {
+			t.Fatalf("Description not updated; Got: %s Expected: %s", v.Description, option.Description)
+		}
+	}
+	if noRowFound {
+		t.Fatalf("Row not found that was added; Got: %s Expected: %s", lastId, respAdd)
+	}
 
 	err = controller.DeleteOption(ctx, respAdd)
 	if err != nil {

@@ -29,7 +29,7 @@ func TestTag(t *testing.T) {
 	ctx := context.Background()
 
 	tag := &Tag{
-		Tag: "2",
+		Tag: "1",
 	}
 
 	respAdd, err := controller.AddTag(ctx, tag)
@@ -44,18 +44,33 @@ func TestTag(t *testing.T) {
 	}
 	t.Logf("GetTag: %+v", respGet)
 
-	tag.Tag = "3"
+	tag.Tag = "2"
 	err = controller.UpdateTag(ctx, respAdd, tag)
 	if err != nil {
 		t.Fatalf("Failed to update tag: %v", err)
 	}
 	t.Logf("UpdateTag: %+v", tag)
 
-	respGet, err = controller.GetTag(ctx, respAdd)
+	respSearch, err := controller.SearchTag(ctx, "-1")
 	if err != nil {
-		t.Fatalf("Failed to get tag: %v", err)
+		t.Fatalf("Failed to search Tags: %v", err)
 	}
-	t.Logf("GetTag: %+v", respGet)
+	t.Logf("SearchTag: %+v", respSearch)
+	noRowFound := true
+	lastId := ""
+	for _, v := range respSearch.Rows {
+		lastId = v.Id
+		if v.Id != respAdd {
+			continue
+		}
+		noRowFound = false
+		if v.Tag != tag.Tag {
+			t.Fatalf("Tag not updated; Got: %s Expected: %s", v.Tag, tag.Tag)
+		}
+	}
+	if noRowFound {
+		t.Fatalf("Row not found that was added; Got: %s Expected: %s", lastId, respAdd)
+	}
 
 	err = controller.DeleteTag(ctx, respAdd)
 	if err != nil {

@@ -28,6 +28,7 @@ func TestDomain(t *testing.T) {
 	}
 	ctx := context.Background()
 
+	// Minimal required
 	domain := &Domain{
 		Sequence: "1",
 		Domain:   "test-domain",
@@ -56,11 +57,35 @@ func TestDomain(t *testing.T) {
 	}
 	t.Logf("UpdateDomain: %+v", domain)
 
-	respGet, err = controller.GetDomain(ctx, respAdd)
+	respSearch, err := controller.SearchDomain(ctx, "-1")
 	if err != nil {
-		t.Fatalf("Failed to get Domain: %v", err)
+		t.Fatalf("Failed to search Domain: %v", err)
 	}
-	t.Logf("GetDomain: %+v", respGet)
+	t.Logf("SearchDomain: %+v", respSearch)
+	noRowFound := true
+	lastId := ""
+	for _, v := range respSearch.Rows {
+		lastId = v.Id
+		if v.Id != respAdd {
+			continue
+		}
+		noRowFound = false
+		if v.IP != domain.Ip {
+			t.Fatalf("Ip not updated; Got: %s Expected: %s", v.IP, domain.Ip)
+		}
+		if v.Port != domain.Port {
+			t.Fatalf("Port not updated; Got: %s Expected: %s", v.Port, domain.Port)
+		}
+		if v.SourceIp != domain.SourceIp {
+			t.Fatalf("SourceIp not updated; Got: %s Expected: %s", v.SourceIp, domain.SourceIp)
+		}
+		if v.Description != domain.Description {
+			t.Fatalf("Description not updated; Got: %s Expected: %s", v.Description, domain.Description)
+		}
+	}
+	if noRowFound {
+		t.Fatalf("Row not found that was added; Got: %s Expected: %s", lastId, respAdd)
+	}
 
 	err = controller.DeleteDomain(ctx, respAdd)
 	if err != nil {
