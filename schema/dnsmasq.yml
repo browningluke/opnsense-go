@@ -229,6 +229,363 @@ resources:
         key: tag
 
 rpc:
+  - name: Search
+    filename: search
+    rpc_calls:
+      - name: Host
+        endpoint: /dnsmasq/settings/search_host
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchHostResponse
+      - name: Domain
+        endpoint: /dnsmasq/settings/search_domain
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchDomainResponse
+      - name: Range
+        endpoint: /dnsmasq/settings/search_range
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchRangeResponse
+      - name: Option
+        endpoint: /dnsmasq/settings/search_option
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchOptionResponse
+      - name: Boot
+        endpoint: /dnsmasq/settings/search_boot
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchBootResponse
+      - name: Tag
+        endpoint: /dnsmasq/settings/search_tag
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchTagResponse
+    customTypes:
+      SearchHostItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Host
+          type: string
+          key: host
+        - name: Domain
+          type: string
+          key: domain
+        - name: IsLocal
+          type: string
+          key: local
+        - name: IPs
+          type: string
+          key: ip
+        - name: Aliases
+          type: string
+          key: aliases
+        - name: Cnames
+          type: string
+          key: cnames
+        - name: ClientId
+          type: string
+          key: client_id
+        - name: MacAddresses
+          type: string
+          key: hwaddr
+        - name: LeaseTime
+          type: string
+          key: lease_time
+        - name: TagId
+          type: string
+          key: set_tag
+        - name: Tag
+          type: string
+          key: "%set_tag"
+        - name: IsIgnored
+          type: string
+          key: ignore
+        - name: Description
+          type: string
+          key: descr
+        - name: Comments
+          type: string
+          key: comments
+      SearchHostResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchHostItem"
+          key: rows
+
+      SearchDomainItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Sequence
+          type: string
+          key: sequence
+        - name: Domain
+          type: string
+          key: domain
+        - name: FirewallAliasId
+          type: string
+          key: ipset
+        - name: FirewallAlias
+          type: string
+          key: "%ipset"
+        - name: IP
+          type: string
+          key: ip
+        - name: Port
+          type: string
+          key: port
+        - name: SourceIp
+          type: string
+          key: srcip
+        - name: Description
+          type: string
+          key: descr
+      SearchDomainResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchDomainItem"
+          key: rows
+
+      SearchRangeItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: Tags
+          type: string
+          key: set_tag
+        - name: StartAddress
+          type: string
+          key: start_addr
+        - name: EndAddress
+          type: string
+          key: end_addr
+        - name: SubnetMask
+          type: string
+          key: subnet_mask
+        - name: ConstructorId
+          type: string
+          key: constructor
+        - name: Constructor
+          type: string
+          key: "%constructor"
+        - name: Mode
+          type: string
+          key: mode
+        - name: IPv6PrefixLength
+          type: string
+          key: prefix_len
+        - name: LeaseTime
+          type: string
+          key: lease_time
+        - name: DomainTypeId
+          type: string
+          key: domain_type
+        - name: DomainType
+          type: string
+          key: "%domain_type"
+        - name: Domain
+          type: string
+          key: domain
+        - name: DisableHASync
+          type: string
+          key: nosycn
+        - name: Description
+          type: string
+          key: description
+        - name: RaPriorityId
+          type: string
+          key: ra_priority
+        - name: RaPriority
+          type: string
+          key: "%ra_priority"
+        - name: RaMTU
+          type: string
+          key: ra_mtu
+        - name: RaInterval
+          type: string
+          key: ra_interval
+        - name: RaRouterLifetime
+          type: string
+          key: ra_router_lifetime
+      SearchRangeResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchRangeItem"
+          key: rows
+
+      SearchOptionItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: TypeId
+          type: string
+          key: type
+        - name: Type
+          type: string
+          key: "%type"
+        - name: OptionV4Id
+          type: string
+          key: option
+        - name: OptionV4
+          type: string
+          key: "%option"
+        - name: OptionV6Id
+          type: string
+          key: option6
+        - name: OptionV6
+          type: string
+          key: "%option6"
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: TagIds
+          type: string
+          key: tag
+        - name: Tags
+          type: string
+          key: "%tag"
+        - name: Tag
+          type: string
+          key: set_tag
+        - name: Value
+          type: string
+          key: value
+        - name: Force
+          type: string
+          key: force
+        - name: Description
+          type: string
+          key: description
+      SearchOptionResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchOptionItem"
+          key: rows
+
+      SearchBootItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: TagIds
+          type: string
+          key: tag
+        - name: Tags
+          type: string
+          key: "%tag"
+        - name: Filename
+          type: string
+          key: filename
+        - name: Servername
+          type: string
+          key: servername
+        - name: ServerAddress
+          type: string
+          key: address
+        - name: Description
+          type: string
+          key: description
+      SearchBootResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchBootItem"
+          key: rows
+
+      SearchTagItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Tag
+          type: string
+          key: tag
+      SearchTagResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchTagItem"
+          key: rows
   - name: GeneralSettings
     filename: general
     rpc_calls:
