@@ -18,18 +18,36 @@ resources:
       - name: Enabled
         type: string
         key: enabled
+      - name: SortOrder
+        type: string
+        key: sort_order
       - name: Sequence
         type: string
         key: sequence
-      - name: Action
-        type: SelectedMap
-        key: action
-      - name: Quick
+      - name: Categories
+        type: SelectedMapList
+        key: categories
+      - name: NoXMLRPCSync
         type: string
-        key: quick
+        key: nosync
+      - name: Description
+        type: string
+        key: description
+      - name: InvertInterface
+        type: string
+        key: interfacenot
       - name: Interface
         type: SelectedMapList
         key: interface
+      - name: Quick
+        type: string
+        key: quick
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: AllowOptions
+        type: string
+        key: allowopts
       - name: Direction
         type: SelectedMap
         key: direction
@@ -39,33 +57,111 @@ resources:
       - name: Protocol
         type: SelectedMap
         key: protocol
+      - name: ICMPType
+        type: SelectedMapList
+        key: icmptype
+      - name: SourceInvert
+        type: string
+        key: source_not
       - name: SourceNet
         type: string
         key: source_net
       - name: SourcePort
         type: string
         key: source_port
-      - name: SourceInvert
+      - name: DestinationInvert
         type: string
-        key: source_not
+        key: destination_not
       - name: DestinationNet
         type: string
         key: destination_net
       - name: DestinationPort
         type: string
         key: destination_port
-      - name: DestinationInvert
-        type: string
-        key: destination_not
-      - name: Gateway
-        type: SelectedMap
-        key: gateway
       - name: Log
         type: string
         key: log
-      - name: Description
+      - name: TCPFlags
+        type: SelectedMapList
+        key: tcpflags1
+      - name: TCPFlagsOutOf
+        type: SelectedMapList
+        key: tcpflags2
+      - name: Schedule
+        type: SelectedMap
+        key: sched
+      - name: StateType
+        type: SelectedMap
+        key: statetype
+      - name: StatePolicy
+        type: SelectedMap
+        key: state-policy
+      - name: StateTimeout
         type: string
-        key: description
+        key: statetimeout
+      - name: AdaptiveTimeoutsStart
+        type: string
+        key: adaptivestart
+      - name: AdaptiveTimeoutsEnd
+        type: string
+        key: adaptiveend
+      - name: MaxStates
+        type: string
+        key: max
+      - name: MaxSourceNodes
+        type: string
+        key: max-src-nodes
+      - name: MaxSourceStates
+        type: string
+        key: max-src-states
+      - name: MaxSourceConnections
+        type: string
+        key: max-src-conn
+      - name: MaxNewConnectionsCount
+        type: string
+        key: max-src-conn-rate
+      - name: MaxNewConnectionsSeconds
+        type: string
+        key: max-src-conn-rates
+      - name: OverloadTable
+        type: SelectedMap
+        key: overload
+      - name: NoPfsync
+        type: string
+        key: nopfsync
+      - name: TrafficShaper
+        type: SelectedMap
+        key: shaper1
+      - name: TrafficShaperReverse
+        type: SelectedMap
+        key: shaper2
+      - name: Gateway
+        type: SelectedMap
+        key: gateway
+      - name: DisableReplyTo
+        type: string
+        key: disablereplyto
+      - name: ReplyTo
+        type: SelectedMap
+        key: replyto
+      - name: MatchPriority
+        type: SelectedMap
+        key: prio
+      - name: SetPriority
+        type: SelectedMap
+        key: set-prio
+      - name: SetPriorityLowDelay
+        type: SelectedMap
+        key: set-prio-low
+      - name: MatchTOS
+        type: SelectedMap
+        key: tos
+      - name: SetLocalTag
+        type: string
+        key: tag
+      - name: MatchLocalTag
+        type: string
+        key: tagged
 
   - name: NAT
     filename: nat
