@@ -124,7 +124,10 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	}
 
 	// Log request
-	dReq, _ := httputil.DumpRequest(req.Request, true)
+	reqCopy := req.Clone(req.Context())
+	reqCopy.Header.Set("Authorization", "****************")
+
+	dReq, _ := httputil.DumpRequest(reqCopy, true)
 	logger.Println(fmt.Sprintf("\n%s\n", string(dReq)))
 
 	// Do request
