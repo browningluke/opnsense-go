@@ -20,7 +20,7 @@ var RangeOpts = api.ReqOpts{
 
 type Range struct {
 	Interface        api.SelectedMap `json:"interface"`
-	Tags             api.SelectedMap `json:"set_tag"`
+	Tag              api.SelectedMap `json:"set_tag"`
 	StartAddress     string          `json:"start_addr"`
 	EndAddress       string          `json:"end_addr"`
 	SubnetMask       string          `json:"subnet_mask"`

@@ -37,7 +37,7 @@ resources:
       - name: HardwareAddresses
         type: SelectedMapList
         key: hwaddr
-      - name: Tagset
+      - name: Tag
         type: SelectedMap
         key: set_tag
       - name: IsIgnored
@@ -95,7 +95,7 @@ resources:
       - name: Interface
         type: SelectedMap
         key: interface
-      - name: Tags
+      - name: Tag
         type: SelectedMap
         key: set_tag
       - name: StartAddress
@@ -169,10 +169,10 @@ resources:
       - name: Interface
         type: SelectedMap
         key: interface
-      - name: Tag
+      - name: TypeSetTags
         type: SelectedMapList
         key: tag
-      - name: TagSet
+      - name: TypeMatchTag
         type: SelectedMap
         key: set_tag
       - name: Value

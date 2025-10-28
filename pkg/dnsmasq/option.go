@@ -19,15 +19,15 @@ var OptionOpts = api.ReqOpts{
 // Data structs
 
 type Option struct {
-	Type        api.SelectedMap     `json:"type"`
-	OptionV4    api.SelectedMap     `json:"option"`
-	OptionV6    api.SelectedMap     `json:"option6"`
-	Interface   api.SelectedMap     `json:"interface"`
-	Tag         api.SelectedMapList `json:"tag"`
-	TagSet      api.SelectedMap     `json:"set_tag"`
-	Value       string              `json:"value"`
-	Force       string              `json:"force"`
-	Description string              `json:"description"`
+	Type         api.SelectedMap     `json:"type"`
+	OptionV4     api.SelectedMap     `json:"option"`
+	OptionV6     api.SelectedMap     `json:"option6"`
+	Interface    api.SelectedMap     `json:"interface"`
+	TypeSetTags  api.SelectedMapList `json:"tag"`
+	TypeMatchTag api.SelectedMap     `json:"set_tag"`
+	Value        string              `json:"value"`
+	Force        string              `json:"force"`
+	Description  string              `json:"description"`
 }
 
 // CRUD operations

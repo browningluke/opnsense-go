@@ -27,7 +27,7 @@ type Host struct {
 	CnameRecords      api.SelectedMapList `json:"cnames"`
 	ClientId          string              `json:"client_id"`
 	HardwareAddresses api.SelectedMapList `json:"hwaddr"`
-	Tagset            api.SelectedMap     `json:"set_tag"`
+	Tag               api.SelectedMap     `json:"set_tag"`
 	IsIgnored         string              `json:"ignore"`
 	Description       string              `json:"descr"`
 	Comments          string              `json:"comments"`
