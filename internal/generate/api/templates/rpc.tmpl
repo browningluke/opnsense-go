@@ -27,7 +27,7 @@ type {{ $key }} struct {
 // {{ $rpcContext.Name }}{{ .Name }} executes the {{ .Name }} RPC call of the {{ $rpcContext.Name }} controller 
 func (c *Controller) {{ $rpcContext.Name }}{{ .Name }}(ctx context.Context
     {{- range .Parameters -}}
-        , {{ .Name }} {{ if .Optional }}*{{ end }}string
+        , {{ .Name }} {{ if .Optional }}*{{ end }}{{ .Type }}
     {{- end -}}
     ) (*{{ .ResultType }},error) {
 

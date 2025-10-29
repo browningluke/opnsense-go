@@ -110,3 +110,265 @@ resources:
       - name: VerifyCN
         type: string
         key: verify
+
+
+rpc:
+  - name: "Settings"
+    filename: settings
+    customTypes:
+      SettingsMonad:
+        - name: Unbound
+          type: Settings
+          key: unbound
+      Settings:
+        - name: General
+          type: General
+          key: general
+        - name: Advanced
+          type: Advanced
+          key: advanced
+        - name: ACLs
+          type: ACLs
+          key: acls
+        - name: DNSBL
+          type: DNSBL
+          key: dnsbl
+        - name: Forwarding
+          type: Forwarding
+          key: forwarding
+      General:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Port
+          type: string
+          key: port
+        - name: Stats
+          type: string
+          key: stats
+        - name: ActiveInterface
+          type: SelectedMapList
+          key: active_interface
+        - name: DNSSEC
+          type: string
+          key: dnssec
+        - name: DNS64
+          type: string
+          key: dns64
+        - name: DNS64Prefix
+          type: string
+          key: dns64prefix
+        - name: NoARecords
+          type: string
+          key: noarecords
+        - name: RegDHCP
+          type: string
+          key: regdhcp
+        - name: RegDHCPDomain
+          type: string
+          key: regdhcpdomain
+        - name: RegDHCPStatic
+          type: string
+          key: regdhcpstatic
+        - name: NoRegLLAddr6
+          type: string
+          key: noreglladdr6
+        - name: NoRegRecords
+          type: string
+          key: noregrecords
+        - name: TXTSupport
+          type: string
+          key: txtsupport
+        - name: CacheFlush
+          type: string
+          key: cacheflush
+        - name: LocalZoneType
+          type: SelectedMap
+          key: local_zone_type
+        - name: OutgoingInterface
+          type: SelectedMapList
+          key: outgoing_interface
+        - name: EnableWPAD
+          type: string
+          key: enable_wpad
+      Advanced:
+        - name: HideIdentity
+          type: string
+          key: hideidentity
+        - name: HideVersion
+          type: string
+          key: hideversion
+        - name: Prefetch
+          type: string
+          key: prefetch
+        - name: PrefetchKey
+          type: string
+          key: prefetchkey
+        - name: DNSSECStripped
+          type: string
+          key: dnssecstripped
+        - name: AggressiveNSEC
+          type: string
+          key: aggressivensec
+        - name: ServeExpired
+          type: string
+          key: serveexpired
+        - name: ServeExpiredReplyTTL
+          type: string
+          key: serveexpiredreplyttl
+        - name: ServeExpiredTTL
+          type: string
+          key: serveexpiredttl
+        - name: ServeExpiredTTLReset
+          type: string
+          key: serveexpiredttlreset
+        - name: ServeExpiredClientTimeout
+          type: string
+          key: serveexpiredclienttimeout
+        - name: QnameMinStrict
+          type: string
+          key: qnameminstrict
+        - name: ExtendedStatistics
+          type: string
+          key: extendedstatistics
+        - name: LogQueries
+          type: string
+          key: logqueries
+        - name: LogReplies
+          type: string
+          key: logreplies
+        - name: LogTagQueryReply
+          type: string
+          key: logtagqueryreply
+        - name: LogServFail
+          type: string
+          key: logservfail
+        - name: LogLocalActions
+          type: string
+          key: loglocalactions
+        - name: LogVerbosity
+          type: SelectedMap
+          key: logverbosity
+        - name: ValLogLevel
+          type: SelectedMap
+          key: valloglevel
+        - name: PrivateDomain
+          type: SelectedMapList
+          key: privatedomain
+        - name: PrivateAddress
+          type: SelectedMapList
+          key: privateaddress
+        - name: InsecureDomain
+          type: SelectedMapList
+          key: insecuredomain
+        - name: MsgCacheSize
+          type: string
+          key: msgcachesize
+        - name: RRSetCacheSize
+          type: string
+          key: rrsetcachesize
+        - name: OutgoingNumTCP
+          type: string
+          key: outgoingnumtcp
+        - name: IncomingNumTCP
+          type: string
+          key: incomingnumtcp
+        - name: NumQueriesPerThread
+          type: string
+          key: numqueriesperthread
+        - name: OutgoingRange
+          type: string
+          key: outgoingrange
+        - name: JostleTimeout
+          type: string
+          key: jostletimeout
+        - name: DiscardTimeout
+          type: string
+          key: discardtimeout
+        - name: CacheMaxTTL
+          type: string
+          key: cachemaxttl
+        - name: CacheMaxNegativeTTL
+          type: string
+          key: cachemaxnegativettl
+        - name: CacheMinTTL
+          type: string
+          key: cacheminttl
+        - name: InfraHostTTL
+          type: string
+          key: infrahostttl
+        - name: InfraKeepProbing
+          type: string
+          key: infrakeepprobing
+        - name: InfraCacheNumHosts
+          type: string
+          key: infracachenumhosts
+        - name: UnwantedReplyThreshold
+          type: string
+          key: unwantedreplythreshold
+      ACLs:
+        - name: DefaultAction
+          type: SelectedMap
+          key: default_action
+      DNSBL:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: SafeSearch
+          type: string
+          key: safesearch
+        - name: Type
+          type: SelectedMapList
+          key: type
+        - name: Lists
+          type: SelectedMapList
+          key: lists
+        - name: Whitelists
+          type: SelectedMapList
+          key: whitelists
+        - name: Blocklists
+          type: SelectedMapList
+          key: blocklists
+        - name: Wildcards
+          type: SelectedMapList
+          key: wildcards
+        - name: Address
+          type: string
+          key: address
+        - name: NXDomain
+          type: string
+          key: nxdomain
+      Forwarding:
+        - name: Enabled
+          type: string
+          key: enabled
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: "Get"
+        method: "GET"
+        endpoint: "/unbound/settings/get"
+        result_type: "SettingsMonad"
+      - name: "Update"
+        method: "POST"
+        endpoint: "/unbound/settings/set"
+        params:
+          - name: "unbound"
+            optional: false
+            bodyParameter: true
+            type: "*Settings"
+        result_type: "Result"
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/unbound/service/reconfigure"
+        result_type: "ActionResult"
+      - name: "ReconfigureGeneral"
+        method: "POST"
+        endpoint: "/unbound/service/reconfigure_general"
+        result_type: "ActionResult"
