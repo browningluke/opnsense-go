@@ -46,7 +46,7 @@ func TestRange(t *testing.T) {
 	}
 	t.Logf("GetRange: %+v", respGet)
 
-	rng.Interface = api.SelectedMap("lan")
+	// rng.Interface = api.SelectedMap("lan")
 	// rng.Tags = api.SelectedMap("d594fa8a-1a76-44e7-afab-adb6c5bdb69e")
 	rng.StartAddress = "192.168.100.200"
 	rng.EndAddress = "192.168.100.250"

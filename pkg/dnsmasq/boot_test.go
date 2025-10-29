@@ -29,7 +29,7 @@ func TestBoot(t *testing.T) {
 	ctx := context.Background()
 
 	boot := &Boot{
-		Interface: api.SelectedMap("lan"),
+		// Interface: api.SelectedMap("lan"),
 		// Tag:           api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee", "d594fa8a-1a76-44e7-afab-adb6c5bdb69e"}),
 		Filename:      "test",
 		Servername:    "test-servername",
@@ -49,7 +49,7 @@ func TestBoot(t *testing.T) {
 	}
 	t.Logf("GetBoot: %+v", respGet)
 
-	boot.Interface = api.SelectedMap("wan")
+	// boot.Interface = api.SelectedMap("wan")
 	// boot.Tag = api.SelectedMapList([]string{"b4b79319-2e09-47ae-85c2-687eb4b6e7ee"})
 	boot.Filename = "test-updated"
 	boot.Servername = "test-servername-updated"
