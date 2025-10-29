@@ -29,7 +29,7 @@ func TestTag(t *testing.T) {
 	ctx := context.Background()
 
 	tag := &Tag{
-		Tag: "1",
+		Tag: "154", //query start time tag
 	}
 
 	respAdd, err := controller.AddTag(ctx, tag)
@@ -44,7 +44,7 @@ func TestTag(t *testing.T) {
 	}
 	t.Logf("GetTag: %+v", respGet)
 
-	tag.Tag = "2"
+	tag.Tag = "155" //query end time tag
 	err = controller.UpdateTag(ctx, respAdd, tag)
 	if err != nil {
 		t.Fatalf("Failed to update tag: %v", err)
