@@ -7,7 +7,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
-var ReservationOpts = api.ReqOpts{
+var ReservationV4Opts = api.ReqOpts{
 	AddEndpoint:         "/kea/dhcpv4/add_reservation",
 	GetEndpoint:         "/kea/dhcpv4/get_reservation",
 	UpdateEndpoint:      "/kea/dhcpv4/set_reservation",
@@ -18,7 +18,7 @@ var ReservationOpts = api.ReqOpts{
 
 // Data structs
 
-type Reservation struct {
+type ReservationV4 struct {
 	Subnet      api.SelectedMap `json:"subnet"`
 	IpAddress   string          `json:"ip_address"`
 	HwAddress   string          `json:"hw_address"`
@@ -28,18 +28,18 @@ type Reservation struct {
 
 // CRUD operations
 
-func (c *Controller) AddReservation(ctx context.Context, resource *Reservation) (string, error) {
-	return api.Add(c.Client(), ctx, ReservationOpts, resource)
+func (c *Controller) AddReservationV4(ctx context.Context, resource *ReservationV4) (string, error) {
+	return api.Add(c.Client(), ctx, ReservationV4Opts, resource)
 }
 
-func (c *Controller) GetReservation(ctx context.Context, id string) (*Reservation, error) {
-	return api.Get(c.Client(), ctx, ReservationOpts, &Reservation{}, id)
+func (c *Controller) GetReservationV4(ctx context.Context, id string) (*ReservationV4, error) {
+	return api.Get(c.Client(), ctx, ReservationV4Opts, &ReservationV4{}, id)
 }
 
-func (c *Controller) UpdateReservation(ctx context.Context, id string, resource *Reservation) error {
-	return api.Update(c.Client(), ctx, ReservationOpts, resource, id)
+func (c *Controller) UpdateReservationV4(ctx context.Context, id string, resource *ReservationV4) error {
+	return api.Update(c.Client(), ctx, ReservationV4Opts, resource, id)
 }
 
-func (c *Controller) DeleteReservation(ctx context.Context, id string) error {
-	return api.Delete(c.Client(), ctx, ReservationOpts, id)
+func (c *Controller) DeleteReservationV4(ctx context.Context, id string) error {
+	return api.Delete(c.Client(), ctx, ReservationV4Opts, id)
 }

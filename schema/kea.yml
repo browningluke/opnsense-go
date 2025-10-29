@@ -2,8 +2,8 @@
 name: kea
 reconfigureEndpoint: "/kea/service/reconfigure"
 resources:
-  - name: Subnet
-    filename: subnet
+  - name: SubnetV4
+    filename: subnetv4
     monad: subnet4
     endpoints:
       add: "/kea/dhcpv4/add_subnet"
@@ -11,7 +11,7 @@ resources:
       update: "/kea/dhcpv4/set_subnet"
       delete: "/kea/dhcpv4/del_subnet"
     attrs:
-      - name: Subnet  
+      - name: Subnet
         type: string
         key: subnet
       - name: NextServer
@@ -27,13 +27,13 @@ resources:
         type: string
         key: option_data_autocollect
       - name: OptionData
-        type: OptionData 
+        type: OptionDataV4
         key: option_data
       - name: Description
         type: string
         key: description
     customTypes: 
-      OptionData:
+      OptionDataV4:
         - name: DomainNameServers
           type: SelectedMapList
           key: domain_name_servers
@@ -61,8 +61,8 @@ resources:
         - name: BootFileName
           type: string
           key: boot_file_name
-  - name: Reservation
-    filename: reservation
+  - name: ReservationV4
+    filename: reservationv4
     monad: reservation
     endpoints:
       add: "/kea/dhcpv4/add_reservation"
@@ -85,8 +85,8 @@ resources:
       - name: Description
         type: string
         key: description
-  - name: Peer
-    filename: peer
+  - name: PeerV4
+    filename: peerv4
     monad: peer
     endpoints:
       add: "/kea/dhcpv4/add_peer"
