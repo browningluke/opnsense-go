@@ -586,6 +586,13 @@ rpc:
         - name: Rows
           type: "[]SearchTagItem"
           key: rows
+  - name: Service
+    filename: service
+    rpc_calls:      
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/dnsmasq/service/reconfigure"
+        result_type: api.ReconfigureStatusResult
   - name: GeneralSettings
     filename: general
     rpc_calls:
