@@ -199,7 +199,7 @@ rpc:
           - name: id
             optional: false
             bodyParameter: false
-        result_type: GetItemPrivilegeWrapper
+        result_type: PrivilegeGetItemWrapper
       # - name: SetItem
       #   endpoint: /auth/priv/set_item
       #   method: POST
@@ -209,7 +209,7 @@ rpc:
       #       bodyParameter: false
       #   result_type: SetItemPrivilegeWrapper
     customTypes:
-      GetItemPrivilege:
+      PrivilegeGetItem:
         - name: Id
           type: string
           key: id
@@ -219,9 +219,9 @@ rpc:
         - name: Groups
           type: SelectedMapList
           key: groups
-      GetItemPrivilegeWrapper:
+      PrivilegeGetItemWrapper:
         - name: Item
-          type: GetItemPrivilege
+          type: PrivilegeGetItem
           key: priv
       # SetItemPrivilege:
       #   - name: Users

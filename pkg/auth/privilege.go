@@ -10,18 +10,27 @@ import (
 
 // Data structs
 
-type GetItemPrivilege struct {
+type PrivilegeGetItem struct {
 	Id     string              `json:"id"`
 	Users  api.SelectedMapList `json:"users"`
 	Groups api.SelectedMapList `json:"groups"`
 }
 
-type GetItemPrivilegeWrapper struct {
-	Item GetItemPrivilege `json:"priv"`
+type PrivilegeGetItemWrapper struct {
+	Item PrivilegeGetItem `json:"priv"`
+}
+
+type PrivilegeSetItem struct {
+	Users  string `json:"users"`
+	Groups string `json:"groups"`
+}
+
+type PrivilegeSetItemWrapper struct {
+	Item PrivilegeSetItem `json:"priv"`
 }
 
 // PrivilegeGetItem executes the GetItem RPC call of the Privilege controller
-func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*GetItemPrivilegeWrapper, error) {
+func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*PrivilegeGetItemWrapper, error) {
 
 	callParams := []string{}
 	bodyParams := make(map[string]interface{})
@@ -35,7 +44,7 @@ func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*GetItemP
 		BodyParameters: bodyParams,
 	}
 
-	resultData := &GetItemPrivilegeWrapper{}
+	resultData := &PrivilegeGetItemWrapper{}
 	result, err := api.Call(c.Client(), ctx, callOpts, resultData)
 	if err != nil {
 		return nil, fmt.Errorf("GetItem call failed: %w", err)

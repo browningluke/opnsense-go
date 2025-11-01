@@ -30,7 +30,7 @@ func TestPrivileges(t *testing.T) {
 
 	respItem, err := controller.PrivilegeGetItem(ctx, "page-all")
 	if err != nil {
-		t.Fatalf("Failed to get privilege item: %v", err)
+		t.Fatalf("Failed to get privilege item: %+v", err)
 	}
 	t.Logf("Result: %+v", respItem)
 }
