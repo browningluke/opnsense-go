@@ -56,7 +56,7 @@ func TestUser(t *testing.T) {
 	user.Name = "test-username"
 	user.Disabled = "1"
 	user.Shell = api.SelectedMap("/bin/csh")
-	user.Priviledge = api.SelectedMapList([]string{"page-diagnostics-authentication"})
+	user.Privilege = api.SelectedMapList([]string{"page-diagnostics-authentication"})
 	user.GroupMemberships = api.SelectedMapList([]string{"1999"})
 	user.OtpSeed = "Z2A3Y4EERVKCG24W6Q3VQUUKTK7HZFVM"
 	user.AuthorizedKeys = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINYqRfv6UauTujjdiwZAUALv38Z0OXII20h9q6KdvbyZ mike@mike-desktop-pc"

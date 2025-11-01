@@ -4,6 +4,7 @@ package auth
 
 import (
 	"context"
+
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
@@ -34,7 +35,7 @@ type User struct {
 	Comment           string              `json:"comment"`
 	Email             string              `json:"email"`
 	ApiKeys           string              `json:"apikeys"`
-	Priviledge        api.SelectedMapList `json:"priv"`
+	Privilege         api.SelectedMapList `json:"priv"`
 	Language          api.SelectedMap     `json:"language"`
 	GroupMemberships  api.SelectedMapList `json:"group_memberships"`
 	Fullname          string              `json:"descr"`

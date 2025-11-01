@@ -31,7 +31,7 @@ func TestGroup(t *testing.T) {
 	group := &Group{
 		Name:        "test-group",
 		Description: "test group description",
-		Priviledge:  api.SelectedMapList([]string{"page-diagnostics-authentication", "page-diagnostics-backup-restore"}),
+		Privilege:   api.SelectedMapList([]string{"page-diagnostics-authentication", "page-diagnostics-backup-restore"}),
 	}
 
 	key, err := controller.AddGroup(ctx, group)
@@ -53,7 +53,7 @@ func TestGroup(t *testing.T) {
 	}
 
 	group.Name = "test-group-updated"
-	group.Priviledge = api.SelectedMapList([]string{"page-diagnostics-authentication"})
+	group.Privilege = api.SelectedMapList([]string{"page-diagnostics-authentication"})
 	group.Member = api.SelectedMap("0")
 	err = controller.UpdateGroup(ctx, key, group)
 	if err != nil {
@@ -68,8 +68,8 @@ func TestGroup(t *testing.T) {
 	if retrievedGroup.Name != group.Name {
 		t.Fatalf("Retrieved group name does not match updated name: got %s, want %s", retrievedGroup.Name, group.Name)
 	}
-	if retrievedGroup.Priviledge.String() != group.Priviledge.String() {
-		t.Fatalf("Retrieved group priviledges does not match updated priviledges: got %s, want %s", retrievedGroup.Priviledge.String(), group.Priviledge.String())
+	if retrievedGroup.Privilege.String() != group.Privilege.String() {
+		t.Fatalf("Retrieved group privileges does not match updated privileges: got %s, want %s", retrievedGroup.Privilege.String(), group.Privilege.String())
 	}
 
 	err = controller.DeleteGroup(ctx, key)

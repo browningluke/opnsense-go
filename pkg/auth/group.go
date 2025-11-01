@@ -23,7 +23,7 @@ type Group struct {
 	Name           string              `json:"name"`
 	Scope          string              `json:"scope,omitempty"`
 	Description    string              `json:"description"`
-	Priviledge     api.SelectedMapList `json:"priv"`
+	Privilege      api.SelectedMapList `json:"priv"`
 	Member         api.SelectedMap     `json:"member"`
 	SourceNetworks api.SelectedMap     `json:"source_networks"`
 }

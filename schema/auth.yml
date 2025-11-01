@@ -27,7 +27,7 @@ resources:
       - name: Description
         type: string
         key: description
-      - name: Priviledge
+      - name: Privilege
         type: SelectedMapList
         key: priv
       - name: Member
@@ -95,7 +95,7 @@ resources:
       - name: ApiKeys
         type: string
         key: apikeys
-      - name: Priviledge
+      - name: Privilege
         type: SelectedMapList
         key: priv
       - name: Language
