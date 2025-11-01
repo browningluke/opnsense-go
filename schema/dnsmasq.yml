@@ -1,0 +1,720 @@
+---
+name: dnsmasq
+filename: dnsmasq
+reconfigureEndpoint: "/dnsmasq/service/reconfigure"
+resources:
+  - name: Host
+    filename: host
+    monad: host
+    endpoints:
+      add: "/dnsmasq/settings/add_host"
+      get: "/dnsmasq/settings/get_host"
+      update: "/dnsmasq/settings/set_host"
+      delete: "/dnsmasq/settings/del_host"
+      # reconfigure: "null"
+    attrs:
+      - name: Hostname
+        type: string
+        key: host
+      - name: Domain
+        type: string
+        key: domain
+      - name: IsLocalDomain
+        type: string
+        key: local
+      - name: IpAddresses
+        type: SelectedMapList
+        key: ip
+      - name: AliasRecords
+        type: SelectedMapList
+        key: aliases
+      - name: CnameRecords
+        type: SelectedMapList
+        key: cnames
+      - name: ClientId
+        type: string
+        key: client_id
+      - name: HardwareAddresses
+        type: SelectedMapList
+        key: hwaddr
+      - name: Tag
+        type: SelectedMap
+        key: set_tag
+      - name: IsIgnored
+        type: string
+        key: ignore
+      - name: Description
+        type: string
+        key: descr
+      - name: Comments
+        type: string
+        key: comments
+
+  - name: Domain
+    filename: domain
+    monad: domainoverride
+    endpoints:
+      add: "/dnsmasq/settings/add_domain"
+      get: "/dnsmasq/settings/get_domain"
+      update: "/dnsmasq/settings/set_domain"
+      delete: "/dnsmasq/settings/del_domain"
+      # reconfigure: "null"
+    attrs:
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: Domain
+        type: string
+        key: domain
+      - name: FirewallAlias
+        type: SelectedMap
+        key: ipset
+      - name: SourceIp
+        type: string
+        key: srcip
+      - name: Port
+        type: string
+        key: port
+      - name: Ip
+        type: string
+        key: ip
+      - name: Description
+        type: string
+        key: descr
+
+  - name: Range
+    filename: range
+    monad: range
+    endpoints:
+      add: "/dnsmasq/settings/add_range"
+      get: "/dnsmasq/settings/get_range"
+      update: "/dnsmasq/settings/set_range"
+      delete: "/dnsmasq/settings/del_range"
+      # reconfigure: "null"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Tag
+        type: SelectedMap
+        key: set_tag
+      - name: StartAddress
+        type: string
+        key: start_addr
+      - name: EndAddress
+        type: string
+        key: end_addr
+      - name: SubnetMask
+        type: string
+        key: subnet_mask
+      - name: Constructor
+        type: SelectedMap
+        key: constructor
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: PrefixLength
+        type: string
+        key: prefix_len
+      - name: LeaseTime
+        type: string
+        key: lease_time
+      - name: DomainType
+        type: SelectedMap
+        key: domain_type
+      - name: Domain
+        type: string
+        key: domain
+      - name: DisableHASync
+        type: string
+        key: nosync
+      - name: RaMode
+        type: SelectedMap
+        key: ra_mode
+      - name: RaPriority
+        type: SelectedMap
+        key: ra_priority
+      - name: RaMTU
+        type: string
+        key: ra_mtu
+      - name: RaInterval
+        type: string
+        key: ra_interval
+      - name: RaRouterLifetime
+        type: string
+        key: ra_router_lifetime
+      - name: Description
+        type: string
+        key: description
+
+  - name: Option
+    filename: option
+    monad: option
+    endpoints:
+      add: "/dnsmasq/settings/add_option"
+      get: "/dnsmasq/settings/get_option"
+      update: "/dnsmasq/settings/set_option"
+      delete: "/dnsmasq/settings/del_option"
+      # reconfigure: "null"
+    attrs:
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: OptionV4
+        type: SelectedMap
+        key: option
+      - name: OptionV6
+        type: SelectedMap
+        key: option6
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: TypeSetTags
+        type: SelectedMapList
+        key: tag
+      - name: TypeMatchTag
+        type: SelectedMap
+        key: set_tag
+      - name: Value
+        type: string
+        key: value
+      - name: Force
+        type: string
+        key: force
+      - name: Description
+        type: string
+        key: description
+
+  - name: Boot
+    filename: boot
+    monad: boot
+    endpoints:
+      add: "/dnsmasq/settings/add_boot"
+      get: "/dnsmasq/settings/get_boot"
+      update: "/dnsmasq/settings/set_boot"
+      delete: "/dnsmasq/settings/del_boot"
+      # reconfigure: "null"
+    attrs:
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Tag
+        type: SelectedMapList
+        key: tag
+      - name: Filename
+        type: string
+        key: filename
+      - name: Servername
+        type: string
+        key: servername
+      - name: ServerAddress
+        type: string
+        key: address
+      - name: Description
+        type: string
+        key: description
+
+  - name: Tag
+    filename: tag
+    monad: tag
+    endpoints:
+      add: "/dnsmasq/settings/add_tag"
+      get: "/dnsmasq/settings/get_tag"
+      update: "/dnsmasq/settings/set_tag"
+      delete: "/dnsmasq/settings/del_tag"
+      # reconfigure: "null"
+    attrs:     
+      - name: Tag
+        type: string
+        key: tag
+
+rpc:
+  - name: Search
+    filename: search
+    rpc_calls:
+      - name: Host
+        endpoint: /dnsmasq/settings/search_host
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchHostResponse
+      - name: Domain
+        endpoint: /dnsmasq/settings/search_domain
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchDomainResponse
+      - name: Range
+        endpoint: /dnsmasq/settings/search_range
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchRangeResponse
+      - name: Option
+        endpoint: /dnsmasq/settings/search_option
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchOptionResponse
+      - name: Boot
+        endpoint: /dnsmasq/settings/search_boot
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchBootResponse
+      - name: Tag
+        endpoint: /dnsmasq/settings/search_tag
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchTagResponse
+    customTypes:
+      SearchHostItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Hostname
+          type: string
+          key: host
+        - name: Domain
+          type: string
+          key: domain
+        - name: IsLocal
+          type: string
+          key: local
+        - name: IpAddresses
+          type: string
+          key: ip
+        - name: AliasRecords
+          type: string
+          key: aliases
+        - name: CnameRecords
+          type: string
+          key: cnames
+        - name: ClientId
+          type: string
+          key: client_id
+        - name: HardwareAddresses
+          type: string
+          key: hwaddr
+        - name: LeaseTime
+          type: string
+          key: lease_time
+        - name: TagId
+          type: string
+          key: set_tag
+        - name: Tag
+          type: string
+          key: "%set_tag"
+        - name: IsIgnored
+          type: string
+          key: ignore
+        - name: Description
+          type: string
+          key: descr
+        - name: Comments
+          type: string
+          key: comments
+      SearchHostResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchHostItem"
+          key: rows
+
+      SearchDomainItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Sequence
+          type: string
+          key: sequence
+        - name: Domain
+          type: string
+          key: domain
+        - name: FirewallAliasId
+          type: string
+          key: ipset
+        - name: FirewallAlias
+          type: string
+          key: "%ipset"
+        - name: IP
+          type: string
+          key: ip
+        - name: Port
+          type: string
+          key: port
+        - name: SourceIp
+          type: string
+          key: srcip
+        - name: Description
+          type: string
+          key: descr
+      SearchDomainResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchDomainItem"
+          key: rows
+
+      SearchRangeItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: Tags
+          type: string
+          key: set_tag
+        - name: StartAddress
+          type: string
+          key: start_addr
+        - name: EndAddress
+          type: string
+          key: end_addr
+        - name: SubnetMask
+          type: string
+          key: subnet_mask
+        - name: ConstructorId
+          type: string
+          key: constructor
+        - name: Constructor
+          type: string
+          key: "%constructor"
+        - name: Mode
+          type: string
+          key: mode
+        - name: IPv6PrefixLength
+          type: string
+          key: prefix_len
+        - name: LeaseTime
+          type: string
+          key: lease_time
+        - name: DomainTypeId
+          type: string
+          key: domain_type
+        - name: DomainType
+          type: string
+          key: "%domain_type"
+        - name: Domain
+          type: string
+          key: domain
+        - name: DisableHASync
+          type: string
+          key: nosync
+        - name: Description
+          type: string
+          key: description
+        - name: RaPriorityId
+          type: string
+          key: ra_priority
+        - name: RaPriority
+          type: string
+          key: "%ra_priority"
+        - name: RaMTU
+          type: string
+          key: ra_mtu
+        - name: RaInterval
+          type: string
+          key: ra_interval
+        - name: RaRouterLifetime
+          type: string
+          key: ra_router_lifetime
+      SearchRangeResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchRangeItem"
+          key: rows
+
+      SearchOptionItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: TypeId
+          type: string
+          key: type
+        - name: Type
+          type: string
+          key: "%type"
+        - name: OptionV4Id
+          type: string
+          key: option
+        - name: OptionV4
+          type: string
+          key: "%option"
+        - name: OptionV6Id
+          type: string
+          key: option6
+        - name: OptionV6
+          type: string
+          key: "%option6"
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: TagIds
+          type: string
+          key: tag
+        - name: Tags
+          type: string
+          key: "%tag"
+        - name: Tag
+          type: string
+          key: set_tag
+        - name: Value
+          type: string
+          key: value
+        - name: Force
+          type: string
+          key: force
+        - name: Description
+          type: string
+          key: description
+      SearchOptionResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchOptionItem"
+          key: rows
+
+      SearchBootItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: InterfaceId
+          type: string
+          key: interface
+        - name: Interface
+          type: string
+          key: "%interface"
+        - name: TagIds
+          type: string
+          key: tag
+        - name: Tags
+          type: string
+          key: "%tag"
+        - name: Filename
+          type: string
+          key: filename
+        - name: Servername
+          type: string
+          key: servername
+        - name: ServerAddress
+          type: string
+          key: address
+        - name: Description
+          type: string
+          key: description
+      SearchBootResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchBootItem"
+          key: rows
+
+      SearchTagItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Tag
+          type: string
+          key: tag
+      SearchTagResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchTagItem"
+          key: rows
+  - name: Service
+    filename: service
+    rpc_calls:      
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/dnsmasq/service/reconfigure"
+        result_type: api.ReconfigureStatusResult
+  - name: GeneralSettings
+    filename: general
+    rpc_calls:
+      - name: Get
+        endpoint: /dnsmasq/settings/get
+        method: GET
+        result_type: GeneralSettingsWrapper
+      - name: Set
+        endpoint: /dnsmasq/settings/set
+        method: POST
+        params:
+          - name: dnsmasq
+            optional: true
+            bodyParameter: false
+            customType: GeneralSettings
+        result_type: api.ActionResult
+    customTypes:
+      GeneralSettingsWrapper:
+      - name: Dnsmasq
+        type: GeneralSettings
+        key: dnsmasq
+
+      GeneralSettings:
+      - name: IsEnabled
+        type: string
+        key: enable
+      - name: Interface
+        type: SelectedMapList
+        key: interface
+      - name: StrictInterfaceBinding
+        type: string
+        key: strictbind
+
+      - name: DNS_Port
+        type: string
+        key: port
+      - name: DNS_DNSSEC
+        type: string
+        key: dnssec
+      - name: DNS_NoHostLookup
+        type: string
+        key: no_hosts
+      - name: DNS_LogDnsQueries
+        type: string
+        key: log_queries
+      - name: DNS_MaxConcurrentQueries
+        type: string
+        key: dns_forward_max
+      - name: DNS_CacheSize
+        type: string
+        key: cache_size
+      - name: DNS_LocalEntryTTL
+        type: string
+        key: local_ttl
+      - name: DNS_NoIdent
+        type: string
+        key: no_ident
+
+      - name: DNS_QF_QuerySequentially
+        type: string
+        key: strict_order
+      - name: DNS_QF_RequireDomain
+        type: string
+        key: domain_needed
+      - name: DNS_QF_DoNotForwardSystemDNS
+        type: string
+        key: no_resolv
+      - name: DNS_QF_DoNotForwardPrivateReverseLookup
+        type: string
+        key: no_private_reverse
+      - name: DNS_QF_AddMac
+        type: SelectedMap
+        key: add_mac
+      - name: DNS_QF_AddSubnet
+        type: string
+        key: add_subnet
+      - name: DNS_QF_StripSubnet
+        type: string
+        key: strip_subnet
+
+      - name: DHCPSettings
+        type: GeneralDHCPSettings
+        key: dhcp
+
+      - name: Legacy_RegisterISCDhcp4Leases
+        type: string
+        key: regdhcp
+      - name: Legacy_DhcpDomainOverride
+        type: string
+        key: regdhcpdomain
+      - name: Legacy_RegisterDhcpStaticMappings
+        type: string
+        key: regdhcpstatic
+      - name: Legacy_PreferDhcp
+        type: string
+        key: dhcpfirst
+
+      GeneralDHCPSettings:
+      - name: InterfaceNoDhcp
+        type: SelectedMapList
+        key: no_interface
+      - name: FQDN
+        type: string
+        key: fqdn
+      - name: DefaultDomain
+        type: string
+        key: domain
+      - name: MaxLeases
+        type: string
+        key: lease_max
+      - name: Authoritative
+        type: string
+        key: authoritative
+      - name: ReplyDelay
+        type: string
+        key: reply_delay
+      - name: RegisterFirewallRules
+        type: string
+        key: default_fw_rules
+      - name: RouterAdvertisements
+        type: string
+        key: enable_ra
+      - name: DisableHASync
+        type: string
+        key: nosync
