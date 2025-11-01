@@ -20,15 +20,6 @@ type PrivilegeGetItemWrapper struct {
 	Item PrivilegeGetItem `json:"priv"`
 }
 
-type PrivilegeSetItem struct {
-	Users  string `json:"users"`
-	Groups string `json:"groups"`
-}
-
-type PrivilegeSetItemWrapper struct {
-	Item PrivilegeSetItem `json:"priv"`
-}
-
 // PrivilegeGetItem executes the GetItem RPC call of the Privilege controller
 func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*PrivilegeGetItemWrapper, error) {
 

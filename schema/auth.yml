@@ -207,7 +207,11 @@ rpc:
       #     - name: id
       #       optional: false
       #       bodyParameter: false
-      #   result_type: SetItemPrivilegeWrapper
+      #     - name: priv
+      #       optional: false
+      #       bodyParameter: true
+      #       customType: PrivilegeSetItem
+      #   result_type: api.ActionResult
     customTypes:
       PrivilegeGetItem:
         - name: Id
@@ -223,17 +227,17 @@ rpc:
         - name: Item
           type: PrivilegeGetItem
           key: priv
-      # SetItemPrivilege:
+      # PrivilegeSetItem:
       #   - name: Users
       #     type: string
       #     key: users
       #   - name: Groups
       #     type: string
       #     key: groups
-      # SetItemPrivilegeWrapper:
-      #   - name: Item
-      #     type: SetItemPrivilege
-      #     key: priv
+      # PrivilegeSetItemWrapper:
+        # - name: Item
+        #   type: PrivilegeSetItem
+        #   key: priv
 
   - name: Privilege
     filename: privilege_search

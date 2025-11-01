@@ -33,4 +33,19 @@ func TestPrivileges(t *testing.T) {
 		t.Fatalf("Failed to get privilege item: %+v", err)
 	}
 	t.Logf("Result: %+v", respItem)
+
+	// groupId := respItem.Item.Groups.String()
+	// t.Logf("groupId: %+v", groupId)
+	// item := PrivilegeSetItem{
+	// 	Groups: groupId,
+	// 	Users:  "",
+	// }
+	// respSet, err := controller.PrivilegeSetItem(ctx, "page-diagnostics-arptable", item)
+	// if err != nil {
+	// 	t.Fatalf("Failed to set privilege item: %+v", err)
+	// }
+	// if respSet.Result != "saved" {
+	// 	t.Fatalf("Failed to set privilege item")
+	// }
+	// t.Logf("PrivilegeSetItem: %+v", respSet)
 }
