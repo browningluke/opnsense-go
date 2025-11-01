@@ -8,6 +8,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
+	"github.com/browningluke/opnsense-go/pkg/dnsmasq"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
@@ -24,6 +25,7 @@ type Client interface {
 	Bind() *bind.Controller
 	Core() *core.Controller
 	Diagnostics() *diagnostics.Controller
+	Dnsmasq() *dnsmasq.Controller
 	Firewall() *firewall.Controller
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
@@ -57,6 +59,10 @@ func (c *client) Core() *core.Controller {
 
 func (c *client) Diagnostics() *diagnostics.Controller {
 	return &diagnostics.Controller{Api: c.a}
+}
+
+func (c *client) Dnsmasq() *dnsmasq.Controller {
+	return &dnsmasq.Controller{Api: c.a}
 }
 
 func (c *client) Firewall() *firewall.Controller {

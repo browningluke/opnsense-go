@@ -66,3 +66,7 @@ func (p *RPCOpts) Body() (string, error) {
 type ActionResult struct {
 	Result string `json:"result"`
 }
+
+type ReconfigureStatusResult struct {
+	Status string `json:"status"`
+}
