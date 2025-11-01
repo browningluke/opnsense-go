@@ -20,6 +20,15 @@ type PrivilegeGetItemWrapper struct {
 	Item PrivilegeGetItem `json:"priv"`
 }
 
+type PrivilegeSetItem struct {
+	Users  string `json:"users"`
+	Groups string `json:"groups"`
+}
+
+type PrivilegeSetItemWrapper struct {
+	Item PrivilegeSetItem `json:"priv"`
+}
+
 // PrivilegeGetItem executes the GetItem RPC call of the Privilege controller
 func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*PrivilegeGetItemWrapper, error) {
 
@@ -39,6 +48,31 @@ func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*Privileg
 	result, err := api.Call(c.Client(), ctx, callOpts, resultData)
 	if err != nil {
 		return nil, fmt.Errorf("GetItem call failed: %w", err)
+	}
+	return result, nil
+}
+
+// PrivilegeSetItem executes the SetItem RPC call of the Privilege controller
+func (c *Controller) PrivilegeSetItem(ctx context.Context, id string, priv *PrivilegeSetItem) (*api.ActionResult, error) {
+
+	callParams := []string{}
+	bodyParams := make(map[string]interface{})
+
+	callParams = append(callParams, id)
+
+	bodyParams["priv"] = priv
+
+	callOpts := api.RPCOpts{
+		BaseEndpoint:   "/auth/priv/set_item",
+		Method:         "POST",
+		PathParameters: callParams,
+		BodyParameters: bodyParams,
+	}
+
+	resultData := &api.ActionResult{}
+	result, err := api.Call(c.Client(), ctx, callOpts, resultData)
+	if err != nil {
+		return nil, fmt.Errorf("SetItem call failed: %w", err)
 	}
 	return result, nil
 }

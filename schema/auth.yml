@@ -200,18 +200,18 @@ rpc:
             optional: false
             bodyParameter: false
         result_type: PrivilegeGetItemWrapper
-      # - name: SetItem
-      #   endpoint: /auth/priv/set_item
-      #   method: POST
-      #   params:
-      #     - name: id
-      #       optional: false
-      #       bodyParameter: false
-      #     - name: priv
-      #       optional: false
-      #       bodyParameter: true
-      #       customType: PrivilegeSetItem
-      #   result_type: api.ActionResult
+      - name: SetItem
+        endpoint: /auth/priv/set_item
+        method: POST
+        params:
+          - name: id
+            optional: false
+            bodyParameter: false
+          - name: priv
+            optional: false
+            bodyParameter: true
+            customType: PrivilegeSetItem
+        result_type: api.ActionResult
     customTypes:
       PrivilegeGetItem:
         - name: Id
@@ -227,17 +227,17 @@ rpc:
         - name: Item
           type: PrivilegeGetItem
           key: priv
-      # PrivilegeSetItem:
-      #   - name: Users
-      #     type: string
-      #     key: users
-      #   - name: Groups
-      #     type: string
-      #     key: groups
-      # PrivilegeSetItemWrapper:
-        # - name: Item
-        #   type: PrivilegeSetItem
-        #   key: priv
+      PrivilegeSetItem:
+        - name: Users
+          type: string
+          key: users
+        - name: Groups
+          type: string
+          key: groups
+      PrivilegeSetItemWrapper:
+        - name: Item
+          type: PrivilegeSetItem
+          key: priv
 
   - name: Privilege
     filename: privilege_search
