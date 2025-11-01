@@ -690,26 +690,6 @@ rpc:
         type: string
         key: dhcpfirst
 
-      # - name: Hosts
-      #   type: map[string]Host
-      #   key: hosts
-      # - name: Domains
-      #   type: "*map[string]Domain"
-      #   key: domainoverrides
-      #   omitEmpty: true
-      # - name: DHCPTags
-      #   type: map[string]Tag
-      #   key: dhcp_tags
-      # - name: DHCPRanges
-      #   type: map[string]Range
-      #   key: dhcp_ranges
-      # - name: DHCPOptions
-      #   type: map[string]*Option
-      #   key: dhcp_options
-      # - name: DHCPBoots
-      #   type: map[string]*Boot
-      #   key: dhcp_boot
-
       GeneralDHCPSettings:
       - name: InterfaceNoDhcp
         type: SelectedMapList
