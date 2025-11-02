@@ -2,8 +2,8 @@
 name: kea
 reconfigureEndpoint: "/kea/service/reconfigure"
 resources:
-  - name: Subnet
-    filename: subnet
+  - name: SubnetV4
+    filename: subnetv4
     monad: subnet4
     endpoints:
       add: "/kea/dhcpv4/add_subnet"
@@ -11,7 +11,7 @@ resources:
       update: "/kea/dhcpv4/set_subnet"
       delete: "/kea/dhcpv4/del_subnet"
     attrs:
-      - name: Subnet  
+      - name: Subnet
         type: string
         key: subnet
       - name: NextServer
@@ -27,13 +27,13 @@ resources:
         type: string
         key: option_data_autocollect
       - name: OptionData
-        type: OptionData 
+        type: OptionDataV4
         key: option_data
       - name: Description
         type: string
         key: description
     customTypes: 
-      OptionData:
+      OptionDataV4:
         - name: DomainNameServers
           type: SelectedMapList
           key: domain_name_servers
@@ -61,8 +61,8 @@ resources:
         - name: BootFileName
           type: string
           key: boot_file_name
-  - name: Reservation
-    filename: reservation
+  - name: ReservationV4
+    filename: reservationv4
     monad: reservation
     endpoints:
       add: "/kea/dhcpv4/add_reservation"
@@ -85,8 +85,8 @@ resources:
       - name: Description
         type: string
         key: description
-  - name: Peer
-    filename: peer
+  - name: PeerV4
+    filename: peerv4
     monad: peer
     endpoints:
       add: "/kea/dhcpv4/add_peer"
@@ -103,3 +103,111 @@ resources:
       - name: Role
         type: SelectedMap
         key: role
+
+  - name: SubnetV6
+    filename: subnetv6
+    monad: subnet6
+    endpoints:
+      add: "/kea/dhcpv6/add_subnet"
+      get: "/kea/dhcpv6/get_subnet"
+      update: "/kea/dhcpv6/set_subnet"
+      delete: "/kea/dhcpv6/del_subnet"
+    attrs:
+      - name: Subnet
+        type: string
+        key: subnet
+      - name: Allocator
+        type: SelectedMap
+        key: allocator
+      - name: PDAllocator
+        type: SelectedMap
+        key: pd-allocator
+      - name: Pools
+        type: string
+        key: pools
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: OptionData
+        type: OptionDataV6
+        key: option_data
+      - name: Description
+        type: string
+        key: description
+    customTypes:
+      OptionDataV6:
+        - name: DomainNameServers
+          type: SelectedMapList
+          key: dns_servers
+        - name: DomainSearch
+          type: SelectedMapList
+          key: domain_search
+  - name: ReservationV6
+    filename: reservationv6
+    monad: reservation
+    endpoints:
+      add: "/kea/dhcpv6/add_reservation"
+      get: "/kea/dhcpv6/get_reservation"
+      update: "/kea/dhcpv6/set_reservation"
+      delete: "/kea/dhcpv6/del_reservation"
+    attrs:
+      - name: Subnet
+        type: SelectedMap
+        key: subnet
+      - name: IpAddress
+        type: string
+        key: ip_address
+      - name: DUID
+        type: string
+        key: duid
+      - name: Hostname
+        type: string
+        key: hostname
+      - name: DomainSearch
+        type: SelectedMapList
+        key: domain_search
+      - name: Description
+        type: string
+        key: description
+  - name: PeerV6
+    filename: peerv6
+    monad: peer
+    endpoints:
+      add: "/kea/dhcpv6/add_peer"
+      get: "/kea/dhcpv6/get_peer"
+      update: "/kea/dhcpv6/set_peer"
+      delete: "/kea/dhcpv6/del_peer"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Url
+        type: string
+        key: url
+      - name: Role
+        type: SelectedMap
+        key: role
+  - name: PDPool
+    filename: pd_pool
+    monad: pd_pool
+    endpoints:
+      add: "/kea/dhcpv6/add_pd_pool"
+      get: "/kea/dhcpv6/get_pd_pool"
+      update: "/kea/dhcpv6/set_pd_pool"
+      delete: "/kea/dhcpv6/del_pd_pool"
+    attrs:
+      - name: Subnet
+        type: SelectedMap
+        key: subnet
+      - name: Prefix
+        type: string
+        key: prefix
+      - name: PrefixLen
+        type: string
+        key: prefix_len
+      - name: DelegatedLen
+        type: string
+        key: delegated_len
+      - name: Description
+        type: string
+        key: description
