@@ -43,7 +43,7 @@ resources:
         type: string
         key: domain
       - name: Type
-        type: SelectedMap
+        type: string
         key: rr
       - name: Server
         type: string
@@ -110,3 +110,145 @@ resources:
       - name: VerifyCN
         type: string
         key: verify
+
+rpc:
+  - name: Search
+    filename: search
+    rpc_calls:
+      - name: HostOverride
+        endpoint: /unbound/settings/search_host_override
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchHostOverrideResponse
+
+      - name: HostAlias
+        endpoint: /unbound/settings/search_host_alias
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchHostAliasResponse
+
+      - name: Forward
+        endpoint: /unbound/settings/search_forward
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchForwardResponse
+    customTypes:
+      SearchHostOverrideItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Hostname
+          type: string
+          key: hostname
+        - name: Domain
+          type: string
+          key: domain
+        - name: Type
+          type: string
+          key: rr
+        - name: Server
+          type: string
+          key: server
+        - name: MXPriority
+          type: string
+          key: mxprio
+        - name: MXDomain
+          type: string
+          key: mx
+        - name: Description
+          type: string
+          key: description
+      SearchHostOverrideResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchHostOverrideItem"
+          key: rows
+
+      SearchHostAliasItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Host
+          type: SelectedMap
+          key: host
+        - name: Hostname
+          type: string
+          key: hostname
+        - name: Domain
+          type: string
+          key: domain
+        - name: Description
+          type: string
+          key: description
+      SearchHostAliasResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchHostAliasItem"
+          key: rows
+
+      SearchForwardItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Domain
+          type: string
+          key: domain
+        - name: Type
+          type: SelectedMap
+          key: type
+        - name: Server
+          type: string
+          key: server
+        - name: Port
+          type: string
+          key: port
+        - name: VerifyCN
+          type: string
+          key: verify
+      SearchForwardResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchForwardItem"
+          key: rows

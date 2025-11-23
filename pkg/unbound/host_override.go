@@ -19,14 +19,14 @@ var HostOverrideOpts = api.ReqOpts{
 // Data structs
 
 type HostOverride struct {
-	Enabled     string          `json:"enabled"`
-	Hostname    string          `json:"hostname"`
-	Domain      string          `json:"domain"`
-	Type        api.SelectedMap `json:"rr"`
-	Server      string          `json:"server"`
-	MXPriority  string          `json:"mxprio"`
-	MXDomain    string          `json:"mx"`
-	Description string          `json:"description"`
+	Enabled     string `json:"enabled"`
+	Hostname    string `json:"hostname"`
+	Domain      string `json:"domain"`
+	Type        string `json:"rr"`
+	Server      string `json:"server"`
+	MXPriority  string `json:"mxprio"`
+	MXDomain    string `json:"mx"`
+	Description string `json:"description"`
 }
 
 // CRUD operations
