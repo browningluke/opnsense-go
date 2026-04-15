@@ -1,0 +1,79 @@
+---
+name: dyndns
+reconfigureEndpoint: "/dyndns/service/reconfigure"
+resources:
+  - name: Account
+    filename: account
+    monad: account
+    endpoints:
+      add: "/dyndns/accounts/add_item"
+      get: "/dyndns/accounts/get_item"
+      update: "/dyndns/accounts/set_item"
+      delete: "/dyndns/accounts/del_item"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Service
+        type: SelectedMap
+        key: service
+      - name: Protocol
+        type: SelectedMap
+        key: protocol
+      - name: Server
+        type: string
+        key: server
+      - name: Username
+        type: string
+        key: username
+      - name: Password
+        type: string
+        key: password
+      - name: ResourceId
+        type: string
+        key: resourceId
+      - name: Hostnames
+        type: SelectedMapList
+        key: hostnames
+      - name: Wildcard
+        type: string
+        key: wildcard
+      - name: Zone
+        type: string
+        key: zone
+      - name: Checkip
+        type: SelectedMap
+        key: checkip
+      - name: DynIpv6Host
+        type: string
+        key: dynipv6host
+      - name: CheckipTimeout
+        type: string
+        key: checkip_timeout
+      - name: ForceSsl
+        type: string
+        key: force_ssl
+      - name: Ttl
+        type: string
+        key: ttl
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Description
+        type: string
+        key: description
+      - name: CurrentIp
+        type: string
+        key: current_ip
+      - name: CurrentMtime
+        type: string
+        key: current_mtime
+
+rpc:
+  - name: Service
+    filename: service
+    rpc_calls:
+      - name: Reconfigure
+        method: POST
+        endpoint: /dyndns/service/reconfigure
+        result_type: api.ReconfigureStatusResult
