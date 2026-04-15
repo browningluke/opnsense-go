@@ -1,0 +1,278 @@
+---
+name: auth
+filename: auth
+reconfigureEndpoint: ""
+resources:
+  - name: Group
+    filename: group
+    monad: group
+    ReconfigureEndpointVariable: ""
+    endpoints:
+      add: "/auth/group/add"
+      get: "/auth/group/get"
+      update: "/auth/group/set"
+      delete: "/auth/group/del"
+      reconfigure: "null"
+    attrs:
+      - name: GroupId
+        type: string
+        key: gid
+      - name: Name
+        type: string
+        key: name
+      - name: Scope
+        type: string
+        key: scope
+        omitEmpty: true
+      - name: Description
+        type: string
+        key: description
+      - name: Privilege
+        type: SelectedMapList
+        key: priv
+      - name: Member
+        type: SelectedMap
+        key: member
+      - name: SourceNetworks
+        type: SelectedMap
+        key: source_networks
+
+  - name: User
+    filename: user
+    monad: user
+    ReconfigureEndpointVariable: ""
+    endpoints:
+      add: "/auth/user/add"
+      get: "/auth/user/get"
+      update: "/auth/user/set"
+      delete: "/auth/user/del"
+      reconfigure: "null"
+    attrs:
+      - name: UserId
+        type: string
+        key: uid
+      - name: Name
+        type: string
+        key: name
+      - name: Disabled
+        type: string
+        key: disabled
+        # As of 25.7, should always be 'user'. If omitted, gets 'user' by default.
+      - name: Scope
+        type: string
+        key: scope
+        omitEmpty: true
+      - name: Expires
+        type: string
+        key: expires
+      - name: AuthorizedKeys
+        type: string
+        key: authorizedkeys
+      - name: OtpSeed
+        type: string
+        key: otp_seed
+      - name: Shell
+        type: SelectedMap
+        key: shell
+      - name: Password
+        type: string
+        key: password
+      - name: ScrambledPassword
+        type: string
+        key: scrambled_password
+      - name: PasswordChangedAt
+        type: string
+        key: pwd_changed_at
+      - name: LandingPage
+        type: string
+        key: landing_page
+      - name: Comment
+        type: string
+        key: comment
+      - name: Email
+        type: string
+        key: email
+      - name: ApiKeys
+        type: string
+        key: apikeys
+      - name: Privilege
+        type: SelectedMapList
+        key: priv
+      - name: Language
+        type: SelectedMap
+        key: language
+      - name: GroupMemberships
+        type: SelectedMapList
+        key: group_memberships
+      - name: Fullname
+        type: string
+        key: descr
+      - name: Dashboard
+        type: string
+        key: dashboard
+
+rpc:
+  - name: User
+    filename: user_api_key
+    rpc_calls:
+      - name: AddApiKey
+        endpoint: /auth/user/add_api_key
+        method: POST
+        params: 
+          - name: username
+            optional: false
+            bodyParameter: false
+        result_type: AddApiKeyResult
+      - name: DeleteApiKey
+        endpoint: /auth/user/del_api_key
+        method: POST
+        params:
+          - name: id
+            optional: false
+            bodyParameter: false
+        result_type: api.ActionResult
+      - name: GetAllApiKeys
+        endpoint: /auth/user/search_api_key
+        method: GET
+        result_type: GetAllApiKeysResult
+    customTypes:
+      AddApiKeyResult:
+        - name: Result
+          type: string
+          key: result
+        - name: Hostname
+          type: string
+          key: hostname
+        - name: Key
+          type: string
+          key: key
+        - name: Secret
+          type: string
+          key: secret
+      ApiKeyResult:
+        - name: Username
+          type: string
+          key: username
+        - name: Key
+          type: string
+          key: key
+        - name: Id
+          type: string
+          key: id
+      GetAllApiKeysResult:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: "[]ApiKeyResult"
+          key: rows
+
+  - name: User
+    filename: user_otp
+    rpc_calls:
+      - name: NewOtpSeed
+        endpoint: /auth/user/new_otp_seed
+        method: GET
+        result_type: NewOtpSeedResult
+    customTypes:
+      NewOtpSeedResult:
+        - name: Seed
+          type: string
+          key: seed
+        - name: OtpQrUri
+          type: string
+          key: otp_uri_template
+
+  - name: Privilege
+    filename: privilege
+    rpc_calls:
+      - name: GetItem
+        endpoint: /auth/priv/get_item
+        method: GET
+        params: 
+          - name: id
+            optional: false
+            bodyParameter: false
+        result_type: PrivilegeGetItemWrapper
+      - name: SetItem
+        endpoint: /auth/priv/set_item
+        method: POST
+        params:
+          - name: id
+            optional: false
+            bodyParameter: false
+          - name: priv
+            optional: false
+            bodyParameter: true
+            customType: PrivilegeSetItem
+        result_type: api.ActionResult
+    customTypes:
+      PrivilegeGetItem:
+        - name: Id
+          type: string
+          key: id
+        - name: Users
+          type: SelectedMapList
+          key: users
+        - name: Groups
+          type: SelectedMapList
+          key: groups
+      PrivilegeGetItemWrapper:
+        - name: Item
+          type: PrivilegeGetItem
+          key: priv
+      PrivilegeSetItem:
+        - name: Users
+          type: string
+          key: users
+        - name: Groups
+          type: string
+          key: groups
+      PrivilegeSetItemWrapper:
+        - name: Item
+          type: PrivilegeSetItem
+          key: priv
+
+  - name: Privilege
+    filename: privilege_search
+    rpc_calls:
+      - name: GetAll
+        endpoint: /auth/priv/search
+        method: GET
+        result_type: PrivilegeGetAllResult
+    customTypes:
+      PrivilegeGetAllItemResult:
+        - name: Id
+          type: string
+          key: id
+        - name: Name
+          type: string
+          key: name
+        - name: Match
+          type: string
+          key: match
+        - name: Users
+          type: "[]string"
+          key: users
+        - name: Groups
+          type: "[]string"
+          key: groups
+      PrivilegeGetAllResult:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: "[]PrivilegeGetAllItemResult"
+          key: rows

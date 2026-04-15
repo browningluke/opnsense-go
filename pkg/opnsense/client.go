@@ -4,9 +4,11 @@ package opnsense
 
 import (
 	"github.com/browningluke/opnsense-go/pkg/api"
+	"github.com/browningluke/opnsense-go/pkg/auth"
 	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
+	"github.com/browningluke/opnsense-go/pkg/dnsmasq"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
@@ -19,9 +21,11 @@ import (
 
 // Client defines a client interface for the Proxmox Virtual Environment API.
 type Client interface {
+	Auth() *auth.Controller
 	Bind() *bind.Controller
 	Core() *core.Controller
 	Diagnostics() *diagnostics.Controller
+	Dnsmasq() *dnsmasq.Controller
 	Firewall() *firewall.Controller
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
@@ -41,6 +45,10 @@ func NewClient(a *api.Client) Client {
 	return &client{a: a}
 }
 
+func (c *client) Auth() *auth.Controller {
+	return &auth.Controller{Api: c.a}
+}
+
 func (c *client) Bind() *bind.Controller {
 	return &bind.Controller{Api: c.a}
 }
@@ -51,6 +59,10 @@ func (c *client) Core() *core.Controller {
 
 func (c *client) Diagnostics() *diagnostics.Controller {
 	return &diagnostics.Controller{Api: c.a}
+}
+
+func (c *client) Dnsmasq() *dnsmasq.Controller {
+	return &dnsmasq.Controller{Api: c.a}
 }
 
 func (c *client) Firewall() *firewall.Controller {
