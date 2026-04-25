@@ -5,10 +5,10 @@ on:
     paths-ignore:
       - 'scripts/**'
       - 'README.md'
-      - '.github/**'
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   check-make-generate:
@@ -28,9 +28,46 @@ jobs:
         run: make all
 
       - name: Check for uncommitted changes
+        id: diff
         run: |
-          if ! git diff --exit-code; then
-            echo "⚠️ 'make all' resulted in changes. Please run 'make all' and commit the results."
-            git diff
-            exit 1
+          if git diff --exit-code; then
+            echo "clean=true" >> $GITHUB_OUTPUT
+          else
+            echo "clean=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Find existing sticky comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: <!-- make-generate-check -->
+
+      - name: Post or update failure comment
+        if: steps.diff.outputs.clean == 'false'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- make-generate-check -->
+            ## ⚠️ Generated files are out of date
+
+            Running `make all` produced uncommitted changes. Please run `make all` locally and commit the results.
+
+            See the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for the full diff.
+          edit-mode: replace
+
+      - name: Delete resolved sticky comment
+        if: steps.diff.outputs.clean == 'true' && steps.find-comment.outputs.comment-id != ''
+        run: gh api repos/${{ github.repository }}/issues/comments/${{ steps.find-comment.outputs.comment-id }} -X DELETE
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Fail if changes detected
+        if: steps.diff.outputs.clean == 'false'
+        run: |
+          echo "⚠️ 'make all' resulted in changes. Please run 'make all' and commit the results."
+          git diff
+          exit 1
