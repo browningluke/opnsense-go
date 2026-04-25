@@ -4,6 +4,7 @@ package quagga
 
 import (
 	"context"
+
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
