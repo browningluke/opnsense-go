@@ -5,6 +5,7 @@ package dnsmasq
 import (
 	"context"
 	"fmt"
+
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
