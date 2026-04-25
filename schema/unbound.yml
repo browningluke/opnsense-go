@@ -362,7 +362,7 @@ rpc:
           - name: "unbound"
             optional: false
             bodyParameter: true
-            type: "*Settings"
+            customType: "Settings"
         result_type: "Result"
       - name: "Reconfigure"
         method: "POST"
