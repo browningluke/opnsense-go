@@ -1,0 +1,91 @@
+name: PR Tests (Tier 1)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!scripts/**'
+      - '!README.md'
+      - '.github/workflows/go-test-pr.yml'
+      - '.github/workflows/go-test-reusable.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.detect.outputs.packages }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch main branch
+        run: git fetch origin main --depth=1
+
+      - name: Detect changed packages
+        id: detect
+        run: |
+          ALL_CHANGED=$(git diff --name-only origin/main...HEAD)
+
+          # Check for any Go source or module file changes
+          GO_FILES=$(echo "$ALL_CHANGED" | grep '\.go$' || true)
+          MOD_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^go\.(mod|sum)$' || true)
+
+          if [ -z "$GO_FILES" ] && [ -z "$MOD_CHANGED" ]; then
+            echo "No Go files changed — skipping tests"
+            echo "packages=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ -n "$MOD_CHANGED" ]; then
+            echo "go.mod/go.sum changed — running full suite"
+            echo "packages=./..." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Core packages: changes here affect all modules
+          CORE_CHANGED=$(echo "$GO_FILES" | grep -E '^(pkg/api/|pkg/errs/|pkg/opnsense/|internal/)' || true)
+          if [ -n "$CORE_CHANGED" ]; then
+            echo "Core files changed — running full suite"
+            echo "packages=./..." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Map changed pkg/{name}/ and schema/{name}.yml to ./pkg/{name}/...
+          PKG_NAMES=""
+
+          PKG_CHANGED=$(echo "$GO_FILES" | grep '^pkg/' | sed 's|^pkg/\([^/]*\)/.*|\1|' | sort -u || true)
+          for name in $PKG_CHANGED; do
+            PKG_NAMES="$PKG_NAMES $name"
+          done
+
+          SCHEMA_CHANGED=$(echo "$ALL_CHANGED" | grep '^schema/.*\.yml$' | sed 's|^schema/\(.*\)\.yml$|\1|' | sort -u || true)
+          for name in $SCHEMA_CHANGED; do
+            PKG_NAMES="$PKG_NAMES $name"
+          done
+
+          PKG_NAMES=$(echo "$PKG_NAMES" | tr ' ' '\n' | sort -u | grep -v '^$' || true)
+
+          if [ -z "$PKG_NAMES" ]; then
+            echo "No relevant packages detected — skipping tests"
+            echo "packages=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PACKAGES=$(echo "$PKG_NAMES" | sed 's|^|./pkg/|; s|$|/...|' | tr '\n' ' ' | sed 's/ $//')
+          echo "Changed packages: ${PACKAGES}"
+          echo "packages=${PACKAGES}" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.packages != ''
+    uses: ./.github/workflows/go-test-reusable.yml
+    with:
+      packages: ${{ needs.detect-changes.outputs.packages }}
