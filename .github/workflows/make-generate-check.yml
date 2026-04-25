@@ -1,0 +1,36 @@
+name: Make Generate Check
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'scripts/**'
+      - 'README.md'
+      - '.github/**'
+
+permissions:
+  contents: read
+
+jobs:
+  check-make-generate:
+    name: Ensure all modules are generated
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run make all
+        run: make all
+
+      - name: Check for uncommitted changes
+        run: |
+          if ! git diff --exit-code; then
+            echo "⚠️ 'make all' resulted in changes. Please run 'make all' and commit the results."
+            git diff
+            exit 1
+          fi
