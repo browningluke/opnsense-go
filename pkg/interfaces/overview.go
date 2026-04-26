@@ -237,8 +237,8 @@ type InterfacesInfoResponse struct {
 	Rows     []InterfaceInfo `json:"rows"`
 }
 
-// OverviewInterfacesInfo executes the InterfacesInfo RPC call of the Overview controller
-func (c *Controller) OverviewInterfacesInfo(ctx context.Context) (*InterfacesInfoResponse, error) {
+// OverviewGet executes the Get RPC call of the Overview controller
+func (c *Controller) OverviewGet(ctx context.Context) (*InterfacesInfoResponse, error) {
 
 	callParams := []string{}
 	bodyParams := make(map[string]interface{})
@@ -253,7 +253,7 @@ func (c *Controller) OverviewInterfacesInfo(ctx context.Context) (*InterfacesInf
 	resultData := &InterfacesInfoResponse{}
 	result, err := api.Call(c.Client(), ctx, callOpts, resultData)
 	if err != nil {
-		return nil, fmt.Errorf("InterfacesInfo call failed: %w", err)
+		return nil, fmt.Errorf("Get call failed: %w", err)
 	}
 	return result, nil
 }

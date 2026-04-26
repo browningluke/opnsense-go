@@ -904,7 +904,7 @@ rpc:
           key: parent
           omitEmpty: true
     rpc_calls:
-      - name: "InterfacesInfo"
+      - name: "Get"
         method: "GET"
         endpoint: "/interfaces/overview/interfaces_info"
         result_type: "InterfacesInfoResponse"
