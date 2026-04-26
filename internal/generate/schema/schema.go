@@ -73,9 +73,10 @@ type RPCData struct {
 }
 
 type Parameter struct {
-	Name     string `yaml:"name"`
-	Optional bool   `yaml:"optional"`
-	IsBodyParameter bool `yaml:"bodyParameter"`
+	Name            string `yaml:"name"`
+	Optional        bool   `yaml:"optional"`
+	IsBodyParameter bool   `yaml:"bodyParameter"`
+	CustomType      string `yaml:"customType"`
 }
 
 type RPCCallData struct {
