@@ -1,0 +1,30 @@
+[
+  {
+    "description": "Kea DHCPv4: register wan interface in general settings",
+    "endpoint": "/api/kea/dhcpv4/set",
+    "body": {
+      "dhcpv4": {
+        "general": {
+          "enabled": "0",
+          "interfaces": "wan",
+          "valid_lifetime": "4000",
+          "fwrules": "1"
+        }
+      }
+    }
+  },
+  {
+    "description": "Kea DHCPv6: register wan interface in general settings",
+    "endpoint": "/api/kea/dhcpv6/set",
+    "body": {
+      "dhcpv6": {
+        "general": {
+          "enabled": "0",
+          "interfaces": "wan",
+          "valid_lifetime": "4000",
+          "fwrules": "1"
+        }
+      }
+    }
+  }
+]
