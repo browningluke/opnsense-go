@@ -211,3 +211,145 @@ resources:
       - name: Description
         type: string
         key: description
+
+rpc:
+  - name: "Settings"
+    filename: settings
+    customTypes:
+      DHCPv4Monad:
+        - name: DHCPv4
+          type: DHCPv4Settings
+          key: dhcpv4
+      DHCPv4Settings:
+        - name: General
+          type: DHCPv4General
+          key: general
+        - name: LeaseExpire
+          type: LeaseExpire
+          key: lexpire
+        - name: HA
+          type: HA
+          key: ha
+        - name: ThisHostname
+          type: string
+          key: this_hostname
+      DHCPv4General:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: ManualConfig
+          type: string
+          key: manual_config
+        - name: Interfaces
+          type: SelectedMapList
+          key: interfaces
+        - name: ValidLifetime
+          type: string
+          key: valid_lifetime
+        - name: FWRules
+          type: string
+          key: fwrules
+        - name: DHCPSocketType
+          type: SelectedMap
+          key: dhcp_socket_type
+      DHCPv6Monad:
+        - name: DHCPv6
+          type: DHCPv6Settings
+          key: dhcpv6
+      DHCPv6Settings:
+        - name: General
+          type: DHCPv6General
+          key: general
+        - name: LeaseExpire
+          type: LeaseExpire
+          key: lexpire
+        - name: HA
+          type: HA
+          key: ha
+        - name: ThisHostname
+          type: string
+          key: this_hostname
+      DHCPv6General:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: ManualConfig
+          type: string
+          key: manual_config
+        - name: Interfaces
+          type: SelectedMapList
+          key: interfaces
+        - name: ValidLifetime
+          type: string
+          key: valid_lifetime
+        - name: FWRules
+          type: string
+          key: fwrules
+      LeaseExpire:
+        - name: HoldReclaimedTime
+          type: string
+          key: hold_reclaimed_time
+        - name: ReclaimTimerWaitTime
+          type: string
+          key: reclaim_timer_wait_time
+        - name: FlushReclaimedTimerWaitTime
+          type: string
+          key: flush_reclaimed_timer_wait_time
+        - name: MaxReclaimTime
+          type: string
+          key: max_reclaim_time
+        - name: MaxReclaimLeases
+          type: string
+          key: max_reclaim_leases
+        - name: UnwarnedReclaimCycles
+          type: string
+          key: unwarned_reclaim_cycles
+      HA:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: ThisServerName
+          type: string
+          key: this_server_name
+        - name: MaxUnackedClients
+          type: string
+          key: max_unacked_clients
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: "DHCPv4Get"
+        method: "GET"
+        endpoint: "/kea/dhcpv4/get"
+        result_type: "DHCPv4Monad"
+      - name: "DHCPv4Update"
+        method: "POST"
+        endpoint: "/kea/dhcpv4/set"
+        params:
+          - name: "dhcpv4"
+            optional: false
+            bodyParameter: true
+            customType: "DHCPv4Settings"
+        result_type: "Result"
+      - name: "DHCPv6Get"
+        method: "GET"
+        endpoint: "/kea/dhcpv6/get"
+        result_type: "DHCPv6Monad"
+      - name: "DHCPv6Update"
+        method: "POST"
+        endpoint: "/kea/dhcpv6/set"
+        params:
+          - name: "dhcpv6"
+            optional: false
+            bodyParameter: true
+            customType: "DHCPv6Settings"
+        result_type: "Result"
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/kea/service/reconfigure"
+        result_type: "ActionResult"
