@@ -1,3 +1,4 @@
+---
 name: interfaces
 reconfigureEndpoint: "" # Controller-wide reconfigure endpoint (can be overwritten)
 resources:
@@ -26,6 +27,7 @@ resources:
       - name: Device
         type: string
         key: vlanif
+
   - name: Vip
     filename: vip
     monad: vip
