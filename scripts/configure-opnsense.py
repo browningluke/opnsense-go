@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Apply OPNsense pre-test configuration defined in opnsense-setup.json.
+Apply OPNsense pre-test configuration defined in opnsense-setup.jsonc.
 
 This script is called by CI before running acceptance tests. It reads a list
-of API calls from scripts/opnsense-setup.json and executes them in order.
+of API calls from scripts/opnsense-setup.jsonc and executes them in order.
 
-To add or remove pre-conditions, edit opnsense-setup.json — no Python
+To add or remove pre-conditions, edit opnsense-setup.jsonc — no Python
 changes required.
 
 Reads credentials from environment variables:
@@ -17,12 +17,22 @@ Reads credentials from environment variables:
 import json
 import os
 import pathlib
+import re
 import ssl
 import sys
 import urllib.request
 from base64 import b64encode
 
-SETUP_FILE = pathlib.Path(__file__).parent / "opnsense-setup.json"
+SETUP_FILE = pathlib.Path(__file__).parent / "opnsense-setup.jsonc"
+
+
+def parse_jsonc(text):
+    """Parse JSON with C-style comments (// line and /* block */)."""
+    # Remove /* ... */ block comments
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    # Remove // line comments (not inside strings)
+    text = re.sub(r"//[^\n]*", "", text)
+    return json.loads(text)
 
 
 def api_post(base_url, key, secret, path, body):
@@ -59,7 +69,7 @@ def main():
         )
         sys.exit(1)
 
-    steps = json.loads(SETUP_FILE.read_text())
+    steps = parse_jsonc(SETUP_FILE.read_text())
     print(f"Applying {len(steps)} setup step(s) to {base_url} ...")
 
     errors = []

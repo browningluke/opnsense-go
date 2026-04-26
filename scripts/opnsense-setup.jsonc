@@ -1,0 +1,48 @@
+// OPNsense pre-test setup configuration
+//
+// Each entry is a POST request applied to the OPNsense API before acceptance
+// tests run. Entries are applied in order. If any entry fails, the CI step
+// fails immediately.
+//
+// To add a new pre-condition:
+//   1. Find the relevant API endpoint (GET the resource first to see its shape)
+//   2. Add an entry below with a clear "description", the "endpoint", and the
+//      full "body" payload.
+//   No changes to configure-opnsense.py are needed.
+[
+  // ── Kea DHCPv4 ────────────────────────────────────────────────────────────
+  // The DHCPv4 subnet API requires any subnet's interface to be listed in the
+  // module's global interface list. Register "wan" so subnet tests can use it.
+  {
+    "description": "Kea DHCPv4: register wan interface in general settings",
+    "endpoint": "/api/kea/dhcpv4/set",
+    "body": {
+      "dhcpv4": {
+        "general": {
+          "enabled": "0",
+          "interfaces": "wan",
+          "valid_lifetime": "4000",
+          "fwrules": "1"
+        }
+      }
+    }
+  },
+
+  // ── Kea DHCPv6 ────────────────────────────────────────────────────────────
+  // Same requirement as DHCPv4 — the subnet API validates that the selected
+  // interface is listed in the module's global interface list.
+  {
+    "description": "Kea DHCPv6: register wan interface in general settings",
+    "endpoint": "/api/kea/dhcpv6/set",
+    "body": {
+      "dhcpv6": {
+        "general": {
+          "enabled": "0",
+          "interfaces": "wan",
+          "valid_lifetime": "4000",
+          "fwrules": "1"
+        }
+      }
+    }
+  }
+]
