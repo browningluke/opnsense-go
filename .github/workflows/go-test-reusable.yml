@@ -85,9 +85,6 @@ jobs:
             echo "OPNSENSE_ALLOW_INSECURE=true";
           } >> "$GITHUB_ENV"
 
-      - name: Configure OPNsense for tests
-        run: python3 scripts/configure-opnsense.py
-
       - name: Run tests
         run: go test -p 1 -v ${{ inputs.packages }}
 
