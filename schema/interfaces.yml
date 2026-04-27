@@ -88,4 +88,825 @@ resources:
       - name: Description
         type: string
         key: descr
-      
+
+rpc:
+  - name: "Overview"
+    filename: overview
+    customTypes:
+      InterfacesInfoResponse:
+        - name: Total
+          type: int
+          key: total
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Current
+          type: int
+          key: current
+        - name: Rows
+          type: '[]InterfaceInfo'
+          key: rows
+      InterfaceInfo:
+        - name: Flags
+          type: '[]string'
+          key: flags
+          omitEmpty: true
+        - name: Capabilities
+          type: '[]string'
+          key: capabilities
+          omitEmpty: true
+        - name: Options
+          type: '[]string'
+          key: options
+          omitEmpty: true
+        - name: MacAddr
+          type: string
+          key: macaddr
+          omitEmpty: true
+        - name: SupportedMedia
+          type: '[]string'
+          key: supported_media
+          omitEmpty: true
+        - name: IsPhysical
+          type: bool
+          key: is_physical
+          omitEmpty: true
+        - name: Device
+          type: string
+          key: device
+          omitEmpty: true
+        - name: MTU
+          type: string
+          key: mtu
+          omitEmpty: true
+        - name: MacAddrHw
+          type: string
+          key: macaddr_hw
+          omitEmpty: true
+        - name: Media
+          type: string
+          key: media
+          omitEmpty: true
+        - name: MediaRaw
+          type: string
+          key: media_raw
+          omitEmpty: true
+        - name: Status
+          type: string
+          key: status
+          omitEmpty: true
+        - name: ND6
+          type: InterfaceND6
+          key: nd6
+          omitEmpty: true
+        - name: Routes
+          type: '[]string'
+          key: routes
+          omitEmpty: true
+        - name: Config
+          type: InterfaceConfig
+          key: config
+          omitEmpty: true
+        - name: IfctlNameserver
+          type: '[]string'
+          key: ifctl.nameserver
+          omitEmpty: true
+        - name: IfctlRouter
+          type: '[]string'
+          key: ifctl.router
+          omitEmpty: true
+        - name: IfctlPrefix
+          type: '[]string'
+          key: ifctl.prefix
+          omitEmpty: true
+        - name: IfctlSearchdomain
+          type: '[]string'
+          key: ifctl.searchdomain
+          omitEmpty: true
+        - name: Identifier
+          type: string
+          key: identifier
+          omitEmpty: true
+        - name: Description
+          type: string
+          key: description
+          omitEmpty: true
+        - name: Enabled
+          type: bool
+          key: enabled
+          omitEmpty: true
+        - name: LinkType
+          type: string
+          key: link_type
+          omitEmpty: true
+        - name: Addr4
+          type: string
+          key: addr4
+          omitEmpty: true
+        - name: Addr6
+          type: string
+          key: addr6
+          omitEmpty: true
+        - name: IPv4
+          type: '[]InterfaceIPv4'
+          key: ipv4
+          omitEmpty: true
+        - name: IPv6
+          type: '[]InterfaceIPv6'
+          key: ipv6
+          omitEmpty: true
+        - name: VLANTag
+          type: string
+          key: vlan_tag
+          omitEmpty: true
+        - name: Gateways
+          type: '[]string'
+          key: gateways
+          omitEmpty: true
+        - name: Groups
+          type: '[]string'
+          key: groups
+          omitEmpty: true
+        - name: VLAN
+          type: InterfaceVlan
+          key: vlan
+          omitEmpty: true
+        - name: LaggProto
+          type: string
+          key: laggproto
+          omitEmpty: true
+        - name: LaggHash
+          type: string
+          key: lagghash
+          omitEmpty: true
+        - name: LaggOptions
+          type: string
+          key: laggoptions
+          omitEmpty: true
+      InterfaceND6:
+        - name: Flags
+          type: '[]string'
+          key: flags
+          omitEmpty: true
+      InterfaceConfig:
+        - name: If
+          type: string
+          key: if
+          omitEmpty: true
+        - name: Description
+          type: string
+          key: descr
+          omitEmpty: true
+        - name: Enable
+          type: string
+          key: enable
+          omitEmpty: true
+        - name: Lock
+          type: string
+          key: lock
+          omitEmpty: true
+        - name: SpoofMac
+          type: string
+          key: spoofmac
+          omitEmpty: true
+        - name: BlockPriv
+          type: string
+          key: blockpriv
+          omitEmpty: true
+        - name: BlockBogons
+          type: string
+          key: blockbogons
+          omitEmpty: true
+        - name: Promisc
+          type: string
+          key: promisc
+          omitEmpty: true
+        - name: Media
+          type: string
+          key: media
+          omitEmpty: true
+        - name: MediaOpt
+          type: string
+          key: mediaopt
+          omitEmpty: true
+        - name: MTU
+          type: string
+          key: mtu
+          omitEmpty: true
+        - name: MSS
+          type: string
+          key: mss
+          omitEmpty: true
+        - name: HwSettingsOverwrite
+          type: string
+          key: hw_settings_overwrite
+          omitEmpty: true
+        - name: DisableChecksumOffloading
+          type: string
+          key: disablechecksumoffloading
+          omitEmpty: true
+        - name: DisableLargeReceiveOffloading
+          type: string
+          key: disablelargereceiveoffloading
+          omitEmpty: true
+        - name: DisableSegmentationOffloading
+          type: string
+          key: disablesegmentationoffloading
+          omitEmpty: true
+        - name: DisableVlanHwfilter
+          type: string
+          key: disablevlanhwfilter
+          omitEmpty: true
+        - name: IPAddr
+          type: string
+          key: ipaddr
+          omitEmpty: true
+        - name: Subnet
+          type: string
+          key: subnet
+          omitEmpty: true
+        - name: DHCPHostname
+          type: string
+          key: dhcphostname
+          omitEmpty: true
+        - name: AliasAddress
+          type: string
+          key: alias-address
+          omitEmpty: true
+        - name: AliasSubnet
+          type: string
+          key: alias-subnet
+          omitEmpty: true
+        - name: DHCPRejectFrom
+          type: string
+          key: dhcprejectfrom
+          omitEmpty: true
+        - name: DHCPHonourMTU
+          type: string
+          key: dhcphonourmtu
+          omitEmpty: true
+        - name: DHCPVlanPrio
+          type: string
+          key: dhcpvlanprio
+          omitEmpty: true
+        - name: AdvDHCPPtTimeout
+          type: string
+          key: adv_dhcp_pt_timeout
+          omitEmpty: true
+        - name: AdvDHCPPtRetry
+          type: string
+          key: adv_dhcp_pt_retry
+          omitEmpty: true
+        - name: AdvDHCPPtSelectTimeout
+          type: string
+          key: adv_dhcp_pt_select_timeout
+          omitEmpty: true
+        - name: AdvDHCPPtReboot
+          type: string
+          key: adv_dhcp_pt_reboot
+          omitEmpty: true
+        - name: AdvDHCPPtBackoffCutoff
+          type: string
+          key: adv_dhcp_pt_backoff_cutoff
+          omitEmpty: true
+        - name: AdvDHCPPtInitialInterval
+          type: string
+          key: adv_dhcp_pt_initial_interval
+          omitEmpty: true
+        - name: AdvDHCPPtValues
+          type: string
+          key: adv_dhcp_pt_values
+          omitEmpty: true
+        - name: AdvDHCPSendOptions
+          type: string
+          key: adv_dhcp_send_options
+          omitEmpty: true
+        - name: AdvDHCPRequestOptions
+          type: string
+          key: adv_dhcp_request_options
+          omitEmpty: true
+        - name: AdvDHCPRequiredOptions
+          type: string
+          key: adv_dhcp_required_options
+          omitEmpty: true
+        - name: AdvDHCPOptionModifiers
+          type: string
+          key: adv_dhcp_option_modifiers
+          omitEmpty: true
+        - name: AdvDHCPConfigAdvanced
+          type: string
+          key: adv_dhcp_config_advanced
+          omitEmpty: true
+        - name: AdvDHCPConfigFileOverride
+          type: string
+          key: adv_dhcp_config_file_override
+          omitEmpty: true
+        - name: AdvDHCPConfigFileOverridePath
+          type: string
+          key: adv_dhcp_config_file_override_path
+          omitEmpty: true
+        - name: IPAddrV6
+          type: string
+          key: ipaddrv6
+          omitEmpty: true
+        - name: DHCP6IAPdLen
+          type: string
+          key: dhcp6-ia-pd-len
+          omitEmpty: true
+        - name: DHCP6IAPdSendHint
+          type: string
+          key: dhcp6-ia-pd-send-hint
+          omitEmpty: true
+        - name: DHCP6PrefixOnly
+          type: string
+          key: dhcp6prefixonly
+          omitEmpty: true
+        - name: DHCP6PrefixID
+          type: string
+          key: dhcp6-prefix-id
+          omitEmpty: true
+        - name: DHCP6VlanPrio
+          type: string
+          key: dhcp6vlanprio
+          omitEmpty: true
+        - name: DHCP6IfID
+          type: string
+          key: dhcp6_ifid
+          omitEmpty: true
+        - name: DHCP6NorequestDns
+          type: string
+          key: dhcp6_norequest_dns
+          omitEmpty: true
+        - name: DHCP6RapidCommit
+          type: string
+          key: dhcp6_rapid_commit
+          omitEmpty: true
+        - name: DHCP6AssocPd
+          type: string
+          key: dhcp6_assoc_pd
+          omitEmpty: true
+        - name: AdvDHCP6InterfaceStatementSendOptions
+          type: string
+          key: adv_dhcp6_interface_statement_send_options
+          omitEmpty: true
+        - name: AdvDHCP6InterfaceStatementRequestOptions
+          type: string
+          key: adv_dhcp6_interface_statement_request_options
+          omitEmpty: true
+        - name: AdvDHCP6InterfaceStatementInformationOnlyEnable
+          type: string
+          key: adv_dhcp6_interface_statement_information_only_enable
+          omitEmpty: true
+        - name: AdvDHCP6InterfaceStatementScript
+          type: string
+          key: adv_dhcp6_interface_statement_script
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementAddressEnable
+          type: string
+          key: adv_dhcp6_id_assoc_statement_address_enable
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementAddress
+          type: string
+          key: adv_dhcp6_id_assoc_statement_address
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementAddressID
+          type: string
+          key: adv_dhcp6_id_assoc_statement_address_id
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementAddressPltime
+          type: string
+          key: adv_dhcp6_id_assoc_statement_address_pltime
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementAddressVltime
+          type: string
+          key: adv_dhcp6_id_assoc_statement_address_vltime
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementPrefixEnable
+          type: string
+          key: adv_dhcp6_id_assoc_statement_prefix_enable
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementPrefix
+          type: string
+          key: adv_dhcp6_id_assoc_statement_prefix
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementPrefixID
+          type: string
+          key: adv_dhcp6_id_assoc_statement_prefix_id
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementPrefixPltime
+          type: string
+          key: adv_dhcp6_id_assoc_statement_prefix_pltime
+          omitEmpty: true
+        - name: AdvDHCP6IDAssocStatementPrefixVltime
+          type: string
+          key: adv_dhcp6_id_assoc_statement_prefix_vltime
+          omitEmpty: true
+        - name: AdvDHCP6PrefixInterfaceStatementSlaLen
+          type: string
+          key: adv_dhcp6_prefix_interface_statement_sla_len
+          omitEmpty: true
+        - name: AdvDHCP6AuthenticationStatementAuthname
+          type: string
+          key: adv_dhcp6_authentication_statement_authname
+          omitEmpty: true
+        - name: AdvDHCP6AuthenticationStatementProtocol
+          type: string
+          key: adv_dhcp6_authentication_statement_protocol
+          omitEmpty: true
+        - name: AdvDHCP6AuthenticationStatementAlgorithm
+          type: string
+          key: adv_dhcp6_authentication_statement_algorithm
+          omitEmpty: true
+        - name: AdvDHCP6AuthenticationStatementRdm
+          type: string
+          key: adv_dhcp6_authentication_statement_rdm
+          omitEmpty: true
+        - name: AdvDHCP6KeyInfoStatementKeyname
+          type: string
+          key: adv_dhcp6_key_info_statement_keyname
+          omitEmpty: true
+        - name: AdvDHCP6KeyInfoStatementRealm
+          type: string
+          key: adv_dhcp6_key_info_statement_realm
+          omitEmpty: true
+        - name: AdvDHCP6KeyInfoStatementKeyid
+          type: string
+          key: adv_dhcp6_key_info_statement_keyid
+          omitEmpty: true
+        - name: AdvDHCP6KeyInfoStatementSecret
+          type: string
+          key: adv_dhcp6_key_info_statement_secret
+          omitEmpty: true
+        - name: AdvDHCP6KeyInfoStatementExpire
+          type: string
+          key: adv_dhcp6_key_info_statement_expire
+          omitEmpty: true
+        - name: AdvDHCP6ConfigAdvanced
+          type: string
+          key: adv_dhcp6_config_advanced
+          omitEmpty: true
+        - name: AdvDHCP6ConfigFileOverride
+          type: string
+          key: adv_dhcp6_config_file_override
+          omitEmpty: true
+        - name: AdvDHCP6ConfigFileOverridePath
+          type: string
+          key: adv_dhcp6_config_file_override_path
+          omitEmpty: true
+        - name: Identifier
+          type: string
+          key: identifier
+          omitEmpty: true
+        - name: InternalDynamic
+          type: string
+          key: internal_dynamic
+          omitEmpty: true
+        - name: SubnetV6
+          type: string
+          key: subnetv6
+          omitEmpty: true
+        - name: GatewayV6
+          type: string
+          key: gatewayv6
+          omitEmpty: true
+        - name: Gateway6rd
+          type: string
+          key: gateway-6rd
+          omitEmpty: true
+        - name: Prefix6rd
+          type: string
+          key: prefix-6rd
+          omitEmpty: true
+        - name: Prefix6rdV4Addr
+          type: string
+          key: prefix-6rd-v4addr
+          omitEmpty: true
+        - name: Prefix6rdV4Plen
+          type: string
+          key: prefix-6rd-v4plen
+          omitEmpty: true
+        - name: Track6Interface
+          type: string
+          key: track6-interface
+          omitEmpty: true
+        - name: Track6PrefixID
+          type: string
+          key: track6-prefix-id
+          omitEmpty: true
+        - name: Track6IfID
+          type: string
+          key: track6_ifid
+          omitEmpty: true
+        - name: Track6AssocPd
+          type: string
+          key: track6_assoc_pd
+          omitEmpty: true
+        - name: DHCPD6Track6AllowOverride
+          type: string
+          key: dhcpd6track6allowoverride
+          omitEmpty: true
+        - name: Type
+          type: string
+          key: type
+          omitEmpty: true
+        - name: Virtual
+          type: string
+          key: virtual
+          omitEmpty: true
+        - name: Gateway
+          type: string
+          key: gateway
+          omitEmpty: true
+        - name: GatewayInterface
+          type: string
+          key: gateway_interface
+          omitEmpty: true
+        - name: Wireless
+          type: InterfaceWireless
+          key: wireless
+          omitEmpty: true
+      InterfaceWireless:
+        - name: Standard
+          type: string
+          key: standard
+          omitEmpty: true
+        - name: Mode
+          type: string
+          key: mode
+          omitEmpty: true
+        - name: Protmode
+          type: string
+          key: protmode
+          omitEmpty: true
+        - name: SSID
+          type: string
+          key: ssid
+          omitEmpty: true
+        - name: Channel
+          type: string
+          key: channel
+          omitEmpty: true
+        - name: TXPower
+          type: string
+          key: txpower
+          omitEmpty: true
+        - name: Diversity
+          type: string
+          key: diversity
+          omitEmpty: true
+        - name: TXAntenna
+          type: string
+          key: txantenna
+          omitEmpty: true
+        - name: RXAntenna
+          type: string
+          key: rxantenna
+          omitEmpty: true
+        - name: Regdomain
+          type: string
+          key: regdomain
+          omitEmpty: true
+        - name: Regcountry
+          type: string
+          key: regcountry
+          omitEmpty: true
+        - name: Reglocation
+          type: string
+          key: reglocation
+          omitEmpty: true
+        - name: Authmode
+          type: string
+          key: authmode
+          omitEmpty: true
+        - name: AuthServerAddr
+          type: string
+          key: auth_server_addr
+          omitEmpty: true
+        - name: AuthServerPort
+          type: string
+          key: auth_server_port
+          omitEmpty: true
+        - name: AuthServerSharedSecret
+          type: string
+          key: auth_server_shared_secret
+          omitEmpty: true
+        - name: AuthServerAddr2
+          type: string
+          key: auth_server_addr2
+          omitEmpty: true
+        - name: AuthServerPort2
+          type: string
+          key: auth_server_port2
+          omitEmpty: true
+        - name: AuthServerSharedSecret2
+          type: string
+          key: auth_server_shared_secret2
+          omitEmpty: true
+        - name: MacACL
+          type: string
+          key: mac_acl
+          omitEmpty: true
+        - name: DebugMode
+          type: string
+          key: debug_mode
+          omitEmpty: true
+        - name: MacAddrACL
+          type: string
+          key: macaddr_acl
+          omitEmpty: true
+        - name: AuthAlgs
+          type: string
+          key: auth_algs
+          omitEmpty: true
+        - name: WPAMode
+          type: string
+          key: wpa_mode
+          omitEmpty: true
+        - name: WPAEAPMethod
+          type: string
+          key: wpa_eap_method
+          omitEmpty: true
+        - name: WPAEAPP2Auth
+          type: string
+          key: wpa_eap_p2_auth
+          omitEmpty: true
+        - name: WPAKeyMgmt
+          type: string
+          key: wpa_key_mgmt
+          omitEmpty: true
+        - name: WPAPairwise
+          type: string
+          key: wpa_pairwise
+          omitEmpty: true
+        - name: WPAEAPCACertRef
+          type: string
+          key: wpa_eap_cacertref
+          omitEmpty: true
+        - name: WPAEAPCltCertRef
+          type: string
+          key: wpa_eap_cltcertref
+          omitEmpty: true
+        - name: WPAGroupRekey
+          type: string
+          key: wpa_group_rekey
+          omitEmpty: true
+        - name: WPAGMKRekey
+          type: string
+          key: wpa_gmk_rekey
+          omitEmpty: true
+        - name: Identity
+          type: string
+          key: identity
+          omitEmpty: true
+        - name: Passphrase
+          type: string
+          key: passphrase
+          omitEmpty: true
+        - name: ExtWPASW
+          type: string
+          key: ext_wpa_sw
+          omitEmpty: true
+        - name: PersistCommonWireless
+          type: string
+          key: persistcommonwireless
+          omitEmpty: true
+        - name: WMEEnable
+          type: string
+          key: wme_enable
+          omitEmpty: true
+        - name: APBridgeEnable
+          type: string
+          key: apbridge_enable
+          omitEmpty: true
+        - name: HideSSIDEnable
+          type: string
+          key: hidessid_enable
+          omitEmpty: true
+        - name: WEPEnable
+          type: string
+          key: wep_enable
+          omitEmpty: true
+        - name: PureMode
+          type: string
+          key: puremode
+          omitEmpty: true
+        - name: IEEE8021X
+          type: string
+          key: ieee8021x
+          omitEmpty: true
+        - name: RSNPreauth
+          type: string
+          key: rsn_preauth
+          omitEmpty: true
+        - name: MacACLEnable
+          type: string
+          key: mac_acl_enable
+          omitEmpty: true
+        - name: WPAStrictRekey
+          type: string
+          key: wpa_strict_rekey
+          omitEmpty: true
+        - name: WPAEnable
+          type: string
+          key: wpa_enable
+          omitEmpty: true
+        - name: Key1
+          type: string
+          key: key1
+          omitEmpty: true
+        - name: Key2
+          type: string
+          key: key2
+          omitEmpty: true
+        - name: Key3
+          type: string
+          key: key3
+          omitEmpty: true
+        - name: Key4
+          type: string
+          key: key4
+          omitEmpty: true
+        - name: TXKey
+          type: string
+          key: txkey
+          omitEmpty: true
+      InterfaceIPv4:
+        - name: IPAddr
+          type: string
+          key: ipaddr
+          omitEmpty: true
+        - name: Vhid
+          type: string
+          key: vhid
+          omitEmpty: true
+        - name: CarpStatus
+          type: string
+          key: status
+          omitEmpty: true
+        - name: AdvBase
+          type: string
+          key: advbase
+          omitEmpty: true
+        - name: AdvSkew
+          type: string
+          key: advskew
+          omitEmpty: true
+        - name: Peer
+          type: string
+          key: peer
+          omitEmpty: true
+        - name: Peer6
+          type: string
+          key: peer6
+          omitEmpty: true
+      InterfaceIPv6:
+        - name: IPAddr
+          type: string
+          key: ipaddr
+          omitEmpty: true
+        - name: Vhid
+          type: string
+          key: vhid
+          omitEmpty: true
+        - name: CarpStatus
+          type: string
+          key: status
+          omitEmpty: true
+        - name: AdvBase
+          type: string
+          key: advbase
+          omitEmpty: true
+        - name: AdvSkew
+          type: string
+          key: advskew
+          omitEmpty: true
+        - name: Peer
+          type: string
+          key: peer
+          omitEmpty: true
+        - name: Peer6
+          type: string
+          key: peer6
+          omitEmpty: true
+      InterfaceVlan:
+        - name: Tag
+          type: string
+          key: tag
+          omitEmpty: true
+        - name: Proto
+          type: string
+          key: proto
+          omitEmpty: true
+        - name: PCP
+          type: string
+          key: pcp
+          omitEmpty: true
+        - name: Parent
+          type: string
+          key: parent
+          omitEmpty: true
+    rpc_calls:
+      - name: "Get"
+        method: "GET"
+        endpoint: "/interfaces/overview/interfaces_info"
+        result_type: "InterfacesInfoResponse"
