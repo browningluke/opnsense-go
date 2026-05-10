@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 env:
-  OPNSENSE_VERSION: "26.1"
-  OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-26.1.qcow2"
-  OPNSENSE_SHA1: 2266a644b1669be1a8d916a0a79fc91ba4be4733
+  OPNSENSE_VERSION: "26.1.6"
+  OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-26.1.6.qcow2"
+  OPNSENSE_SHA1: a2edec6ce8e775fd094eeafa09b51d3a411888d2
   OPNSENSE_SSH_PORT: 8022
   OPNSENSE_WEB_PORT: 8443
 
