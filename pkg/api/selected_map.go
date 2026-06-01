@@ -2,9 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"sort"
 	"strconv"
-	"strings"
 )
 
 /*
@@ -58,25 +56,22 @@ func (s *SelectedMap) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	var selectedKeys []string
-	// Find selected element(s)
+	// Find selected element
 	for k, v := range dataMap {
 		// If bool
 		if selectedBool, ok := v.Selected.(bool); ok {
 			if selectedBool {
-				selectedKeys = append(selectedKeys, k)
+				*s = SelectedMap(k)
 			}
 		}
 
 		// If float64
 		if selectedInt, ok := v.Selected.(float64); ok {
 			if selectedInt == 1 {
-				selectedKeys = append(selectedKeys, k)
+				*s = SelectedMap(k)
 			}
 		}
 	}
-	sort.Strings(selectedKeys)
-	*s = SelectedMap(strings.Join(selectedKeys, ","))
 
 	return nil
 }
