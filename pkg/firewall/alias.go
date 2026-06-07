@@ -20,16 +20,17 @@ var AliasOpts = api.ReqOpts{
 // Data structs
 
 type Alias struct {
-	Enabled     string                `json:"enabled"`
-	Name        string                `json:"name"`
-	Type        api.SelectedMap       `json:"type"`
-	IPProtocol  api.SelectedMapList   `json:"proto"`
-	Interface   api.SelectedMap       `json:"interface"`
-	Content     api.SelectedMapListNL `json:"content"`
-	Categories  api.SelectedMapList   `json:"categories"`
-	UpdateFreq  string                `json:"updatefreq"`
-	Statistics  string                `json:"counters"`
-	Description string                `json:"description"`
+	Enabled        string                `json:"enabled"`
+	Name           string                `json:"name"`
+	Type           api.SelectedMap       `json:"type"`
+	IPProtocol     api.SelectedMapList   `json:"proto"`
+	Interface      api.SelectedMap       `json:"interface"`
+	Content        api.SelectedMapListNL `json:"content"`
+	Categories     api.SelectedMapList   `json:"categories"`
+	UpdateFreq     string                `json:"updatefreq"`
+	PathExpression string                `json:"path_expression"`
+	Statistics     string                `json:"counters"`
+	Description    string                `json:"description"`
 }
 
 // CRUD operations
