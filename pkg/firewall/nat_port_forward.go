@@ -32,7 +32,7 @@ type NatPortForward struct {
 	Disabled      string                 `json:"disabled"`
 	NoRDR         string                 `json:"nordr"`
 	Sequence      string                 `json:"sequence"`
-	Interface     api.SelectedMap        `json:"interface"`
+	Interface     api.SelectedMapList    `json:"interface"`
 	IPProtocol    api.SelectedMap        `json:"ipprotocol"`
 	Protocol      api.SelectedMap        `json:"protocol"`
 	Source        NatPortForwardLocation `json:"source"`
