@@ -129,40 +129,51 @@ type InterfaceIPv6 struct {
 }
 
 type InterfaceInfo struct {
-	Flags             []string        `json:"flags,omitempty"`
-	Capabilities      []string        `json:"capabilities,omitempty"`
-	Options           []string        `json:"options,omitempty"`
-	MacAddr           string          `json:"macaddr,omitempty"`
-	SupportedMedia    []string        `json:"supported_media,omitempty"`
-	IsPhysical        bool            `json:"is_physical,omitempty"`
-	Device            string          `json:"device,omitempty"`
-	MTU               string          `json:"mtu,omitempty"`
-	MacAddrHw         string          `json:"macaddr_hw,omitempty"`
-	Media             string          `json:"media,omitempty"`
-	MediaRaw          string          `json:"media_raw,omitempty"`
-	Status            string          `json:"status,omitempty"`
-	ND6               InterfaceND6    `json:"nd6,omitempty"`
-	Routes            []string        `json:"routes,omitempty"`
-	Config            InterfaceConfig `json:"config,omitempty"`
-	IfctlNameserver   []string        `json:"ifctl.nameserver,omitempty"`
-	IfctlRouter       []string        `json:"ifctl.router,omitempty"`
-	IfctlPrefix       []string        `json:"ifctl.prefix,omitempty"`
-	IfctlSearchdomain []string        `json:"ifctl.searchdomain,omitempty"`
-	Identifier        string          `json:"identifier,omitempty"`
-	Description       string          `json:"description,omitempty"`
-	Enabled           bool            `json:"enabled,omitempty"`
-	LinkType          string          `json:"link_type,omitempty"`
-	Addr4             string          `json:"addr4,omitempty"`
-	Addr6             string          `json:"addr6,omitempty"`
-	IPv4              []InterfaceIPv4 `json:"ipv4,omitempty"`
-	IPv6              []InterfaceIPv6 `json:"ipv6,omitempty"`
-	VLANTag           string          `json:"vlan_tag,omitempty"`
-	Gateways          []string        `json:"gateways,omitempty"`
-	Groups            []string        `json:"groups,omitempty"`
-	VLAN              InterfaceVlan   `json:"vlan,omitempty"`
-	LaggProto         string          `json:"laggproto,omitempty"`
-	LaggHash          string          `json:"lagghash,omitempty"`
-	LaggOptions       string          `json:"laggoptions,omitempty"`
+	Flags             []string                `json:"flags,omitempty"`
+	Capabilities      []string                `json:"capabilities,omitempty"`
+	Options           []string                `json:"options,omitempty"`
+	MacAddr           string                  `json:"macaddr,omitempty"`
+	SupportedMedia    []string                `json:"supported_media,omitempty"`
+	IsPhysical        bool                    `json:"is_physical,omitempty"`
+	Device            string                  `json:"device,omitempty"`
+	MTU               string                  `json:"mtu,omitempty"`
+	MacAddrHw         string                  `json:"macaddr_hw,omitempty"`
+	Media             string                  `json:"media,omitempty"`
+	MediaRaw          string                  `json:"media_raw,omitempty"`
+	Status            string                  `json:"status,omitempty"`
+	ND6               InterfaceND6            `json:"nd6,omitempty"`
+	Routes            []string                `json:"routes,omitempty"`
+	Config            InterfaceConfig         `json:"config,omitempty"`
+	IfctlNameserver   []string                `json:"ifctl.nameserver,omitempty"`
+	IfctlRouter       []string                `json:"ifctl.router,omitempty"`
+	IfctlPrefix       []string                `json:"ifctl.prefix,omitempty"`
+	IfctlSearchdomain []string                `json:"ifctl.searchdomain,omitempty"`
+	Identifier        string                  `json:"identifier,omitempty"`
+	Description       string                  `json:"description,omitempty"`
+	Enabled           bool                    `json:"enabled,omitempty"`
+	LinkType          string                  `json:"link_type,omitempty"`
+	Addr4             string                  `json:"addr4,omitempty"`
+	Addr6             string                  `json:"addr6,omitempty"`
+	IPv4              []InterfaceIPv4         `json:"ipv4,omitempty"`
+	IPv6              []InterfaceIPv6         `json:"ipv6,omitempty"`
+	VLANTag           string                  `json:"vlan_tag,omitempty"`
+	Gateways          []string                `json:"gateways,omitempty"`
+	Groups            []string                `json:"groups,omitempty"`
+	VLAN              InterfaceVlan           `json:"vlan,omitempty"`
+	LaggProto         string                  `json:"laggproto,omitempty"`
+	LaggHash          string                  `json:"lagghash,omitempty"`
+	LaggOptions       InterfaceLaggOptions    `json:"laggoptions,omitempty"`
+	LaggStatistics    InterfaceLaggStatistics `json:"laggstatistics,omitempty"`
+}
+
+type InterfaceLaggOptions struct {
+	Flags       []string `json:"flags,omitempty"`
+	FlowIDShift string   `json:"flowid_shift,omitempty"`
+}
+
+type InterfaceLaggStatistics struct {
+	ActivePorts string `json:"active ports,omitempty"`
+	Flapping    string `json:"flapping,omitempty"`
 }
 
 type InterfaceND6 struct {

@@ -240,8 +240,30 @@ rpc:
           key: lagghash
           omitEmpty: true
         - name: LaggOptions
-          type: string
+          type: InterfaceLaggOptions
           key: laggoptions
+          omitEmpty: true
+        - name: LaggStatistics
+          type: InterfaceLaggStatistics
+          key: laggstatistics
+          omitEmpty: true
+      InterfaceLaggOptions:
+        - name: Flags
+          type: '[]string'
+          key: flags
+          omitEmpty: true
+        - name: FlowIDShift
+          type: string
+          key: flowid_shift
+          omitEmpty: true
+      InterfaceLaggStatistics:
+        - name: ActivePorts
+          type: string
+          key: "active ports"
+          omitEmpty: true
+        - name: Flapping
+          type: string
+          key: flapping
           omitEmpty: true
       InterfaceND6:
         - name: Flags
