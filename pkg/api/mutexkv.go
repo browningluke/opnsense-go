@@ -20,13 +20,37 @@ type mutexKV struct {
 	store map[string]*sync.Mutex
 }
 
-// Locks the mutex for the given key. Caller is responsible for calling Unlock
-// for the same key
-func (m *mutexKV) Lock(key string, ctx context.Context) {
-	m.Get(key).Lock()
+// Lock acquires the mutex for the given key, honouring ctx cancellation.
+// On success the caller is responsible for calling Unlock for the same key.
+// If ctx is cancelled before the lock can be acquired, ctx.Err() is returned
+// and the caller must NOT call Unlock — the acquisition is abandoned and the
+// inner mutex is released as soon as it can be taken.
+func (m *mutexKV) Lock(key string, ctx context.Context) error {
+	mu := m.Get(key)
+
+	acquired := make(chan struct{})
+	go func() {
+		mu.Lock()
+		// If the outer select has already returned via ctx.Done(), nothing
+		// is reading from acquired. Release the lock immediately so it
+		// isn't held forever.
+		select {
+		case acquired <- struct{}{}:
+		default:
+			mu.Unlock()
+		}
+	}()
+
+	select {
+	case <-acquired:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 }
 
-// Unlock the mutex for the given key. Caller must have called Lock for the same key first
+// Unlock releases the mutex for the given key. The caller must have
+// previously held the lock (a successful Lock for the same key).
 func (m *mutexKV) Unlock(key string, ctx context.Context) {
 	m.Get(key).Unlock()
 }
