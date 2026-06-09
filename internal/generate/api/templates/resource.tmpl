@@ -18,8 +18,10 @@ var {{ .Resource.Name }}Opts = api.ReqOpts{
     "",
     {{- else if not (eq .Resource.Endpoints.Reconfigure "") -}}
     "{{ .Resource.Endpoints.Reconfigure }}",
-    {{- else -}}
+    {{- else if not (eq .Controller.ReconfigureEndpoint "") -}}
     {{ .Controller.Name }}ReconfigureEndpoint,
+    {{- else -}}
+    "",
     {{- end }}
 	Monad:               "{{ .Resource.Monad }}",
 }
