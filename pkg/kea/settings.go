@@ -77,13 +77,15 @@ type Result struct {
 func (c *Controller) SettingsDHCPv4Get(ctx context.Context) (*DHCPv4Monad, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/kea/dhcpv4/get",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/kea/dhcpv4/get",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &DHCPv4Monad{}
@@ -98,15 +100,17 @@ func (c *Controller) SettingsDHCPv4Get(ctx context.Context) (*DHCPv4Monad, error
 func (c *Controller) SettingsDHCPv4Update(ctx context.Context, dhcpv4 *DHCPv4Settings) (*Result, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	bodyParams["dhcpv4"] = dhcpv4
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/kea/dhcpv4/set",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/kea/dhcpv4/set",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &Result{}
@@ -121,13 +125,15 @@ func (c *Controller) SettingsDHCPv4Update(ctx context.Context, dhcpv4 *DHCPv4Set
 func (c *Controller) SettingsDHCPv6Get(ctx context.Context) (*DHCPv6Monad, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/kea/dhcpv6/get",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/kea/dhcpv6/get",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &DHCPv6Monad{}
@@ -142,15 +148,17 @@ func (c *Controller) SettingsDHCPv6Get(ctx context.Context) (*DHCPv6Monad, error
 func (c *Controller) SettingsDHCPv6Update(ctx context.Context, dhcpv6 *DHCPv6Settings) (*Result, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	bodyParams["dhcpv6"] = dhcpv6
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/kea/dhcpv6/set",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/kea/dhcpv6/set",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &Result{}
@@ -165,13 +173,15 @@ func (c *Controller) SettingsDHCPv6Update(ctx context.Context, dhcpv6 *DHCPv6Set
 func (c *Controller) SettingsReconfigure(ctx context.Context) (*ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/kea/service/reconfigure",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/kea/service/reconfigure",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ActionResult{}

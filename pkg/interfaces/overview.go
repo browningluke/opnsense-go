@@ -252,13 +252,15 @@ type InterfacesInfoResponse struct {
 func (c *Controller) OverviewGet(ctx context.Context) (*InterfacesInfoResponse, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/interfaces/overview/interfaces_info",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/interfaces/overview/interfaces_info",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &InterfacesInfoResponse{}

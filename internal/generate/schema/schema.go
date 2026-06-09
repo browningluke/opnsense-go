@@ -74,10 +74,22 @@ type RPCData struct {
 }
 
 type Parameter struct {
-	Name            string `yaml:"name"`
-	Optional        bool   `yaml:"optional"`
-	IsBodyParameter bool   `yaml:"bodyParameter"`
-	CustomType      string `yaml:"customType"`
+	Name             string `yaml:"name"`
+	Key              string `yaml:"key"`
+	Optional         bool   `yaml:"optional"`
+	IsBodyParameter  bool   `yaml:"bodyParameter"`
+	IsQueryParameter bool   `yaml:"queryParameter"`
+	CustomType       string `yaml:"customType"`
+}
+
+// KeyOrName returns the wire/URL key the API expects for this parameter.
+// Defaults to Name when Key is unset; lets schemas use a Go-safe variable
+// name (e.g. keyType) while emitting the actual API key (e.g. ?type=).
+func (p *Parameter) KeyOrName() string {
+	if p.Key != "" {
+		return p.Key
+	}
+	return p.Name
 }
 
 type RPCCallData struct {

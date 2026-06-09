@@ -15,13 +15,15 @@ import (
 func (c *Controller) ServiceReconfigure(ctx context.Context) (*api.ReconfigureStatusResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/dnsmasq/service/reconfigure",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/dnsmasq/service/reconfigure",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ReconfigureStatusResult{}

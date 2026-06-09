@@ -117,13 +117,15 @@ type SettingsMonad struct {
 func (c *Controller) SettingsGet(ctx context.Context) (*SettingsMonad, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/unbound/settings/get",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/unbound/settings/get",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &SettingsMonad{}
@@ -138,15 +140,17 @@ func (c *Controller) SettingsGet(ctx context.Context) (*SettingsMonad, error) {
 func (c *Controller) SettingsUpdate(ctx context.Context, unbound *Settings) (*Result, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	bodyParams["unbound"] = unbound
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/unbound/settings/set",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/unbound/settings/set",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &Result{}
@@ -161,13 +165,15 @@ func (c *Controller) SettingsUpdate(ctx context.Context, unbound *Settings) (*Re
 func (c *Controller) SettingsReconfigure(ctx context.Context) (*ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/unbound/service/reconfigure",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/unbound/service/reconfigure",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ActionResult{}
@@ -182,13 +188,15 @@ func (c *Controller) SettingsReconfigure(ctx context.Context) (*ActionResult, er
 func (c *Controller) SettingsReconfigureGeneral(ctx context.Context) (*ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/unbound/service/reconfigure_general",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/unbound/service/reconfigure_general",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ActionResult{}
