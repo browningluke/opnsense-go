@@ -31,7 +31,9 @@ func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.Raw
 func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpoint string) (string, error) {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
+		return "", err
+	}
 	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 	// Wrap resource
@@ -152,7 +154,9 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
+		return err
+	}
 	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 	respJson := &deleteResp{}
