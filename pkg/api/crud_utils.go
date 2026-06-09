@@ -127,15 +127,13 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 	}
 
 	// Find key in returned list
-	i := 0
-	for key, _ := range reqData {
+	for key := range reqData {
 		r := new(K)
 		if err := json.Unmarshal(reqData[key], r); err != nil {
 			return nil, err
 		}
 
 		resources = append(resources, *r)
-		i++
 	}
 
 	if len(resources) == 0 {
