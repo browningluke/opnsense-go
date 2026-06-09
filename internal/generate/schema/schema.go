@@ -3,6 +3,7 @@ package schema
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -138,10 +139,21 @@ func GetControllerNames() []string {
 
 	var controllerNames []string
 	for _, file := range files {
+		// Skip directories and non-YAML entries (.DS_Store, README.md,
+		// editor swap files, etc.). Without this guard, a single stray
+		// file in schema/ makes the generator panic with an opaque
+		// yaml.Unmarshal error.
+		if file.IsDir() {
+			continue
+		}
+		name := file.Name()
+		if !strings.HasSuffix(name, ".yml") && !strings.HasSuffix(name, ".yaml") {
+			continue
+		}
 		controllerNames = append(
 			controllerNames,
 			// Get load controller name from schema file
-			newController(fmt.Sprintf("%s/%s", relativePathToSchema, file.Name())).Name,
+			newController(fmt.Sprintf("%s/%s", relativePathToSchema, name)).Name,
 		)
 	}
 	return controllerNames
