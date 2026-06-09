@@ -14,7 +14,12 @@ func resourceWrap[K any](monad string, resource K) map[string]K {
 }
 
 func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.RawMessage) error {
-	wrapped := reqData[monad]
+	wrapped, ok := reqData[monad]
+	if !ok || len(wrapped) == 0 {
+		// Upstream returned 200 but the response did not include the
+		// configured monad — treat as not-found.
+		return errs.NewNotFoundError()
+	}
 
 	if err := json.Unmarshal(wrapped, resource); err != nil {
 		return err
