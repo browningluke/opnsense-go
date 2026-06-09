@@ -14,6 +14,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
 	"github.com/browningluke/opnsense-go/pkg/kea"
+	"github.com/browningluke/opnsense-go/pkg/openvpn"
 	"github.com/browningluke/opnsense-go/pkg/quagga"
 	"github.com/browningluke/opnsense-go/pkg/routes"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
@@ -32,6 +33,7 @@ type Client interface {
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
 	Kea() *kea.Controller
+	Openvpn() *openvpn.Controller
 	Quagga() *quagga.Controller
 	Routes() *routes.Controller
 	Unbound() *unbound.Controller
@@ -85,6 +87,10 @@ func (c *client) Ipsec() *ipsec.Controller {
 
 func (c *client) Kea() *kea.Controller {
 	return &kea.Controller{Api: c.a}
+}
+
+func (c *client) Openvpn() *openvpn.Controller {
+	return &openvpn.Controller{Api: c.a}
 }
 
 func (c *client) Quagga() *quagga.Controller {
