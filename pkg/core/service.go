@@ -34,13 +34,15 @@ type ServiceItem struct {
 func (c *Controller) ServiceSearch(ctx context.Context) (*SearchServicesResponse, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/service/search",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/service/search",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &SearchServicesResponse{}
@@ -55,15 +57,17 @@ func (c *Controller) ServiceSearch(ctx context.Context) (*SearchServicesResponse
 func (c *Controller) ServiceStart(ctx context.Context, id string) (*ServiceActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/service/start",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/service/start",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ServiceActionResult{}
@@ -78,15 +82,17 @@ func (c *Controller) ServiceStart(ctx context.Context, id string) (*ServiceActio
 func (c *Controller) ServiceStop(ctx context.Context, id string) (*ServiceActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/service/stop",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/service/stop",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ServiceActionResult{}
@@ -101,15 +107,17 @@ func (c *Controller) ServiceStop(ctx context.Context, id string) (*ServiceAction
 func (c *Controller) ServiceRestart(ctx context.Context, id string) (*ServiceActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/service/restart",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/service/restart",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &ServiceActionResult{}
