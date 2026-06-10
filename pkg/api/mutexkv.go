@@ -29,14 +29,12 @@ func (m *mutexKV) Lock(key string, ctx context.Context) error {
 	mu := m.Get(key)
 
 	acquired := make(chan struct{})
+	abandoned := make(chan struct{})
 	go func() {
 		mu.Lock()
-		// If the outer select has already returned via ctx.Done(), nothing
-		// is reading from acquired. Release the lock immediately so it
-		// isn't held forever.
 		select {
 		case acquired <- struct{}{}:
-		default:
+		case <-abandoned:
 			mu.Unlock()
 		}
 	}()
@@ -45,6 +43,7 @@ func (m *mutexKV) Lock(key string, ctx context.Context) error {
 	case <-acquired:
 		return nil
 	case <-ctx.Done():
+		close(abandoned)
 		return ctx.Err()
 	}
 }
