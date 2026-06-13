@@ -111,6 +111,31 @@ resources:
         type: string
         key: verify
 
+  - name: Acl
+    filename: acl
+    monad: acl
+    endpoints:
+      add: "/unbound/settings/add_acl"
+      get: "/unbound/settings/get_acl"
+      update: "/unbound/settings/set_acl"
+      delete: "/unbound/settings/del_acl"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Networks
+        type: SelectedMapList
+        key: networks
+      - name: Description
+        type: string
+        key: description
+
 
 rpc:
   - name: "Settings"
