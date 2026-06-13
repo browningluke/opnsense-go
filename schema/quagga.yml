@@ -3,7 +3,7 @@ name: quagga
 reconfigureEndpoint: "/quagga/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
 resources:
 
-  # quagga resources
+  # BGP child resources
 
   - name: BGPNeighbor
     filename: bgp_neighbor
@@ -23,9 +23,15 @@ resources:
       - name: PeerIP
         type: string
         key: address
+      - name: RemoteASMode
+        type: SelectedMap
+        key: remote_as_mode
       - name: RemoteAS
         type: string
         key: remoteas
+      - name: LocalAS
+        type: string
+        key: localas
       - name: Password
         type: string
         key: password
@@ -56,6 +62,9 @@ resources:
       - name: RRClient
         type: string
         key: rrclient
+      - name: SoftReconfigurationInbound
+        type: string
+        key: soft_reconfiguration_inbound
       - name: BFD
         type: string
         key: bfd
@@ -74,12 +83,21 @@ resources:
       - name: ASOverride
         type: string
         key: asoverride
+      - name: RemovePrivateAS
+        type: SelectedMap
+        key: removeprivateas
+      - name: AllowASIn
+        type: SelectedMap
+        key: allowas_in
       - name: DisableConnectedCheck
         type: string
         key: disable_connected_check
       - name: AttributeUnchanged
-        type: SelectedMap
+        type: SelectedMapList
         key: attributeunchanged
+      - name: Capabilities
+        type: SelectedMapList
+        key: capabilities
       - name: PrefixListIn
         type: SelectedMap
         key: linkedPrefixlistIn
@@ -92,6 +110,9 @@ resources:
       - name: RouteMapOut
         type: SelectedMap
         key: linkedRoutemapOut
+      - name: PeerGroup
+        type: SelectedMap
+        key: peergroup
 
   - name: BGPASPath
     filename: bgp_aspath
@@ -213,3 +234,851 @@ resources:
       - name: Set
         type: string
         key: set
+
+  - name: BGPPeerGroup
+    filename: bgp_peergroup
+    monad: peergroup
+    endpoints:
+      add: "/quagga/bgp/add_peergroup"
+      get: "/quagga/bgp/get_peergroup"
+      update: "/quagga/bgp/set_peergroup"
+      delete: "/quagga/bgp/del_peergroup"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: RemoteASMode
+        type: SelectedMap
+        key: remote_as_mode
+      - name: RemoteAS
+        type: string
+        key: remoteas
+      - name: Family
+        type: SelectedMap
+        key: family
+      - name: ListenRanges
+        type: SelectedMapList
+        key: listenranges
+      - name: UpdateSource
+        type: SelectedMap
+        key: updatesource
+      - name: NextHopSelf
+        type: string
+        key: nexthopself
+      - name: DefaultOriginate
+        type: string
+        key: defaultoriginate
+      - name: PrefixListIn
+        type: SelectedMap
+        key: linkedPrefixlistIn
+      - name: PrefixListOut
+        type: SelectedMap
+        key: linkedPrefixlistOut
+      - name: RouteMapIn
+        type: SelectedMap
+        key: linkedRoutemapIn
+      - name: RouteMapOut
+        type: SelectedMap
+        key: linkedRoutemapOut
+
+  - name: BGPRedistribution
+    filename: bgp_redistribution
+    monad: redistribution
+    endpoints:
+      add: "/quagga/bgp/add_redistribution"
+      get: "/quagga/bgp/get_redistribution"
+      update: "/quagga/bgp/set_redistribution"
+      delete: "/quagga/bgp/del_redistribution"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Redistribute
+        type: SelectedMap
+        key: redistribute
+      - name: LinkedRouteMap
+        type: SelectedMap
+        key: linkedRoutemap
+
+  # BFD child resources
+
+  - name: BFDNeighbor
+    filename: bfd_neighbor
+    monad: neighbor
+    endpoints:
+      add: "/quagga/bfd/add_neighbor"
+      get: "/quagga/bfd/get_neighbor"
+      update: "/quagga/bfd/set_neighbor"
+      delete: "/quagga/bfd/del_neighbor"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Address
+        type: string
+        key: address
+      - name: MultiHop
+        type: string
+        key: multihop
+      - name: LocalAddress
+        type: string
+        key: localaddress
+      - name: InterfaceName
+        type: SelectedMap
+        key: interfacename
+      - name: DetectMultiplier
+        type: string
+        key: detect_multiplier
+      - name: ReceiveInterval
+        type: string
+        key: receive_interval
+      - name: TransmitInterval
+        type: string
+        key: transmit_interval
+
+  # OSPF child resources (URL space: /quagga/ospfsettings/; monad: ospf)
+
+  - name: OSPFArea
+    filename: ospf_area
+    monad: area
+    endpoints:
+      add: "/quagga/ospfsettings/add_area"
+      get: "/quagga/ospfsettings/get_area"
+      update: "/quagga/ospfsettings/set_area"
+      delete: "/quagga/ospfsettings/del_area"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: AreaID
+        type: string
+        key: id
+      - name: Type
+        type: SelectedMap
+        key: type
+
+  - name: OSPFInterface
+    filename: ospf_interface
+    monad: interface
+    endpoints:
+      add: "/quagga/ospfsettings/add_interface"
+      get: "/quagga/ospfsettings/get_interface"
+      update: "/quagga/ospfsettings/set_interface"
+      delete: "/quagga/ospfsettings/del_interface"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: InterfaceName
+        type: SelectedMap
+        key: interfacename
+      - name: AuthType
+        type: SelectedMap
+        key: authtype
+      - name: AuthKey
+        type: string
+        key: authkey
+      - name: AuthKeyID
+        type: string
+        key: authkey_id
+      - name: Area
+        type: string
+        key: area
+      - name: Cost
+        type: string
+        key: cost
+      - name: CostDemoted
+        type: string
+        key: cost_demoted
+      - name: CARPDependOn
+        type: SelectedMap
+        key: carp_depend_on
+      - name: HelloInterval
+        type: string
+        key: hellointerval
+      - name: DeadInterval
+        type: string
+        key: deadinterval
+      - name: RetransmitInterval
+        type: string
+        key: retransmitinterval
+      - name: TransmitDelay
+        type: string
+        key: transmitdelay
+      - name: Priority
+        type: string
+        key: priority
+      - name: BFD
+        type: string
+        key: bfd
+      - name: NetworkType
+        type: SelectedMap
+        key: networktype
+      - name: P2MPOptions
+        type: SelectedMap
+        key: p2mpoptions
+
+  - name: OSPFNeighbor
+    filename: ospf_neighbor
+    monad: neighbor
+    endpoints:
+      add: "/quagga/ospfsettings/add_neighbor"
+      get: "/quagga/ospfsettings/get_neighbor"
+      update: "/quagga/ospfsettings/set_neighbor"
+      delete: "/quagga/ospfsettings/del_neighbor"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Address
+        type: string
+        key: address
+      - name: PollInterval
+        type: string
+        key: pollinterval
+      - name: Priority
+        type: string
+        key: priority
+
+  - name: OSPFNetwork
+    filename: ospf_network
+    monad: network
+    endpoints:
+      add: "/quagga/ospfsettings/add_network"
+      get: "/quagga/ospfsettings/get_network"
+      update: "/quagga/ospfsettings/set_network"
+      delete: "/quagga/ospfsettings/del_network"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: IPAddr
+        type: string
+        key: ipaddr
+      - name: Area
+        type: string
+        key: area
+      - name: NetMask
+        type: string
+        key: netmask
+      - name: AreaRange
+        type: string
+        key: arearange
+      - name: LinkedPrefixListIn
+        type: SelectedMap
+        key: linkedPrefixlistIn
+      - name: LinkedPrefixListOut
+        type: SelectedMap
+        key: linkedPrefixlistOut
+
+  - name: OSPFPrefixList
+    filename: ospf_prefixlist
+    monad: prefixlist
+    endpoints:
+      add: "/quagga/ospfsettings/add_prefixlist"
+      get: "/quagga/ospfsettings/get_prefixlist"
+      update: "/quagga/ospfsettings/set_prefixlist"
+      delete: "/quagga/ospfsettings/del_prefixlist"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: SequenceNumber
+        type: string
+        key: seqnumber
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Network
+        type: string
+        key: network
+
+  - name: OSPFRedistribution
+    filename: ospf_redistribution
+    monad: redistribution
+    endpoints:
+      add: "/quagga/ospfsettings/add_redistribution"
+      get: "/quagga/ospfsettings/get_redistribution"
+      update: "/quagga/ospfsettings/set_redistribution"
+      delete: "/quagga/ospfsettings/del_redistribution"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Redistribute
+        type: SelectedMap
+        key: redistribute
+      - name: LinkedRouteMap
+        type: SelectedMap
+        key: linkedRoutemap
+
+  - name: OSPFRouteMap
+    filename: ospf_routemap
+    monad: routemap
+    endpoints:
+      add: "/quagga/ospfsettings/add_routemap"
+      get: "/quagga/ospfsettings/get_routemap"
+      update: "/quagga/ospfsettings/set_routemap"
+      delete: "/quagga/ospfsettings/del_routemap"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: RouteMapID
+        type: string
+        key: id
+      - name: PrefixList
+        type: SelectedMap
+        key: match2
+      - name: Set
+        type: string
+        key: set
+
+  # OSPFv3 child resources (URL space: /quagga/ospf6settings/; monad: ospf6)
+
+  - name: OSPF6Interface
+    filename: ospf6_interface
+    monad: interface
+    endpoints:
+      add: "/quagga/ospf6settings/add_interface"
+      get: "/quagga/ospf6settings/get_interface"
+      update: "/quagga/ospf6settings/set_interface"
+      delete: "/quagga/ospf6settings/del_interface"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: InterfaceName
+        type: SelectedMap
+        key: interfacename
+      - name: Area
+        type: string
+        key: area
+      - name: Passive
+        type: string
+        key: passive
+      - name: Cost
+        type: string
+        key: cost
+      - name: CostDemoted
+        type: string
+        key: cost_demoted
+      - name: CARPDependOn
+        type: SelectedMap
+        key: carp_depend_on
+      - name: HelloInterval
+        type: string
+        key: hellointerval
+      - name: DeadInterval
+        type: string
+        key: deadinterval
+      - name: RetransmitInterval
+        type: string
+        key: retransmitinterval
+      - name: TransmitDelay
+        type: string
+        key: transmitdelay
+      - name: Priority
+        type: string
+        key: priority
+      - name: BFD
+        type: string
+        key: bfd
+      - name: NetworkType
+        type: SelectedMap
+        key: networktype
+
+  - name: OSPF6Network
+    filename: ospf6_network
+    monad: network
+    endpoints:
+      add: "/quagga/ospf6settings/add_network"
+      get: "/quagga/ospf6settings/get_network"
+      update: "/quagga/ospf6settings/set_network"
+      delete: "/quagga/ospf6settings/del_network"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: IPAddr
+        type: string
+        key: ipaddr
+      - name: NetMask
+        type: string
+        key: netmask
+      - name: Area
+        type: string
+        key: area
+      - name: AreaRange
+        type: string
+        key: arearange
+      - name: LinkedPrefixListIn
+        type: SelectedMap
+        key: linkedPrefixlistIn
+      - name: LinkedPrefixListOut
+        type: SelectedMap
+        key: linkedPrefixlistOut
+
+  - name: OSPF6PrefixList
+    filename: ospf6_prefixlist
+    monad: prefixlist
+    endpoints:
+      add: "/quagga/ospf6settings/add_prefixlist"
+      get: "/quagga/ospf6settings/get_prefixlist"
+      update: "/quagga/ospf6settings/set_prefixlist"
+      delete: "/quagga/ospf6settings/del_prefixlist"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: SequenceNumber
+        type: string
+        key: seqnumber
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Network
+        type: string
+        key: network
+
+  - name: OSPF6Redistribution
+    filename: ospf6_redistribution
+    monad: redistribution
+    endpoints:
+      add: "/quagga/ospf6settings/add_redistribution"
+      get: "/quagga/ospf6settings/get_redistribution"
+      update: "/quagga/ospf6settings/set_redistribution"
+      delete: "/quagga/ospf6settings/del_redistribution"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Description
+        type: string
+        key: description
+      - name: Redistribute
+        type: SelectedMap
+        key: redistribute
+      - name: LinkedRouteMap
+        type: SelectedMap
+        key: linkedRoutemap
+
+  - name: OSPF6RouteMap
+    filename: ospf6_routemap
+    monad: routemap
+    endpoints:
+      add: "/quagga/ospf6settings/add_routemap"
+      get: "/quagga/ospf6settings/get_routemap"
+      update: "/quagga/ospf6settings/set_routemap"
+      delete: "/quagga/ospf6settings/del_routemap"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: RouteMapID
+        type: string
+        key: id
+      - name: PrefixList
+        type: SelectedMap
+        key: match2
+      - name: Set
+        type: string
+        key: set
+
+  # Static route child resources
+
+  - name: StaticRoute
+    filename: static_route
+    monad: route
+    endpoints:
+      add: "/quagga/static/add_route"
+      get: "/quagga/static/get_route"
+      update: "/quagga/static/set_route"
+      delete: "/quagga/static/del_route"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Network
+        type: string
+        key: network
+      - name: Gateway
+        type: string
+        key: gateway
+      - name: InterfaceName
+        type: SelectedMap
+        key: interfacename
+      - name: BFD
+        type: string
+        key: bfd
+
+rpc:
+
+  # General singleton (monad: general)
+  - name: General
+    filename: general
+    customTypes:
+      QuaggaGeneral:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Profile
+          type: SelectedMap
+          key: profile
+        - name: EnableCarp
+          type: string
+          key: enablecarp
+        - name: EnableSyslog
+          type: string
+          key: enablesyslog
+        - name: EnableSNMP
+          type: string
+          key: enablesnmp
+        - name: SyslogLevel
+          type: SelectedMap
+          key: sysloglevel
+        - name: FWRules
+          type: string
+          key: fwrules
+      GeneralGetResult:
+        - name: General
+          type: QuaggaGeneral
+          key: general
+      GeneralSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/general/get"
+        result_type: GeneralGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/general/set"
+        params:
+          - name: general
+            optional: false
+            bodyParameter: true
+            customType: QuaggaGeneral
+        result_type: GeneralSetResult
+
+  # BFD singleton (monad: bfd)
+  - name: BFD
+    filename: bfd
+    customTypes:
+      QuaggaBFD:
+        - name: Enabled
+          type: string
+          key: enabled
+      BFDGetResult:
+        - name: BFD
+          type: QuaggaBFD
+          key: bfd
+      BFDSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/bfd/get"
+        result_type: BFDGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/bfd/set"
+        params:
+          - name: bfd
+            optional: false
+            bodyParameter: true
+            customType: QuaggaBFD
+        result_type: BFDSetResult
+
+  # BGP singleton (monad: bgp)
+  - name: BGP
+    filename: bgp
+    customTypes:
+      QuaggaBGP:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: ASNumber
+          type: string
+          key: asnumber
+        - name: Distance
+          type: string
+          key: distance
+        - name: RouterID
+          type: string
+          key: routerid
+        - name: Graceful
+          type: string
+          key: graceful
+        - name: NetworkImportCheck
+          type: string
+          key: networkimportcheck
+        - name: EnforceFirstAS
+          type: string
+          key: enforce_first_as
+        - name: LogNeighborChanges
+          type: string
+          key: logneighborchanges
+        - name: Networks
+          type: SelectedMapList
+          key: networks
+        - name: BestPath
+          type: SelectedMapList
+          key: bestpath
+        - name: MaximumPaths
+          type: string
+          key: maximumpaths
+        - name: MaximumPathsIBGP
+          type: string
+          key: maximumpathsibgp
+      BGPGetResult:
+        - name: BGP
+          type: QuaggaBGP
+          key: bgp
+      BGPSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/bgp/get"
+        result_type: BGPGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/bgp/set"
+        params:
+          - name: bgp
+            optional: false
+            bodyParameter: true
+            customType: QuaggaBGP
+        result_type: BGPSetResult
+
+  # OSPF singleton (URL space: /quagga/ospfsettings/; monad: ospf)
+  - name: OSPF
+    filename: ospf
+    customTypes:
+      QuaggaOSPF:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: CARPDemote
+          type: string
+          key: carp_demote
+        - name: RouterID
+          type: string
+          key: routerid
+        - name: CostReference
+          type: string
+          key: costreference
+        - name: LogAdjacencyChanges
+          type: string
+          key: logadjacencychanges
+        - name: Originate
+          type: string
+          key: originate
+        - name: OriginateAlways
+          type: string
+          key: originatealways
+        - name: OriginateMetric
+          type: string
+          key: originatemetric
+        - name: PassiveInterfaces
+          type: SelectedMapList
+          key: passiveinterfaces
+      OSPFGetResult:
+        - name: OSPF
+          type: QuaggaOSPF
+          key: ospf
+      OSPFSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/ospfsettings/get"
+        result_type: OSPFGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/ospfsettings/set"
+        params:
+          - name: ospf
+            optional: false
+            bodyParameter: true
+            customType: QuaggaOSPF
+        result_type: OSPFSetResult
+
+  # OSPFv3 singleton (URL space: /quagga/ospf6settings/; monad: ospf6)
+  - name: OSPF6
+    filename: ospf6
+    customTypes:
+      QuaggaOSPF6:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: CARPDemote
+          type: string
+          key: carp_demote
+        - name: RouterID
+          type: string
+          key: routerid
+        - name: Originate
+          type: string
+          key: originate
+        - name: OriginateAlways
+          type: string
+          key: originatealways
+        - name: OriginateMetric
+          type: string
+          key: originatemetric
+      OSPF6GetResult:
+        - name: OSPF6
+          type: QuaggaOSPF6
+          key: ospf6
+      OSPF6SetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/ospf6settings/get"
+        result_type: OSPF6GetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/ospf6settings/set"
+        params:
+          - name: ospf6
+            optional: false
+            bodyParameter: true
+            customType: QuaggaOSPF6
+        result_type: OSPF6SetResult
+
+  # RIP singleton (monad: rip)
+  - name: RIP
+    filename: rip
+    customTypes:
+      QuaggaRIP:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Version
+          type: string
+          key: version
+        - name: Networks
+          type: SelectedMapList
+          key: networks
+        - name: PassiveInterfaces
+          type: SelectedMapList
+          key: passiveinterfaces
+        - name: Redistribute
+          type: SelectedMapList
+          key: redistribute
+        - name: DefaultMetric
+          type: string
+          key: defaultmetric
+      RIPGetResult:
+        - name: RIP
+          type: QuaggaRIP
+          key: rip
+      RIPSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/rip/get"
+        result_type: RIPGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/rip/set"
+        params:
+          - name: rip
+            optional: false
+            bodyParameter: true
+            customType: QuaggaRIP
+        result_type: RIPSetResult
+
+  # Static singleton (monad: staticd)
+  - name: Static
+    filename: static
+    customTypes:
+      QuaggaStatic:
+        - name: Enabled
+          type: string
+          key: enabled
+      StaticGetResult:
+        - name: Static
+          type: QuaggaStatic
+          key: staticd
+      StaticSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/quagga/static/get"
+        result_type: StaticGetResult
+      - name: Set
+        method: POST
+        endpoint: "/quagga/static/set"
+        params:
+          - name: staticd
+            optional: false
+            bodyParameter: true
+            customType: QuaggaStatic
+        result_type: StaticSetResult
+
+  # Service RPC (reconfigure)
+  - name: Service
+    filename: service
+    customTypes:
+      ReconfigureResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: Reconfigure
+        method: POST
+        endpoint: "/quagga/service/reconfigure"
+        result_type: ReconfigureResult
