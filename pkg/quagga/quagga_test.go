@@ -3,10 +3,20 @@ package quagga
 import (
 	"context"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
+
+// skipIfUnavailable skips the test when the endpoint doesn't exist on this
+// platform (older os-frr versions lack RIP, staticd, and OSPFv3 redistribution).
+func skipIfUnavailable(t *testing.T, err error) {
+	t.Helper()
+	if err != nil && strings.Contains(err.Error(), "404") {
+		t.Skipf("endpoint not available on this os-frr version: %v", err)
+	}
+}
 
 func newController(t *testing.T) Controller {
 	t.Helper()
@@ -880,6 +890,7 @@ func TestOSPF6Redistribution(t *testing.T) {
 	}
 
 	id, err := c.AddOSPF6Redistribution(ctx, rd)
+	skipIfUnavailable(t, err)
 	if err != nil {
 		t.Fatalf("AddOSPF6Redistribution failed: %v", err)
 	}
@@ -917,6 +928,7 @@ func TestRIPSingleton(t *testing.T) {
 	ctx := context.Background()
 
 	orig, err := c.RIPGet(ctx)
+	skipIfUnavailable(t, err)
 	if err != nil {
 		t.Fatalf("RIPGet failed: %v", err)
 	}
@@ -953,6 +965,7 @@ func TestStaticSingleton(t *testing.T) {
 	ctx := context.Background()
 
 	orig, err := c.StaticGet(ctx)
+	skipIfUnavailable(t, err)
 	if err != nil {
 		t.Fatalf("StaticGet failed: %v", err)
 	}
@@ -991,6 +1004,7 @@ func TestStaticRoute(t *testing.T) {
 	}
 
 	id, err := c.AddStaticRoute(ctx, route)
+	skipIfUnavailable(t, err)
 	if err != nil {
 		t.Fatalf("AddStaticRoute failed: %v", err)
 	}
