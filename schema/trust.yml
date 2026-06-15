@@ -1,0 +1,263 @@
+---
+name: trust
+reconfigureEndpoint: ""
+resources:
+  - name: Ca
+    filename: ca
+    monad: ca
+    endpoints:
+      add: "/trust/ca/add"
+      get: "/trust/ca/get"
+      update: "/trust/ca/set"
+      delete: "/trust/ca/del"
+      reconfigure: "null"
+    attrs:
+      - name: RefId
+        type: string
+        key: refid
+        omitEmpty: true
+      - name: Description
+        type: string
+        key: descr
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Crt
+        type: string
+        key: crt
+      - name: Prv
+        type: string
+        key: prv
+      - name: Serial
+        type: string
+        key: serial
+        omitEmpty: true
+      - name: CaRef
+        type: SelectedMap
+        key: caref
+      - name: KeyType
+        type: SelectedMap
+        key: key_type
+      - name: Lifetime
+        type: string
+        key: lifetime
+      - name: Digest
+        type: SelectedMap
+        key: digest
+      - name: Country
+        type: SelectedMap
+        key: country
+      - name: State
+        type: string
+        key: state
+      - name: City
+        type: string
+        key: city
+      - name: Organization
+        type: string
+        key: organization
+      - name: OrganizationalUnit
+        type: string
+        key: organizationalunit
+      - name: Email
+        type: string
+        key: email
+      - name: CommonName
+        type: string
+        key: commonname
+      - name: OcspUri
+        type: string
+        key: ocsp_uri
+      - name: CrtPayload
+        type: string
+        key: crt_payload
+        omitEmpty: true
+      - name: PrvPayload
+        type: string
+        key: prv_payload
+        omitEmpty: true
+      - name: Refcount
+        type: string
+        key: refcount
+        omitEmpty: true
+      - name: Name
+        type: string
+        key: name
+        omitEmpty: true
+      - name: ValidFrom
+        type: string
+        key: valid_from
+        omitEmpty: true
+      - name: ValidTo
+        type: string
+        key: valid_to
+        omitEmpty: true
+
+  - name: Cert
+    filename: cert
+    monad: cert
+    endpoints:
+      add: "/trust/cert/add"
+      get: "/trust/cert/get"
+      update: "/trust/cert/set"
+      delete: "/trust/cert/del"
+      reconfigure: "null"
+    attrs:
+      - name: RefId
+        type: string
+        key: refid
+        omitEmpty: true
+      - name: Description
+        type: string
+        key: descr
+      - name: CaRef
+        type: SelectedMap
+        key: caref
+      - name: Crt
+        type: string
+        key: crt
+      - name: Csr
+        type: string
+        key: csr
+      - name: Prv
+        type: string
+        key: prv
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: KeyType
+        type: SelectedMap
+        key: key_type
+      - name: Digest
+        type: SelectedMap
+        key: digest
+      - name: CertType
+        type: SelectedMap
+        key: cert_type
+      - name: Lifetime
+        type: string
+        key: lifetime
+      - name: PrivateKeyLocation
+        type: SelectedMap
+        key: private_key_location
+      - name: Country
+        type: SelectedMap
+        key: country
+      - name: State
+        type: string
+        key: state
+      - name: City
+        type: string
+        key: city
+      - name: Organization
+        type: string
+        key: organization
+      - name: OrganizationalUnit
+        type: string
+        key: organizationalunit
+      - name: Email
+        type: string
+        key: email
+      - name: CommonName
+        type: string
+        key: commonname
+      - name: OcspUri
+        type: string
+        key: ocsp_uri
+      - name: AltnamesDns
+        type: string
+        key: altnames_dns
+      - name: AltnamesIp
+        type: string
+        key: altnames_ip
+      - name: AltnamesUri
+        type: string
+        key: altnames_uri
+      - name: AltnamesEmail
+        type: string
+        key: altnames_email
+      - name: Rfc3280Purpose
+        type: string
+        key: rfc3280_purpose
+      - name: InUse
+        type: string
+        key: in_use
+        omitEmpty: true
+      - name: IsUser
+        type: string
+        key: is_user
+        omitEmpty: true
+      - name: CrtPayload
+        type: string
+        key: crt_payload
+        omitEmpty: true
+      - name: CsrPayload
+        type: string
+        key: csr_payload
+        omitEmpty: true
+      - name: PrvPayload
+        type: string
+        key: prv_payload
+        omitEmpty: true
+      - name: Name
+        type: string
+        key: name
+        omitEmpty: true
+      - name: ValidFrom
+        type: string
+        key: valid_from
+        omitEmpty: true
+      - name: ValidTo
+        type: string
+        key: valid_to
+        omitEmpty: true
+
+rpc:
+  - name: Settings
+    filename: settings
+    customTypes:
+      TrustSettingsMonad:
+        - name: Trust
+          type: TrustSettings
+          key: trust
+      TrustSettings:
+        - name: StoreIntermediateCerts
+          type: string
+          key: store_intermediate_certs
+        - name: InstallCrls
+          type: string
+          key: install_crls
+        - name: FetchCrls
+          type: string
+          key: fetch_crls
+        - name: EnableLegacySect
+          type: string
+          key: enable_legacy_sect
+        - name: EnableConfigConstraints
+          type: string
+          key: enable_config_constraints
+        - name: CipherString
+          type: SelectedMapList
+          key: CipherString
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/trust/settings/get"
+        result_type: TrustSettingsMonad
+      - name: Set
+        method: POST
+        endpoint: "/trust/settings/set"
+        params:
+          - name: trust
+            optional: false
+            bodyParameter: true
+            customType: TrustSettings
+        result_type: ActionResult
+      - name: Reconfigure
+        method: POST
+        endpoint: "/trust/settings/reconfigure"
+        result_type: ActionResult
