@@ -7,6 +7,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/auth"
 	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
+	"github.com/browningluke/opnsense-go/pkg/cron"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
 	"github.com/browningluke/opnsense-go/pkg/dnsmasq"
 	"github.com/browningluke/opnsense-go/pkg/dyndns"
@@ -27,6 +28,7 @@ type Client interface {
 	Auth() *auth.Controller
 	Bind() *bind.Controller
 	Core() *core.Controller
+	Cron() *cron.Controller
 	Diagnostics() *diagnostics.Controller
 	Dnsmasq() *dnsmasq.Controller
 	Dyndns() *dyndns.Controller
@@ -61,6 +63,10 @@ func (c *client) Bind() *bind.Controller {
 
 func (c *client) Core() *core.Controller {
 	return &core.Controller{Api: c.a}
+}
+
+func (c *client) Cron() *cron.Controller {
+	return &cron.Controller{Api: c.a}
 }
 
 func (c *client) Diagnostics() *diagnostics.Controller {
