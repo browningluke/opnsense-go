@@ -1,0 +1,43 @@
+---
+name: syslog
+reconfigureEndpoint: "/syslog/service/reconfigure"
+resources:
+  - name: Destination
+    filename: destination
+    monad: destination
+    endpoints:
+      add: "/syslog/settings/addDestination"
+      get: "/syslog/settings/getDestination"
+      update: "/syslog/settings/setDestination"
+      delete: "/syslog/settings/delDestination"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Transport
+        type: SelectedMap
+        key: transport
+      - name: Level
+        type: SelectedMap
+        key: level
+      - name: Facility
+        type: SelectedMapList
+        key: facility
+      - name: Program
+        type: SelectedMapList
+        key: program
+      - name: Hostname
+        type: string
+        key: hostname
+      - name: Certificate
+        type: SelectedMap
+        key: certificate
+      - name: Port
+        type: string
+        key: port
+      - name: Rfc5424
+        type: string
+        key: rfc5424
+      - name: Description
+        type: string
+        key: description
