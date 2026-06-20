@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"path"
 	"sort"
 	"strings"
 )
@@ -39,18 +40,12 @@ type RPCOpts struct {
 }
 
 func (p *RPCOpts) EndpointURL() string {
-	currentPath := p.BaseEndpoint
+	segments := make([]string, 0, 1+len(p.PathParameters))
+	segments = append(segments, p.BaseEndpoint)
 	for _, param := range p.PathParameters {
-		escapedParam := url.PathEscape(param)
-
-		if currentPath == "" {
-			currentPath = escapedParam
-		} else if strings.HasSuffix(currentPath, "/") {
-			currentPath += escapedParam
-		} else {
-			currentPath += "/" + escapedParam
-		}
+		segments = append(segments, url.PathEscape(param))
 	}
+	currentPath := path.Join(segments...)
 
 	if len(p.QueryParameters) > 0 {
 		keys := make([]string, 0, len(p.QueryParameters))
