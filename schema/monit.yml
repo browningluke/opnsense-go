@@ -1,0 +1,115 @@
+---
+name: monit
+reconfigureEndpoint: "/monit/service/reconfigure"
+resources:
+  - name: Service
+    filename: service
+    monad: service
+    endpoints:
+      add: "/monit/settings/addService"
+      get: "/monit/settings/getService"
+      update: "/monit/settings/setService"
+      delete: "/monit/settings/delService"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Description
+        type: string
+        key: description
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Pidfile
+        type: string
+        key: pidfile
+      - name: Match
+        type: string
+        key: match
+      - name: Path
+        type: string
+        key: path
+      - name: Timeout
+        type: string
+        key: timeout
+      - name: Starttimeout
+        type: string
+        key: starttimeout
+      - name: Address
+        type: string
+        key: address
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Start
+        type: string
+        key: start
+      - name: Stop
+        type: string
+        key: stop
+      - name: Tests
+        type: SelectedMapList
+        key: tests
+      - name: Depends
+        type: SelectedMapList
+        key: depends
+      - name: Polltime
+        type: string
+        key: polltime
+  - name: Test
+    filename: test
+    monad: test
+    endpoints:
+      add: "/monit/settings/addTest"
+      get: "/monit/settings/getTest"
+      update: "/monit/settings/setTest"
+      delete: "/monit/settings/delTest"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Condition
+        type: string
+        key: condition
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Path
+        type: string
+        key: path
+  - name: Alert
+    filename: alert
+    monad: alert
+    endpoints:
+      add: "/monit/settings/addAlert"
+      get: "/monit/settings/getAlert"
+      update: "/monit/settings/setAlert"
+      delete: "/monit/settings/delAlert"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Recipient
+        type: string
+        key: recipient
+      - name: Noton
+        type: string
+        key: noton
+      - name: Events
+        type: SelectedMapList
+        key: events
+      - name: Format
+        type: string
+        key: format
+      - name: Reminder
+        type: string
+        key: reminder
+      - name: Description
+        type: string
+        key: description

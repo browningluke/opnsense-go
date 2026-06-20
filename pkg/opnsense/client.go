@@ -15,9 +15,11 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
 	"github.com/browningluke/opnsense-go/pkg/kea"
+	"github.com/browningluke/opnsense-go/pkg/monit"
 	"github.com/browningluke/opnsense-go/pkg/openvpn"
 	"github.com/browningluke/opnsense-go/pkg/quagga"
 	"github.com/browningluke/opnsense-go/pkg/routes"
+	"github.com/browningluke/opnsense-go/pkg/syslog"
 	"github.com/browningluke/opnsense-go/pkg/trust"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
 	"github.com/browningluke/opnsense-go/pkg/wireguard"
@@ -36,9 +38,11 @@ type Client interface {
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
 	Kea() *kea.Controller
+	Monit() *monit.Controller
 	Openvpn() *openvpn.Controller
 	Quagga() *quagga.Controller
 	Routes() *routes.Controller
+	Syslog() *syslog.Controller
 	Trust() *trust.Controller
 	Unbound() *unbound.Controller
 	Wireguard() *wireguard.Controller
@@ -97,6 +101,10 @@ func (c *client) Kea() *kea.Controller {
 	return &kea.Controller{Api: c.a}
 }
 
+func (c *client) Monit() *monit.Controller {
+	return &monit.Controller{Api: c.a}
+}
+
 func (c *client) Openvpn() *openvpn.Controller {
 	return &openvpn.Controller{Api: c.a}
 }
@@ -107,6 +115,10 @@ func (c *client) Quagga() *quagga.Controller {
 
 func (c *client) Routes() *routes.Controller {
 	return &routes.Controller{Api: c.a}
+}
+
+func (c *client) Syslog() *syslog.Controller {
+	return &syslog.Controller{Api: c.a}
 }
 
 func (c *client) Trust() *trust.Controller {
