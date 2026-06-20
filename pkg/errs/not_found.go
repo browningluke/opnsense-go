@@ -16,12 +16,10 @@ func (e *NotFoundError) ErrorMessage() string {
 	return e.err.ErrorMessage
 }
 
-func NewNotFoundError() *NotFoundError {
-	return &NotFoundError{
-		err: &Error{
-			Type:         ErrorTypeNotFound,
-			StatusCode:   404,
-			ErrorMessage: "Resource not found",
-		},
-	}
+var ErrNotFound = &NotFoundError{
+	err: &Error{
+		Type:         ErrorTypeNotFound,
+		StatusCode:   404,
+		ErrorMessage: "Resource not found",
+	},
 }
