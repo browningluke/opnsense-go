@@ -89,7 +89,7 @@ jobs:
         run: python3 scripts/configure-opnsense.py
 
       - name: Run tests
-        run: go test -p 1 -v ${{ inputs.packages }}
+        run: go test -p 1 -v -timeout 120m ${{ inputs.packages }}
 
       - name: Stop opnsense VM
         if: always()
