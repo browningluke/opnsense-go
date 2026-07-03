@@ -14,6 +14,9 @@ resources:
       - name: Enabled
         type: string
         key: enabled
+      - name: Disabled
+        type: string
+        key: disabled
       - name: Description
         type: string
         key: descr
