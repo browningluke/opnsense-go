@@ -20,7 +20,7 @@ var RouteOpts = api.ReqOpts{
 // Data structs
 
 type Route struct {
-	Disabled    string          `json:"disabled"`
+	Enabled     string          `json:"enabled"`
 	Description string          `json:"descr"`
 	Gateway     api.SelectedMap `json:"gateway"`
 	Network     string          `json:"network"`

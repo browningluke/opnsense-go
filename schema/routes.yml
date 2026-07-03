@@ -11,9 +11,9 @@ resources:
       update: "/routes/routes/setroute"
       delete: "/routes/routes/delroute"
     attrs:
-      - name: Disabled
+      - name: Enabled
         type: string
-        key: disabled
+        key: enabled
       - name: Description
         type: string
         key: descr
