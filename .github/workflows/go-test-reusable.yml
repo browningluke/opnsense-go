@@ -19,8 +19,100 @@ env:
   OPNSENSE_WEB_PORT: 8443
 
 jobs:
-  test:
+  plan:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Compute test shards
+        id: plan
+        env:
+          PACKAGES: ${{ inputs.packages }}
+        run: |
+          python3 << 'EOF'
+          import json, os, sys
+
+          # Each shard runs on its own runner with its own OPNsense VM, so
+          # shards run in parallel while tests within a shard stay serial.
+          # Long-running suites get a dedicated shard; everything else shares
+          # "other". Every pkg/<service> directory with integration tests MUST
+          # be assigned to a shard — the check below fails the run otherwise.
+          #
+          # Timing evidence from run 27878904613 (2026-06-20):
+          #   dnsmasq:  539s  → dedicated shard
+          #   ipsec:    226s  → dedicated shard
+          #   firewall: 166s  → dedicated shard
+          #   openvpn:   74s  → other
+          #   trust:     41s  → other
+          #   unbound:   39s  → other
+          #   kea:       32s  → other
+          #   cron:      21s  → other
+          #   auth:      14s  → other
+          #   interfaces:12s  → other
+          #   wireguard:  3s  → other
+          #   api:       <1s  → other (unit tests only, no VM needed)
+          SHARDS = {
+              "dnsmasq":  ["dnsmasq"],
+              "ipsec":    ["ipsec"],
+              "firewall": ["firewall"],
+              "other":    ["api", "auth", "bind", "core", "cron", "diagnostics",
+                           "dyndns", "interfaces", "kea", "openvpn", "quagga",
+                           "routes", "trust", "unbound", "wireguard"],
+          }
+          # pkg/ directories that are infrastructure/generated — excluded from
+          # the must-be-assigned check because they are not OPNsense services.
+          NON_SERVICE = {"errs", "opnsense"}
+
+          assigned = {p for pkgs in SHARDS.values() for p in pkgs}
+          on_disk = {d for d in os.listdir("pkg")
+                     if os.path.isdir(os.path.join("pkg", d))}
+          service_pkgs = on_disk - NON_SERVICE
+          unassigned = sorted(service_pkgs - assigned)
+          if unassigned:
+              sys.exit("pkg/ service packages not assigned to any shard: "
+                       f"{unassigned}. Add them to SHARDS in "
+                       ".github/workflows/go-test-reusable.yml.")
+
+          requested = os.environ["PACKAGES"].split()
+          matrix = []
+          if requested == ["./..."]:
+              for name, pkgs in SHARDS.items():
+                  paths = [f"./pkg/{p}/..." for p in pkgs]
+                  matrix.append({"name": name, "packages": " ".join(paths)})
+          else:
+              services = []
+              for path in requested:
+                  parts = path.split("/")
+                  if parts[:1] != ["."] or parts[1:2] != ["pkg"] or len(parts) < 4:
+                      sys.exit(f"unexpected package path: {path}")
+                  services.append(parts[2])
+              unknown = sorted(set(services) - assigned)
+              if unknown:
+                  sys.exit(f"requested packages not assigned to any shard: {unknown}")
+              for name, pkgs in SHARDS.items():
+                  hit = [p for p in pkgs if p in services]
+                  if hit:
+                      matrix.append({"name": name,
+                                     "packages": " ".join(f"./pkg/{p}/..." for p in hit)})
+
+          if not matrix:
+              sys.exit("no test shards matched the requested packages")
+          print(json.dumps(matrix, indent=2))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("matrix=" + json.dumps(matrix) + "\n")
+          EOF
+
+  test:
+    name: test (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    needs:
+      - plan
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -89,7 +181,7 @@ jobs:
         run: python3 scripts/configure-opnsense.py
 
       - name: Run tests
-        run: go test -p 1 -v -timeout 120m ${{ inputs.packages }}
+        run: go test -p 1 -v -timeout 120m ${{ matrix.packages }}
 
       - name: Stop opnsense VM
         if: always()

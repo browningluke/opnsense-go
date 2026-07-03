@@ -64,6 +64,8 @@ Edit `schema/<service>.yml`, then run `make all`. The `generate.go` in every ser
 2. Create `pkg/<service>/generate.go` with the `//go:generate` directive (copy from any existing service).
 3. Run `make all`.
 
+CI runs the integration suite as parallel shards — one runner + one OPNsense VM per shard, defined in the `SHARDS` map in the `plan` job of `.github/workflows/go-test-reusable.yml`. **If you add a new `pkg/<service>` package, you must assign it to a shard there** (usually the `other` bucket; give it a dedicated shard if its suite runs long). The `plan` job fails the build if a service package is unassigned.
+
 ### Schema YAML structure
 - `resources` block → CRUD resources. Each resource becomes `Add<Name>`, `Get<Name>`, `Update<Name>`, `Delete<Name>` methods.
   - `readOnly: true` — omits Add/Update/Delete.
