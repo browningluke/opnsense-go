@@ -87,6 +87,20 @@ When constructing a resource, assign the key directly: `Type: api.SelectedMap("h
 ### Monad wrapping
 OPNsense's API wraps request/response bodies in a top-level key (the "monad"). The schema `monad` field sets this key. `api.Add`/`api.Update` wrap outgoing structs; `api.Get` unwraps incoming responses automatically.
 
+### Renamed API fields (dual-key compatibility)
+When an OPNsense release renames a model field (e.g. 26.1.10 replaced the route model's `disabled` with `enabled`, opnsense/core#10027), do NOT swap the schema attribute — keep **both** attributes in the schema, one per JSON key:
+
+```yaml
+- name: Enabled     # new key (26.1.10+)
+  type: string
+  key: enabled
+- name: Disabled    # old key (pre-26.1.10)
+  type: string
+  key: disabled
+```
+
+OPNsense ignores unknown model fields, so a consumer that sets both fields on writes works on either side of the rename, and on reads exactly one field is populated — the consumer uses the new field and falls back to the old one when it is empty. No version detection needed. `pkg/routes` `Route.Enabled`/`Route.Disabled` is the reference example.
+
 ## Keeping AGENTS.md Up-to-Date
 
 Update this file whenever you make changes that affect how someone would work in this repo:
