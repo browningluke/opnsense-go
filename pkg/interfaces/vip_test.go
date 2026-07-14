@@ -9,6 +9,8 @@ import (
 )
 
 func TestVip(t *testing.T) {
+	requireIntegration(t)
+
 	opnsenseURL := os.Getenv("OPNSENSE_URI")
 	opnsenseKey := os.Getenv("OPNSENSE_API_KEY")
 	opnsenseSecret := os.Getenv("OPNSENSE_API_SECRET")

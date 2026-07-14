@@ -9,6 +9,8 @@ import (
 )
 
 func TestVLAN(t *testing.T) {
+	requireIntegration(t)
+
 	opnsense_url := os.Getenv("OPNSENSE_URI")
 	opnsense_key := os.Getenv("OPNSENSE_API_KEY")
 	opnsense_secret := os.Getenv("OPNSENSE_API_SECRET")

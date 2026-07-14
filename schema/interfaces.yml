@@ -2,6 +2,47 @@
 name: interfaces
 reconfigureEndpoint: "" # Controller-wide reconfigure endpoint (can be overwritten)
 resources:
+  - name: Lagg
+    filename: lagg
+    monad: lagg
+    endpoints:
+      add: "/interfaces/lagg_settings/addItem"
+      get: "/interfaces/lagg_settings/getItem"
+      update: "/interfaces/lagg_settings/setItem"
+      delete: "/interfaces/lagg_settings/delItem"
+      reconfigure: "/interfaces/lagg_settings/reconfigure"
+    attrs:
+      - name: Device
+        type: string
+        key: laggif
+      - name: Members
+        type: SelectedMapList
+        key: members
+      - name: PrimaryMember
+        type: SelectedMap
+        key: primary_member
+      - name: Protocol
+        type: SelectedMap
+        key: proto
+      - name: LACPFastTimeout
+        type: string
+        key: lacp_fast_timeout
+      - name: UseFlowID
+        type: SelectedMap
+        key: use_flowid
+      - name: HashLayers
+        type: SelectedMapList
+        key: lagghash
+      - name: LACPStrict
+        type: SelectedMap
+        key: lacp_strict
+      - name: MTU
+        type: string
+        key: mtu
+      - name: Description
+        type: string
+        key: descr
+
   - name: Vlan
     filename: vlan
     monad: vlan
@@ -90,6 +131,66 @@ resources:
         key: descr
 
 rpc:
+  - name: Search
+    filename: lagg_search
+    rpc_calls:
+      - name: Lagg
+        endpoint: /interfaces/lagg_settings/search_item
+        method: POST
+        params:
+          - name: rowCount
+            optional: false
+            bodyParameter: true
+        result_type: SearchLaggResponse
+    customTypes:
+      SearchLaggItem:
+        - name: Id
+          type: string
+          key: uuid
+        - name: Device
+          type: string
+          key: laggif
+        - name: Members
+          type: string
+          key: members
+        - name: PrimaryMember
+          type: string
+          key: primary_member
+        - name: Protocol
+          type: string
+          key: proto
+        - name: LACPFastTimeout
+          type: string
+          key: lacp_fast_timeout
+        - name: UseFlowID
+          type: string
+          key: use_flowid
+        - name: HashLayers
+          type: string
+          key: lagghash
+        - name: LACPStrict
+          type: string
+          key: lacp_strict
+        - name: MTU
+          type: string
+          key: mtu
+        - name: Description
+          type: string
+          key: descr
+      SearchLaggResponse:
+        - name: Current
+          type: int
+          key: current
+        - name: RowCount
+          type: int
+          key: rowCount
+        - name: Total
+          type: int
+          key: total
+        - name: Rows
+          type: "[]SearchLaggItem"
+          key: rows
+
   - name: "Overview"
     filename: overview
     customTypes:
