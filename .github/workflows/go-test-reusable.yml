@@ -177,6 +177,7 @@ jobs:
             echo "OPNSENSE_API_SECRET=${{ steps.apikey.outputs.secret }}";
             echo "OPNSENSE_URI=https://localhost:${{ env.OPNSENSE_WEB_PORT }}";
             echo "OPNSENSE_ALLOW_INSECURE=true";
+            echo "OPNSENSE_TEST_BRIDGE_MEMBER=lan";
           } >> "$GITHUB_ENV"
 
       - name: Configure OPNsense for tests

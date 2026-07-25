@@ -28,6 +28,74 @@ resources:
         type: string
         key: vlanif
 
+  - name: Bridge
+    filename: bridge
+    monad: bridge
+    endpoints:
+      add: "/interfaces/bridge_settings/addItem"
+      get: "/interfaces/bridge_settings/getItem"
+      update: "/interfaces/bridge_settings/setItem"
+      delete: "/interfaces/bridge_settings/delItem"
+      reconfigure: "/interfaces/bridge_settings/reconfigure"
+    attrs:
+      - name: Device
+        type: string
+        key: bridgeif
+      - name: Members
+        type: SelectedMapList
+        key: members
+      - name: LinkLocal
+        type: string
+        key: linklocal
+      - name: EnableStp
+        type: string
+        key: enablestp
+      - name: StpProto
+        type: SelectedMap
+        key: proto
+      - name: StpInterfaces
+        type: SelectedMapList
+        key: stp
+      - name: MaxAge
+        type: string
+        key: maxage
+      - name: ForwardDelay
+        type: string
+        key: fwdelay
+      - name: HoldCount
+        type: string
+        key: holdcnt
+      - name: MaxAddresses
+        type: string
+        key: maxaddr
+      - name: AddressTimeout
+        type: string
+        key: timeout
+      - name: SpanInterface
+        type: SelectedMap
+        key: span
+      - name: EdgePorts
+        type: SelectedMapList
+        key: edge
+      - name: AutoEdgePorts
+        type: SelectedMapList
+        key: autoedge
+      - name: PtpPorts
+        type: SelectedMapList
+        key: ptp
+      - name: AutoPtpPorts
+        type: SelectedMapList
+        key: autoptp
+      - name: StaticPorts
+        type: SelectedMapList
+        key: static
+      - name: PrivatePorts
+        type: SelectedMapList
+        key: private
+      - name: Description
+        type: string
+        key: descr
+
   - name: Vip
     filename: vip
     monad: vip
