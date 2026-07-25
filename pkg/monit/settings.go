@@ -20,32 +20,36 @@ type Result struct {
 }
 
 type Settings struct {
-	Enabled                   string          `json:"enabled"`
-	Interval                  string          `json:"interval"`
-	Startdelay                string          `json:"startdelay"`
-	Mailserver                string          `json:"mailserver"`
-	Port                      string          `json:"port"`
-	Username                  string          `json:"username"`
-	Password                  string          `json:"password"`
-	Ssl                       string          `json:"ssl"`
-	SslVersion                api.SelectedMap `json:"sslversion"`
-	SslVerify                 string          `json:"sslverify"`
-	Logfile                   string          `json:"logfile"`
-	Statefile                 string          `json:"statefile"`
-	EventqueuePath            string          `json:"eventqueuePath"`
-	EventqueueSlots           string          `json:"eventqueueSlots"`
-	HttpdEnabled              string          `json:"httpdEnabled"`
-	HttpdUsername             string          `json:"httpdUsername"`
-	HttpdPassword             string          `json:"httpdPassword"`
-	HttpdPort                 string          `json:"httpdPort"`
-	HttpdAllow                string          `json:"httpdAllow"`
-	MmonitUrl                 string          `json:"mmonitUrl"`
-	MmonitTimeout             string          `json:"mmonitTimeout"`
-	MmonitRegisterCredentials string          `json:"mmonitRegisterCredentials"`
+	Enabled                   string              `json:"enabled"`
+	Interval                  string              `json:"interval"`
+	Startdelay                string              `json:"startdelay"`
+	Mailserver                api.SelectedMapList `json:"mailserver"`
+	Port                      string              `json:"port"`
+	Username                  string              `json:"username"`
+	Password                  string              `json:"password"`
+	Ssl                       string              `json:"ssl"`
+	SslVersion                api.SelectedMap     `json:"sslversion"`
+	SslVerify                 string              `json:"sslverify"`
+	Logfile                   string              `json:"logfile"`
+	Statefile                 string              `json:"statefile"`
+	EventqueuePath            string              `json:"eventqueuePath"`
+	EventqueueSlots           string              `json:"eventqueueSlots"`
+	HttpdEnabled              string              `json:"httpdEnabled"`
+	HttpdUsername             string              `json:"httpdUsername"`
+	HttpdPassword             string              `json:"httpdPassword"`
+	HttpdPort                 string              `json:"httpdPort"`
+	HttpdAllow                api.SelectedMapList `json:"httpdAllow"`
+	MmonitUrl                 string              `json:"mmonitUrl"`
+	MmonitTimeout             string              `json:"mmonitTimeout"`
+	MmonitRegisterCredentials string              `json:"mmonitRegisterCredentials"`
+}
+
+type SettingsGeneral struct {
+	General Settings `json:"general"`
 }
 
 type SettingsMonad struct {
-	Monit Settings `json:"monit"`
+	Monit SettingsGeneral `json:"monit"`
 }
 
 // SettingsGet executes the Get RPC call of the Settings controller
@@ -72,7 +76,7 @@ func (c *Controller) SettingsGet(ctx context.Context) (*SettingsMonad, error) {
 }
 
 // SettingsSet executes the Set RPC call of the Settings controller
-func (c *Controller) SettingsSet(ctx context.Context, monit *Settings) (*Result, error) {
+func (c *Controller) SettingsSet(ctx context.Context, monit *SettingsGeneral) (*Result, error) {
 
 	callParams := []string{}
 	queryParams := make(map[string]string)
