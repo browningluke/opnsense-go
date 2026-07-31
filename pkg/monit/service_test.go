@@ -12,12 +12,13 @@ func TestService(t *testing.T) {
 	ctx := context.Background()
 
 	service := &Service{
-		Enabled:     "1",
-		Name:        "test-service",
-		Description: "test-service-description",
-		Type:        api.SelectedMap("process"),
-		Pidfile:     "/var/run/test.pid",
-		Timeout:     "300",
+		Enabled:      "1",
+		Name:         "test-service",
+		Description:  "test-service-description",
+		Type:         api.SelectedMap("process"),
+		Pidfile:      "/var/run/test.pid",
+		Timeout:      "300",
+		Starttimeout: "30",
 	}
 
 	id, err := controller.AddService(ctx, service)

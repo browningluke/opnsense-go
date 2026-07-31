@@ -14,7 +14,8 @@ func TestAlert(t *testing.T) {
 	alert := &Alert{
 		Enabled:     "1",
 		Recipient:   "test@example.com",
-		Events:      api.SelectedMapList{"Action"},
+		Noton:       "0",
+		Events:      api.SelectedMapList{},
 		Description: "test-alert",
 	}
 
