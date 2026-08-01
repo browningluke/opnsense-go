@@ -13,7 +13,15 @@ import (
 // touches Description/Lock, never Device: the CI VM this runs against has a
 // single NIC assigned to wan, and repointing it would cut off the VM's only
 // network path.
+//
+// AssignmentController (/interfaces/assignment/*) was only added in OPNsense
+// 26.7 — it doesn't exist on 26.1, which the CI VM image is pinned to. Skip
+// unless OPNSENSE_TEST_ASSIGNMENT_API=1 confirms the target is 26.7+.
 func TestAssignmentUpdate(t *testing.T) {
+	if os.Getenv("OPNSENSE_TEST_ASSIGNMENT_API") != "1" {
+		t.Skip("OPNSENSE_TEST_ASSIGNMENT_API=1 required: AssignmentController endpoint only exists on OPNsense 26.7+")
+	}
+
 	opnsense_url := os.Getenv("OPNSENSE_URI")
 	opnsense_key := os.Getenv("OPNSENSE_API_KEY")
 	opnsense_secret := os.Getenv("OPNSENSE_API_SECRET")
@@ -73,6 +81,8 @@ func TestAssignmentUpdate(t *testing.T) {
 // a spare physical device. Skipped unless OPNSENSE_TEST_ASSIGNMENT_SPARE_DEVICE
 // is set to a device name that is safe to assign and unassign (i.e. not
 // carrying live traffic) — the CI VM is single-NIC and has no such device.
+// Also requires OPNsense 26.7+ (see TestAssignmentUpdate) — AssignmentController
+// doesn't exist on the 26.1 image the CI VM uses.
 func TestAssignmentCreateDelete(t *testing.T) {
 	device := os.Getenv("OPNSENSE_TEST_ASSIGNMENT_SPARE_DEVICE")
 	if device == "" {
