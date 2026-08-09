@@ -338,3 +338,53 @@ resources:
       - name: Color
         type: string
         key: color
+
+rpc:
+  # os-firewall GeoIP database settings (Firewall > Aliases > GeoIP).
+  # This is a singleton node ("geoip") within the Alias model, not a standalone
+  # controller, so Get/Set reuse the Alias endpoints scoped to that node.
+  - name: GeoIPSettings
+    filename: geoip_settings
+    customTypes:
+      GeoIPSettingsGetResult:
+        - name: Alias
+          type: GeoIPSettingsAlias
+          key: alias
+      GeoIPSettingsAlias:
+        - name: GeoIP
+          type: GeoIPSettings
+          key: geoip
+      GeoIPSettings:
+        - name: Url
+          type: string
+          key: url
+      GeoIPSettingsSetParams:
+        - name: GeoIP
+          type: GeoIPSettingsUrl
+          key: geoip
+      GeoIPSettingsUrl:
+        - name: Url
+          type: string
+          key: url
+      ActionResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/firewall/alias/getGeoIP"
+        result_type: GeoIPSettingsGetResult
+      - name: Set
+        method: POST
+        endpoint: "/firewall/alias/set"
+        params:
+          - name: alias
+            optional: false
+            bodyParameter: true
+            customType: GeoIPSettingsSetParams
+        result_type: ActionResult
+      - name: Update
+        method: POST
+        endpoint: "/firewall/alias/update/geoip"
+        result_type: ActionResult
