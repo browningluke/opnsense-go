@@ -117,3 +117,173 @@ rpc:
             optional: false
             type: string
         result_type: "ServiceActionResult"
+  - name: "Firmware"
+    filename: firmware
+    customTypes:
+      FirmwarePackage:
+        - name: Name
+          type: string
+          key: name
+        - name: Version
+          type: string
+          key: version
+        - name: Comment
+          type: string
+          key: comment
+        - name: Flatsize
+          type: string
+          key: flatsize
+        - name: Locked
+          type: string
+          key: locked
+        - name: Automatic
+          type: string
+          key: automatic
+        - name: License
+          type: string
+          key: license
+        - name: Repository
+          type: string
+          key: repository
+        - name: Origin
+          type: string
+          key: origin
+        - name: Provided
+          type: string
+          key: provided
+        - name: Installed
+          type: string
+          key: installed
+        - name: Path
+          type: string
+          key: path
+        - name: Configured
+          type: string
+          key: configured
+      FirmwarePlugin:
+        - name: Name
+          type: string
+          key: name
+        - name: Version
+          type: string
+          key: version
+        - name: Comment
+          type: string
+          key: comment
+        - name: Flatsize
+          type: string
+          key: flatsize
+        - name: Locked
+          type: string
+          key: locked
+        - name: Automatic
+          type: string
+          key: automatic
+        - name: License
+          type: string
+          key: license
+        - name: Repository
+          type: string
+          key: repository
+        - name: Origin
+          type: string
+          key: origin
+        - name: Provided
+          type: string
+          key: provided
+        - name: Installed
+          type: string
+          key: installed
+        - name: Path
+          type: string
+          key: path
+        - name: Configured
+          type: string
+          key: configured
+        - name: Tier
+          type: string
+          key: tier
+      FirmwareInfo:
+        - name: ProductID
+          type: string
+          key: product_id
+        - name: ProductVersion
+          type: string
+          key: product_version
+        - name: Packages
+          type: '[]FirmwarePackage'
+          key: package
+        - name: Plugins
+          type: '[]FirmwarePlugin'
+          key: plugin
+      FirmwareActionResult:
+        - name: Status
+          type: string
+          key: status
+        - name: MsgUUID
+          type: string
+          key: msg_uuid
+      FirmwareUpgradeStatus:
+        - name: Status
+          type: string
+          key: status
+        - name: Log
+          type: string
+          key: log
+      FirmwareRunningStatus:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: "Info"
+        method: "GET"
+        endpoint: "/core/firmware/info"
+        result_type: "FirmwareInfo"
+      - name: "Running"
+        method: "GET"
+        endpoint: "/core/firmware/running"
+        result_type: "FirmwareRunningStatus"
+      - name: "UpgradeStatus"
+        method: "POST"
+        endpoint: "/core/firmware/upgradestatus"
+        result_type: "FirmwareUpgradeStatus"
+      - name: "Install"
+        method: "POST"
+        endpoint: "/core/firmware/install"
+        params:
+          - name: "pkgName"
+            optional: false
+            type: string
+        result_type: "FirmwareActionResult"
+      - name: "Remove"
+        method: "POST"
+        endpoint: "/core/firmware/remove"
+        params:
+          - name: "pkgName"
+            optional: false
+            type: string
+        result_type: "FirmwareActionResult"
+      - name: "Reinstall"
+        method: "POST"
+        endpoint: "/core/firmware/reinstall"
+        params:
+          - name: "pkgName"
+            optional: false
+            type: string
+        result_type: "FirmwareActionResult"
+      - name: "Lock"
+        method: "POST"
+        endpoint: "/core/firmware/lock"
+        params:
+          - name: "pkgName"
+            optional: false
+            type: string
+        result_type: "FirmwareActionResult"
+      - name: "Unlock"
+        method: "POST"
+        endpoint: "/core/firmware/unlock"
+        params:
+          - name: "pkgName"
+            optional: false
+            type: string
+        result_type: "FirmwareActionResult"
