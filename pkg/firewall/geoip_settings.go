@@ -11,16 +11,20 @@ import (
 
 // Data structs
 
-type GeoIPSettingsGetResult struct {
-	Alias GeoIPSettingsAlias `json:"alias"`
+type ActionResult struct {
+	Result string `json:"result"`
+}
+
+type GeoIPSettings struct {
+	Url string `json:"url"`
 }
 
 type GeoIPSettingsAlias struct {
 	GeoIP GeoIPSettings `json:"geoip"`
 }
 
-type GeoIPSettings struct {
-	Url string `json:"url"`
+type GeoIPSettingsGetResult struct {
+	Alias GeoIPSettingsAlias `json:"alias"`
 }
 
 type GeoIPSettingsSetParams struct {
@@ -29,10 +33,6 @@ type GeoIPSettingsSetParams struct {
 
 type GeoIPSettingsUrl struct {
 	Url string `json:"url"`
-}
-
-type ActionResult struct {
-	Result string `json:"result"`
 }
 
 // GeoIPSettingsGet executes the Get RPC call of the GeoIPSettings controller
