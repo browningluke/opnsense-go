@@ -20,32 +20,39 @@ var BGPNeighborOpts = api.ReqOpts{
 // Data structs
 
 type BGPNeighbor struct {
-	Enabled               string          `json:"enabled"`
-	Description           string          `json:"description"`
-	PeerIP                string          `json:"address"`
-	RemoteAS              string          `json:"remoteas"`
-	Password              string          `json:"password"`
-	Weight                string          `json:"weight"`
-	LocalIP               string          `json:"localip"`
-	UpdateSource          api.SelectedMap `json:"updatesource"`
-	LinkLocalInterface    api.SelectedMap `json:"linklocalinterface"`
-	NextHopSelf           string          `json:"nexthopself"`
-	NextHopSelfAll        string          `json:"nexthopselfall"`
-	MultiHop              string          `json:"multihop"`
-	MultiProtocol         string          `json:"multiprotocol"`
-	RRClient              string          `json:"rrclient"`
-	BFD                   string          `json:"bfd"`
-	KeepAlive             string          `json:"keepalive"`
-	HoldDown              string          `json:"holddown"`
-	ConnectTimer          string          `json:"connecttimer"`
-	DefaultRoute          string          `json:"defaultoriginate"`
-	ASOverride            string          `json:"asoverride"`
-	DisableConnectedCheck string          `json:"disable_connected_check"`
-	AttributeUnchanged    api.SelectedMap `json:"attributeunchanged"`
-	PrefixListIn          api.SelectedMap `json:"linkedPrefixlistIn"`
-	PrefixListOut         api.SelectedMap `json:"linkedPrefixlistOut"`
-	RouteMapIn            api.SelectedMap `json:"linkedRoutemapIn"`
-	RouteMapOut           api.SelectedMap `json:"linkedRoutemapOut"`
+	Enabled                    string              `json:"enabled"`
+	Description                string              `json:"description"`
+	PeerIP                     string              `json:"address"`
+	RemoteASMode               api.SelectedMap     `json:"remote_as_mode"`
+	RemoteAS                   string              `json:"remoteas"`
+	LocalAS                    string              `json:"localas"`
+	Password                   string              `json:"password"`
+	Weight                     string              `json:"weight"`
+	LocalIP                    string              `json:"localip"`
+	UpdateSource               api.SelectedMap     `json:"updatesource"`
+	LinkLocalInterface         api.SelectedMap     `json:"linklocalinterface"`
+	NextHopSelf                string              `json:"nexthopself"`
+	NextHopSelfAll             string              `json:"nexthopselfall"`
+	MultiHop                   string              `json:"multihop"`
+	MultiProtocol              string              `json:"multiprotocol"`
+	RRClient                   string              `json:"rrclient"`
+	SoftReconfigurationInbound string              `json:"soft_reconfiguration_inbound"`
+	BFD                        string              `json:"bfd"`
+	KeepAlive                  string              `json:"keepalive"`
+	HoldDown                   string              `json:"holddown"`
+	ConnectTimer               string              `json:"connecttimer"`
+	DefaultRoute               string              `json:"defaultoriginate"`
+	ASOverride                 string              `json:"asoverride"`
+	RemovePrivateAS            api.SelectedMap     `json:"removeprivateas"`
+	AllowASIn                  api.SelectedMap     `json:"allowas_in"`
+	DisableConnectedCheck      string              `json:"disable_connected_check"`
+	AttributeUnchanged         api.SelectedMapList `json:"attributeunchanged"`
+	Capabilities               api.SelectedMapList `json:"capabilities"`
+	PrefixListIn               api.SelectedMap     `json:"linkedPrefixlistIn"`
+	PrefixListOut              api.SelectedMap     `json:"linkedPrefixlistOut"`
+	RouteMapIn                 api.SelectedMap     `json:"linkedRoutemapIn"`
+	RouteMapOut                api.SelectedMap     `json:"linkedRoutemapOut"`
+	PeerGroup                  api.SelectedMap     `json:"peergroup"`
 }
 
 // CRUD operations
