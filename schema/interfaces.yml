@@ -28,6 +28,41 @@ resources:
         type: string
         key: vlanif
 
+  - name: Vxlan
+    filename: vxlan
+    monad: vxlan
+    endpoints:
+      add: "/interfaces/vxlan_settings/addItem"
+      get: "/interfaces/vxlan_settings/getItem"
+      update: "/interfaces/vxlan_settings/setItem"
+      delete: "/interfaces/vxlan_settings/delItem"
+      reconfigure: "/interfaces/vxlan_settings/reconfigure"
+    attrs:
+      - name: DeviceId
+        type: string
+        key: deviceId
+      - name: VxlanId
+        type: string
+        key: vxlanid
+      - name: Local
+        type: string
+        key: vxlanlocal
+      - name: LocalPort
+        type: string
+        key: vxlanlocalport
+      - name: Remote
+        type: string
+        key: vxlanremote
+      - name: RemotePort
+        type: string
+        key: vxlanremoteport
+      - name: Group
+        type: string
+        key: vxlangroup
+      - name: Device
+        type: SelectedMap
+        key: vxlandev
+
   - name: Bridge
     filename: bridge
     monad: bridge
