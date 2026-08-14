@@ -31,6 +31,7 @@ resources:
   - name: Vxlan
     filename: vxlan
     monad: vxlan
+    getAll: true
     endpoints:
       add: "/interfaces/vxlan_settings/addItem"
       get: "/interfaces/vxlan_settings/getItem"

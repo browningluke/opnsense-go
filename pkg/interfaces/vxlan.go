@@ -40,6 +40,10 @@ func (c *Controller) GetVxlan(ctx context.Context, id string) (*Vxlan, error) {
 	return api.Get(c.Client(), ctx, VxlanOpts, &Vxlan{}, id)
 }
 
+func (c *Controller) GetVxlanAll(ctx context.Context) ([]Vxlan, error) {
+	return api.GetAll(c.Client(), ctx, VxlanOpts, []Vxlan{})
+}
+
 func (c *Controller) UpdateVxlan(ctx context.Context, id string, resource *Vxlan) error {
 	return api.Update(c.Client(), ctx, VxlanOpts, resource, id)
 }
