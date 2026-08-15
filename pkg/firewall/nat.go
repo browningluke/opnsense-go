@@ -34,6 +34,7 @@ type NAT struct {
 	DestinationInvert string          `json:"destination_not"`
 	Target            string          `json:"target"`
 	TargetPort        string          `json:"target_port"`
+	StaticPort        string          `json:"staticnatport"`
 	Log               string          `json:"log"`
 	Description       string          `json:"description"`
 }
