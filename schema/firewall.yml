@@ -215,6 +215,9 @@ resources:
       - name: TargetPort
         type: string
         key: target_port
+      - name: StaticPort
+        type: string
+        key: staticnatport
       - name: Log
         type: string
         key: log
