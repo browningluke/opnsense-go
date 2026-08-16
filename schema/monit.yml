@@ -113,3 +113,109 @@ resources:
       - name: Description
         type: string
         key: description
+
+rpc:
+  - name: Settings
+    filename: settings
+    customTypes:
+      SettingsMonad:
+        - name: Monit
+          type: SettingsGeneral
+          key: monit
+      SettingsGeneral:
+        - name: General
+          type: Settings
+          key: general
+      Settings:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Interval
+          type: string
+          key: interval
+        - name: Startdelay
+          type: string
+          key: startdelay
+        - name: Mailserver
+          type: SelectedMapList
+          key: mailserver
+        - name: Port
+          type: string
+          key: port
+        - name: Username
+          type: string
+          key: username
+        - name: Password
+          type: string
+          key: password
+        - name: Ssl
+          type: string
+          key: ssl
+        - name: SslVersion
+          type: SelectedMap
+          key: sslversion
+        - name: SslVerify
+          type: string
+          key: sslverify
+        - name: Logfile
+          type: string
+          key: logfile
+        - name: Statefile
+          type: string
+          key: statefile
+        - name: EventqueuePath
+          type: string
+          key: eventqueuePath
+        - name: EventqueueSlots
+          type: string
+          key: eventqueueSlots
+        - name: HttpdEnabled
+          type: string
+          key: httpdEnabled
+        - name: HttpdUsername
+          type: string
+          key: httpdUsername
+        - name: HttpdPassword
+          type: string
+          key: httpdPassword
+        - name: HttpdPort
+          type: string
+          key: httpdPort
+        - name: HttpdAllow
+          type: SelectedMapList
+          key: httpdAllow
+        - name: MmonitUrl
+          type: string
+          key: mmonitUrl
+        - name: MmonitTimeout
+          type: string
+          key: mmonitTimeout
+        - name: MmonitRegisterCredentials
+          type: string
+          key: mmonitRegisterCredentials
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/monit/settings/get"
+        result_type: SettingsMonad
+      - name: Set
+        method: POST
+        endpoint: "/monit/settings/set"
+        params:
+          - name: monit
+            optional: false
+            bodyParameter: true
+            customType: SettingsGeneral
+        result_type: Result
+      - name: Reconfigure
+        method: POST
+        endpoint: "/monit/service/reconfigure"
+        result_type: ActionResult
