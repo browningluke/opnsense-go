@@ -53,13 +53,15 @@ jobs:
           #   interfaces:12s  → other
           #   wireguard:  3s  → other
           #   api:       <1s  → other (unit tests only, no VM needed)
+          #   monit, syslog: added in #81, not yet timed → other
           SHARDS = {
               "dnsmasq":  ["dnsmasq"],
               "ipsec":    ["ipsec"],
               "firewall": ["firewall"],
               "other":    ["api", "auth", "bind", "core", "cron", "diagnostics",
-                           "dyndns", "interfaces", "kea", "openvpn", "quagga",
-                           "routes", "trust", "unbound", "wireguard"],
+                           "dyndns", "interfaces", "kea", "monit", "openvpn",
+                           "quagga", "routes", "syslog", "trust", "unbound",
+                           "wireguard"],
           }
           # pkg/ directories that are infrastructure/generated — excluded from
           # the must-be-assigned check because they are not OPNsense services.

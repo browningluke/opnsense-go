@@ -1,0 +1,221 @@
+---
+name: monit
+reconfigureEndpoint: "/monit/service/reconfigure"
+resources:
+  - name: Service
+    filename: service
+    monad: service
+    endpoints:
+      add: "/monit/settings/addService"
+      get: "/monit/settings/getService"
+      update: "/monit/settings/setService"
+      delete: "/monit/settings/delService"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Name
+        type: string
+        key: name
+      - name: Description
+        type: string
+        key: description
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Pidfile
+        type: string
+        key: pidfile
+      - name: Match
+        type: string
+        key: match
+      - name: Path
+        type: string
+        key: path
+      - name: Timeout
+        type: string
+        key: timeout
+      - name: Starttimeout
+        type: string
+        key: starttimeout
+      - name: Address
+        type: string
+        key: address
+      - name: Interface
+        type: SelectedMap
+        key: interface
+      - name: Start
+        type: string
+        key: start
+      - name: Stop
+        type: string
+        key: stop
+      - name: Tests
+        type: SelectedMapList
+        key: tests
+      - name: Depends
+        type: SelectedMapList
+        key: depends
+      - name: Polltime
+        type: string
+        key: polltime
+  - name: Test
+    filename: test
+    monad: test
+    endpoints:
+      add: "/monit/settings/addTest"
+      get: "/monit/settings/getTest"
+      update: "/monit/settings/setTest"
+      delete: "/monit/settings/delTest"
+    attrs:
+      - name: Name
+        type: string
+        key: name
+      - name: Type
+        type: SelectedMap
+        key: type
+      - name: Condition
+        type: string
+        key: condition
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Path
+        type: string
+        key: path
+  - name: Alert
+    filename: alert
+    monad: alert
+    endpoints:
+      add: "/monit/settings/addAlert"
+      get: "/monit/settings/getAlert"
+      update: "/monit/settings/setAlert"
+      delete: "/monit/settings/delAlert"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Recipient
+        type: string
+        key: recipient
+      - name: Noton
+        type: string
+        key: noton
+      - name: Events
+        type: SelectedMapList
+        key: events
+      - name: Format
+        type: string
+        key: format
+      - name: Reminder
+        type: string
+        key: reminder
+      - name: Description
+        type: string
+        key: description
+
+rpc:
+  - name: Settings
+    filename: settings
+    customTypes:
+      SettingsMonad:
+        - name: Monit
+          type: SettingsGeneral
+          key: monit
+      SettingsGeneral:
+        - name: General
+          type: Settings
+          key: general
+      Settings:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Interval
+          type: string
+          key: interval
+        - name: Startdelay
+          type: string
+          key: startdelay
+        - name: Mailserver
+          type: SelectedMapList
+          key: mailserver
+        - name: Port
+          type: string
+          key: port
+        - name: Username
+          type: string
+          key: username
+        - name: Password
+          type: string
+          key: password
+        - name: Ssl
+          type: string
+          key: ssl
+        - name: SslVersion
+          type: SelectedMap
+          key: sslversion
+        - name: SslVerify
+          type: string
+          key: sslverify
+        - name: Logfile
+          type: string
+          key: logfile
+        - name: Statefile
+          type: string
+          key: statefile
+        - name: EventqueuePath
+          type: string
+          key: eventqueuePath
+        - name: EventqueueSlots
+          type: string
+          key: eventqueueSlots
+        - name: HttpdEnabled
+          type: string
+          key: httpdEnabled
+        - name: HttpdUsername
+          type: string
+          key: httpdUsername
+        - name: HttpdPassword
+          type: string
+          key: httpdPassword
+        - name: HttpdPort
+          type: string
+          key: httpdPort
+        - name: HttpdAllow
+          type: SelectedMapList
+          key: httpdAllow
+        - name: MmonitUrl
+          type: string
+          key: mmonitUrl
+        - name: MmonitTimeout
+          type: string
+          key: mmonitTimeout
+        - name: MmonitRegisterCredentials
+          type: string
+          key: mmonitRegisterCredentials
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/monit/settings/get"
+        result_type: SettingsMonad
+      - name: Set
+        method: POST
+        endpoint: "/monit/settings/set"
+        params:
+          - name: monit
+            optional: false
+            bodyParameter: true
+            customType: SettingsGeneral
+        result_type: Result
+      - name: Reconfigure
+        method: POST
+        endpoint: "/monit/service/reconfigure"
+        result_type: ActionResult

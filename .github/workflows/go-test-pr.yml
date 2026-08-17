@@ -37,15 +37,18 @@ jobs:
           # Check for any Go source or module file changes
           GO_FILES=$(echo "$ALL_CHANGED" | grep '\.go$' || true)
           MOD_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^go\.(mod|sum)$' || true)
+          # Test pipeline itself: an edit here changes what "passing CI" means,
+          # so it must run the full suite rather than being skipped as a non-Go change.
+          PIPELINE_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^\.github/workflows/go-test-(pr|reusable)\.yml$' || true)
 
-          if [ -z "$GO_FILES" ] && [ -z "$MOD_CHANGED" ]; then
+          if [ -z "$GO_FILES" ] && [ -z "$MOD_CHANGED" ] && [ -z "$PIPELINE_CHANGED" ]; then
             echo "No Go files changed — skipping tests"
             echo "packages=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          if [ -n "$MOD_CHANGED" ]; then
-            echo "go.mod/go.sum changed — running full suite"
+          if [ -n "$MOD_CHANGED" ] || [ -n "$PIPELINE_CHANGED" ]; then
+            echo "go.mod/go.sum or test pipeline changed — running full suite"
             echo "packages=./..." >> "$GITHUB_OUTPUT"
             exit 0
           fi
