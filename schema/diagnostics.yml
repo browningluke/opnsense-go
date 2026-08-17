@@ -87,3 +87,111 @@ resources:
         - name: Tentative
           type: bool
           key: tentative
+
+rpc:
+  - name: "Netflow"
+    filename: netflow
+    customTypes:
+      NetflowMonad:
+        - name: Netflow
+          type: Netflow
+          key: netflow
+      Netflow:
+        - name: Capture
+          type: Capture
+          key: capture
+        - name: Collect
+          type: Collect
+          key: collect
+        - name: ActiveTimeout
+          type: string
+          key: activeTimeout
+        - name: InactiveTimeout
+          type: string
+          key: inactiveTimeout
+      Capture:
+        - name: Interfaces
+          type: SelectedMapList
+          key: interfaces
+        - name: EgressOnly
+          type: SelectedMapList
+          key: egress_only
+        - name: Version
+          type: SelectedMap
+          key: version
+        - name: Targets
+          type: SelectedMapList
+          key: targets
+      Collect:
+        - name: Enable
+          type: string
+          key: enable
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Status
+          type: string
+          key: status
+      IsEnabledResult:
+        - name: Netflow
+          type: int64
+          key: netflow
+        - name: Local
+          type: int64
+          key: local
+      StatusResult:
+        - name: Status
+          type: string
+          key: status
+        - name: Collectors
+          type: string
+          key: collectors
+          omitEmpty: true
+      CacheStat:
+        - name: Pkts
+          type: int64
+          key: Pkts
+        - name: If
+          type: string
+          key: if
+        - name: SrcIPAddresses
+          type: int64
+          key: SrcIPaddresses
+        - name: DstIPAddresses
+          type: int64
+          key: DstIPaddresses
+    rpc_calls:
+      - name: "GetConfig"
+        method: "GET"
+        endpoint: "/diagnostics/netflow/getconfig"
+        result_type: "NetflowMonad"
+      - name: "SetConfig"
+        method: "POST"
+        endpoint: "/diagnostics/netflow/setconfig"
+        params:
+          - name: "netflow"
+            optional: false
+            bodyParameter: true
+            customType: "Netflow"
+        result_type: "Result"
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/diagnostics/netflow/reconfigure"
+        result_type: "ActionResult"
+      - name: "IsEnabled"
+        method: "GET"
+        endpoint: "/diagnostics/netflow/is_enabled"
+        result_type: "IsEnabledResult"
+      - name: "Status"
+        method: "GET"
+        endpoint: "/diagnostics/netflow/status"
+        result_type: "StatusResult"
+      - name: "CacheStats"
+        method: "GET"
+        endpoint: "/diagnostics/netflow/cache_stats"
+        # CacheStats (plural) is a hand-written map[string]CacheStat wrapper in
+        # cache_stats.go, not a generated customType. The API returns "[]" when
+        # empty and a map keyed by interface when populated.
+        result_type: "CacheStats"
