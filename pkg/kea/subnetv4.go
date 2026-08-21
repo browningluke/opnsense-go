@@ -33,6 +33,7 @@ type OptionDataV4 struct {
 
 type SubnetV4 struct {
 	Subnet                string       `json:"subnet"`
+	ValidLifetime         string       `json:"valid_lifetime"`
 	NextServer            string       `json:"next_server"`
 	Pools                 string       `json:"pools"`
 	MatchClientId         string       `json:"match-client-id"`

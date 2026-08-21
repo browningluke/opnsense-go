@@ -14,6 +14,9 @@ resources:
       - name: Subnet
         type: string
         key: subnet
+      - name: ValidLifetime
+        type: string
+        key: valid_lifetime
       - name: NextServer
         type: string
         key: next_server

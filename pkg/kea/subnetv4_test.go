@@ -2,6 +2,7 @@ package kea
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
@@ -24,6 +25,7 @@ func TestSubnetV4(t *testing.T) {
 
 	subnet := &SubnetV4{
 		Subnet:                "192.168.200.0/24",
+		ValidLifetime:         "86400",
 		NextServer:            "",
 		Pools:                 "192.168.200.100 - 192.168.200.200",
 		MatchClientId:         "1",
@@ -43,6 +45,12 @@ func TestSubnetV4(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to add SubnetV4: %v", err)
 	}
+	deleted := false
+	defer func() {
+		if !deleted {
+			_ = controller.DeleteSubnetV4(ctx, key)
+		}
+	}()
 	t.Logf("Added SubnetV4 with key: %s", key)
 
 	retrieved, err := controller.GetSubnetV4(ctx, key)
@@ -53,6 +61,13 @@ func TestSubnetV4(t *testing.T) {
 
 	if retrieved.Subnet != subnet.Subnet {
 		t.Errorf("Subnet mismatch: got %s, want %s", retrieved.Subnet, subnet.Subnet)
+	}
+	supportsValidLifetime := retrieved.ValidLifetime != ""
+	if supportsValidLifetime && retrieved.ValidLifetime != subnet.ValidLifetime {
+		t.Errorf("ValidLifetime mismatch: got %s, want %s", retrieved.ValidLifetime, subnet.ValidLifetime)
+	}
+	if !supportsValidLifetime {
+		t.Log("OPNsense version does not expose per-subnet valid_lifetime; skipping lifetime API assertions")
 	}
 	if retrieved.Pools != subnet.Pools {
 		t.Errorf("Pools mismatch: got %s, want %s", retrieved.Pools, subnet.Pools)
@@ -72,6 +87,7 @@ func TestSubnetV4(t *testing.T) {
 
 	subnet.Description = "Test Kea DHCPv4 Subnet Updated"
 	subnet.Pools = "192.168.200.100 - 192.168.200.150"
+	subnet.ValidLifetime = "43200"
 	err = controller.UpdateSubnetV4(ctx, key, subnet)
 	if err != nil {
 		t.Fatalf("Failed to update SubnetV4: %v", err)
@@ -88,10 +104,31 @@ func TestSubnetV4(t *testing.T) {
 	if retrieved.Pools != "192.168.200.100 - 192.168.200.150" {
 		t.Errorf("Updated pools mismatch: got %s, want %s", retrieved.Pools, "192.168.200.100 - 192.168.200.150")
 	}
+	if supportsValidLifetime && retrieved.ValidLifetime != "43200" {
+		t.Errorf("Updated valid lifetime mismatch: got %s, want %s", retrieved.ValidLifetime, "43200")
+	}
 
 	err = controller.DeleteSubnetV4(ctx, key)
 	if err != nil {
 		t.Fatalf("Failed to delete SubnetV4: %v", err)
 	}
+	deleted = true
 	t.Logf("Deleted SubnetV4 with key: %s", key)
+}
+
+func TestSubnetV4ValidLifetimeJSON(t *testing.T) {
+	subnet := SubnetV4{ValidLifetime: "86400"}
+
+	payload, err := json.Marshal(subnet)
+	if err != nil {
+		t.Fatalf("Failed to marshal SubnetV4: %v", err)
+	}
+
+	var decoded map[string]any
+	if err := json.Unmarshal(payload, &decoded); err != nil {
+		t.Fatalf("Failed to unmarshal SubnetV4 JSON: %v", err)
+	}
+	if decoded["valid_lifetime"] != "86400" {
+		t.Fatalf("valid_lifetime JSON mismatch: got %v, want %s", decoded["valid_lifetime"], "86400")
+	}
 }
