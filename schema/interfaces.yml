@@ -122,40 +122,25 @@ resources:
         type: string
         key: gateway
 
-  - name: Assign
-    filename: assign
-    monad: assign
+  - name: Assignment
+    filename: assignment
+    monad: interface
     endpoints:
-      add: "/interfaces/assign_settings/addItem"
-      get: "/interfaces/assign_settings/getItem"
-      update: "/interfaces/assign_settings/setItem"
-      delete: "/interfaces/assign_settings/delItem"
-      reconfigure: "/interfaces/assign_settings/reconfigure"
+      add: "/interfaces/assignment/addItem"
+      get: "/interfaces/assignment/getItem"
+      update: "/interfaces/assignment/setItem"
+      delete: "/interfaces/assignment/delItem"
+      reconfigure: "/interfaces/assignment/reconfigure"
     attrs:
-      - name: Interface
-        type: string
-        key: interface
       - name: Device
-        type: string
-        key: device
-      - name: Ip
-        type: string
-        key: ipaddr
-      - name: Subnet
-        type: string
-        key: subnet
-      - name: Gateway
-        type: string
-        key: gateway
-      - name: GatewayInterface
-        type: string
-        key: gateway_interface
-      - name: Enable
-        type: string
-        key: enable
+        type: SelectedMap
+        key: if
       - name: Description
         type: string
         key: descr
+      - name: Lock
+        type: string
+        key: lock
 
 rpc:
   - name: "Overview"
