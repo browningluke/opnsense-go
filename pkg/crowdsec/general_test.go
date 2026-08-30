@@ -2,28 +2,11 @@ package crowdsec
 
 import (
 	"context"
-	"os"
 	"testing"
-
-	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
 func TestGeneral(t *testing.T) {
-	opnsense_url := os.Getenv("OPNSENSE_URI")
-	opnsense_key := os.Getenv("OPNSENSE_API_KEY")
-	opnsense_secret := os.Getenv("OPNSENSE_API_SECRET")
-
-	apiClient := api.NewClient(api.Options{
-		Uri:           opnsense_url,
-		APIKey:        opnsense_key,
-		APISecret:     opnsense_secret,
-		AllowInsecure: true,
-		MaxBackoff:    30,
-		MinBackoff:    1,
-		MaxRetries:    4,
-	})
-
-	controller := Controller{Api: apiClient}
+	controller := newController()
 	ctx := context.Background()
 
 	// Step 1: Get current settings.
