@@ -1,0 +1,63 @@
+---
+name: crowdsec
+reconfigureEndpoint: "/crowdsec/service/reconfigure" # Controller-wide reconfigure endpoint (can be overwritten)
+rpc:
+  - name: General
+    filename: general
+    customTypes:
+      GeneralGetResult:
+        - name: General
+          type: CrowdsecGeneral
+          key: general
+      CrowdsecGeneral:
+        - name: AgentEnabled
+          type: string
+          key: agent_enabled
+        - name: LapiEnabled
+          type: string
+          key: lapi_enabled
+        - name: FirewallBouncerEnabled
+          type: string
+          key: firewall_bouncer_enabled
+        - name: LapiManualConfiguration
+          type: string
+          key: lapi_manual_configuration
+        - name: LapiListenAddress
+          type: string
+          key: lapi_listen_address
+        - name: LapiListenPort
+          type: string
+          key: lapi_listen_port
+        - name: RulesEnabled
+          type: string
+          key: rules_enabled
+        - name: RulesLog
+          type: string
+          key: rules_log
+        - name: RulesTag
+          type: string
+          key: rules_tag
+        - name: EnrollKey
+          type: string
+          key: enroll_key
+        - name: CrowdsecFirewallVerbose
+          type: string
+          key: crowdsec_firewall_verbose
+      GeneralSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/crowdsec/general/get"
+        result_type: GeneralGetResult
+      - name: Set
+        method: POST
+        endpoint: "/crowdsec/general/set"
+        params:
+          - name: general
+            optional: false
+            bodyParameter: true
+            customType: CrowdsecGeneral
+        result_type: GeneralSetResult
