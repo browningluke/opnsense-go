@@ -53,6 +53,15 @@ type {{ .Resource.Name }} struct {
 
 // CRUD operations
 
+{{ if .Resource.Settings }}
+func (c *Controller) Get{{ .Resource.Name }}(ctx context.Context) (*{{ .Resource.Name }}, error) {
+	return api.Get(c.Client(), ctx, {{ .Resource.Name }}Opts, &{{ .Resource.Name }}{}, "")
+}
+
+func (c *Controller) Update{{ .Resource.Name }}(ctx context.Context, resource *{{ .Resource.Name }}) error {
+	return api.Update(c.Client(), ctx, {{ .Resource.Name }}Opts, resource, "")
+}
+{{ else }}
 {{ if not .Resource.ReadOnly }}
 func (c *Controller) Add{{ .Resource.Name }}(ctx context.Context, resource *{{ .Resource.Name }}) (string, error) {
 	return api.Add(c.Client(), ctx, {{ .Resource.Name }}Opts, resource)
@@ -80,4 +89,5 @@ func (c *Controller) Update{{ .Resource.Name }}(ctx context.Context, id string, 
 func (c *Controller) Delete{{ .Resource.Name }}(ctx context.Context, id string) error {
     return api.Delete(c.Client(), ctx, {{ .Resource.Name }}Opts, id)
 }
+{{ end }}
 {{ end }}
