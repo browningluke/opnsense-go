@@ -1,0 +1,43 @@
+---
+name: cron
+reconfigureEndpoint: "/cron/service/reconfigure"
+resources:
+  - name: Job
+    filename: job
+    monad: job
+    endpoints:
+      add: "/cron/settings/addJob"
+      get: "/cron/settings/getJob"
+      update: "/cron/settings/setJob"
+      delete: "/cron/settings/delJob"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Minutes
+        type: string
+        key: minutes
+      - name: Hours
+        type: string
+        key: hours
+      - name: Days
+        type: string
+        key: days
+      - name: Months
+        type: string
+        key: months
+      - name: Weekdays
+        type: string
+        key: weekdays
+      - name: Who
+        type: string
+        key: who
+      - name: Command
+        type: SelectedMap
+        key: command
+      - name: Parameters
+        type: string
+        key: parameters
+      - name: Description
+        type: string
+        key: description

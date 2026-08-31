@@ -34,15 +34,17 @@ type PrivilegeSetItemWrapper struct {
 func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*PrivilegeGetItemWrapper, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/auth/priv/get_item",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/auth/priv/get_item",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &PrivilegeGetItemWrapper{}
@@ -57,6 +59,7 @@ func (c *Controller) PrivilegeGetItem(ctx context.Context, id string) (*Privileg
 func (c *Controller) PrivilegeSetItem(ctx context.Context, id string, priv *PrivilegeSetItem) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
@@ -64,10 +67,11 @@ func (c *Controller) PrivilegeSetItem(ctx context.Context, id string, priv *Priv
 	bodyParams["priv"] = priv
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/auth/priv/set_item",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/auth/priv/set_item",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}

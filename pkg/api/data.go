@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"sort"
 	"strings"
 )
 
@@ -30,10 +31,11 @@ type deleteResp struct {
 
 // RCP Options
 type RPCOpts struct {
-	BaseEndpoint   string
-	Method         string
-	PathParameters []string
-	BodyParameters map[string]interface{}
+	BaseEndpoint    string
+	Method          string
+	PathParameters  []string
+	QueryParameters map[string]string
+	BodyParameters  map[string]interface{}
 }
 
 func (p *RPCOpts) EndpointURL() string {
@@ -48,6 +50,27 @@ func (p *RPCOpts) EndpointURL() string {
 		} else {
 			currentPath += "/" + escapedParam
 		}
+	}
+
+	if len(p.QueryParameters) > 0 {
+		keys := make([]string, 0, len(p.QueryParameters))
+		for k := range p.QueryParameters {
+			keys = append(keys, k)
+		}
+		// Sort so the URL is deterministic — important for any test that
+		// asserts on the request URL and for caches/loggers that key on it.
+		sort.Strings(keys)
+
+		values := url.Values{}
+		for _, k := range keys {
+			values.Set(k, p.QueryParameters[k])
+		}
+
+		separator := "?"
+		if strings.Contains(currentPath, "?") {
+			separator = "&"
+		}
+		currentPath += separator + values.Encode()
 	}
 	return currentPath
 }

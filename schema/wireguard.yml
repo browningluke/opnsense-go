@@ -85,3 +85,65 @@ resources:
       - name: KeepAlive
         type: string
         key: keepalive
+
+rpc:
+  - name: General
+    filename: general
+    customTypes:
+      GeneralGetResult:
+        - name: General
+          type: WireguardGeneral
+          key: general
+      WireguardGeneral:
+        - name: Enabled
+          type: string
+          key: enabled
+      GeneralSetResult:
+        - name: Result
+          type: string
+          key: result
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/wireguard/general/get"
+        result_type: GeneralGetResult
+      - name: Set
+        method: POST
+        endpoint: "/wireguard/general/set"
+        params:
+          - name: general
+            optional: false
+            bodyParameter: true
+            customType: WireguardGeneral
+        result_type: GeneralSetResult
+
+  - name: Service
+    filename: gen
+    customTypes:
+      GenKeyPairResult:
+        - name: PrivKey
+          type: string
+          key: privkey
+        - name: PubKey
+          type: string
+          key: pubkey
+        - name: Status
+          type: string
+          key: status
+      GenPskResult:
+        - name: Psk
+          type: string
+          key: psk
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: GenKeyPair
+        method: GET
+        # Note: path is camelCase (keyPair), NOT snake_case - do not change.
+        endpoint: "/wireguard/server/keyPair"
+        result_type: GenKeyPairResult
+      - name: GenPsk
+        method: GET
+        endpoint: "/wireguard/client/psk"
+        result_type: GenPskResult

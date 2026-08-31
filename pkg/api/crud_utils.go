@@ -14,7 +14,12 @@ func resourceWrap[K any](monad string, resource K) map[string]K {
 }
 
 func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.RawMessage) error {
-	wrapped := reqData[monad]
+	wrapped, ok := reqData[monad]
+	if !ok || len(wrapped) == 0 {
+		// Upstream returned 200 but the response did not include the
+		// configured monad — treat as not-found.
+		return errs.NewNotFoundError()
+	}
 
 	if err := json.Unmarshal(wrapped, resource); err != nil {
 		return err
@@ -26,7 +31,9 @@ func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.Raw
 func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpoint string) (string, error) {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
+		return "", err
+	}
 	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 	// Wrap resource
@@ -127,15 +134,13 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 	}
 
 	// Find key in returned list
-	i := 0
-	for key, _ := range reqData {
+	for key := range reqData {
 		r := new(K)
 		if err := json.Unmarshal(reqData[key], r); err != nil {
 			return nil, err
 		}
 
 		resources = append(resources, *r)
-		i++
 	}
 
 	if len(resources) == 0 {
@@ -149,7 +154,9 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	GlobalMutexKV.Lock(clientMutexKey, ctx)
+	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
+		return err
+	}
 	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
 
 	respJson := &deleteResp{}

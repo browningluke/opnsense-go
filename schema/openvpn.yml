@@ -1,0 +1,342 @@
+---
+name: openvpn
+reconfigureEndpoint: "/openvpn/service/reconfigure" # Controller-wide reconfigure endpoint
+
+resources:
+  - name: Instance
+    filename: instance
+    monad: instance
+    endpoints:
+      add: "/openvpn/instances/add"
+      get: "/openvpn/instances/get"
+      update: "/openvpn/instances/set"
+      delete: "/openvpn/instances/del"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Role
+        type: SelectedMap
+        key: role
+      - name: VPNID
+        type: string
+        key: vpnid
+        omitEmpty: true
+      - name: Description
+        type: string
+        key: description
+      - name: DevType
+        type: SelectedMap
+        key: dev_type
+      - name: Protocol
+        type: SelectedMap
+        key: proto
+      - name: Port
+        type: string
+        key: port
+      - name: PortShare
+        type: string
+        key: port-share
+      - name: Local
+        type: string
+        key: local
+      - name: Remote
+        type: SelectedMapList
+        key: remote
+      - name: Topology
+        type: SelectedMap
+        key: topology
+      - name: Server
+        type: string
+        key: server
+      - name: ServerIPv6
+        type: string
+        key: server_ipv6
+      - name: NoPool
+        type: string
+        key: nopool
+      - name: BridgeGateway
+        type: string
+        key: bridge_gateway
+      - name: BridgePool
+        type: string
+        key: bridge_pool
+      - name: Route
+        type: SelectedMapList
+        key: route
+      - name: PushRoute
+        type: SelectedMapList
+        key: push_route
+      - name: PushExcludedRoutes
+        type: SelectedMapList
+        key: push_excluded_routes
+      - name: Certificate
+        type: SelectedMap
+        key: cert
+      - name: CRL
+        type: SelectedMap
+        key: crl
+      - name: CertificateAuthority
+        type: SelectedMap
+        key: ca
+      - name: CertDepth
+        type: SelectedMap
+        key: cert_depth
+      - name: RemoteCertTLS
+        type: string
+        key: remote_cert_tls
+      - name: VerifyClientCert
+        type: SelectedMap
+        key: verify_client_cert
+      - name: UseOCSP
+        type: string
+        key: use_ocsp
+      - name: AuthDigest
+        type: SelectedMap
+        key: auth
+      - name: DataCiphers
+        type: SelectedMapList
+        key: data-ciphers
+      - name: DataCiphersFallback
+        type: SelectedMap
+        key: data-ciphers-fallback
+      - name: TLSKey
+        type: SelectedMap
+        key: tls_key
+      - name: AuthMode
+        type: SelectedMapList
+        key: authmode
+      - name: LocalGroup
+        type: SelectedMap
+        key: local_group
+      - name: VariousFlags
+        type: SelectedMapList
+        key: various_flags
+      - name: VariousPushFlags
+        type: SelectedMapList
+        key: various_push_flags
+      - name: PushInactive
+        type: string
+        key: push_inactive
+      - name: UsernameAsCommonName
+        type: string
+        key: username_as_common_name
+      - name: StrictUserCN
+        type: SelectedMap
+        key: strictusercn
+      - name: Username
+        type: string
+        key: username
+      - name: Password
+        type: string
+        key: password
+      - name: MaxClients
+        type: string
+        key: maxclients
+      - name: KeepaliveInterval
+        type: string
+        key: keepalive_interval
+      - name: KeepaliveTimeout
+        type: string
+        key: keepalive_timeout
+      - name: RenegSec
+        type: string
+        key: reneg-sec
+      - name: AuthGenToken
+        type: string
+        key: auth-gen-token
+      - name: AuthGenTokenRenewal
+        type: string
+        key: auth-gen-token-renewal
+      - name: AuthGenTokenSecret
+        type: string
+        key: auth-gen-token-secret
+      - name: ProvisionExclusive
+        type: string
+        key: provision_exclusive
+      - name: RedirectGateway
+        type: SelectedMapList
+        key: redirect_gateway
+      - name: RouteMetric
+        type: string
+        key: route_metric
+      - name: RegisterDNS
+        type: string
+        key: register_dns
+      - name: DNSDomain
+        type: SelectedMapList
+        key: dns_domain
+      - name: DNSDomainSearch
+        type: SelectedMapList
+        key: dns_domain_search
+      - name: DNSServers
+        type: SelectedMapList
+        key: dns_servers
+      - name: NTPServers
+        type: SelectedMapList
+        key: ntp_servers
+      - name: TunMTU
+        type: string
+        key: tun_mtu
+      - name: Fragment
+        type: string
+        key: fragment
+      - name: MSSFix
+        type: string
+        key: mssfix
+      - name: CARPDependOn
+        type: SelectedMap
+        key: carp_depend_on
+      - name: CompressMigrate
+        type: string
+        key: compress_migrate
+      - name: IfConfigPoolPersist
+        type: string
+        key: ifconfig-pool-persist
+      - name: HTTPProxy
+        type: string
+        key: http-proxy
+      - name: VerifyX509Name
+        type: string
+        key: verify-x509-name
+
+  - name: StaticKey
+    filename: static_key
+    monad: statickey
+    endpoints:
+      add: "/openvpn/instances/add_static_key"
+      get: "/openvpn/instances/get_static_key"
+      update: "/openvpn/instances/set_static_key"
+      delete: "/openvpn/instances/del_static_key"
+    attrs:
+      - name: Mode
+        type: SelectedMap
+        key: mode
+      - name: Key
+        type: string
+        key: key
+      - name: Description
+        type: string
+        key: description
+
+  - name: ClientOverwrite
+    filename: client_overwrite
+    monad: cso
+    endpoints:
+      add: "/openvpn/client_overwrites/add"
+      get: "/openvpn/client_overwrites/get"
+      update: "/openvpn/client_overwrites/set"
+      delete: "/openvpn/client_overwrites/del"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Servers
+        type: SelectedMapList
+        key: servers
+      - name: CommonName
+        type: string
+        key: common_name
+      - name: Block
+        type: string
+        key: block
+      - name: PushReset
+        type: string
+        key: push_reset
+      - name: TunnelNetwork
+        type: string
+        key: tunnel_network
+      - name: TunnelNetworkV6
+        type: string
+        key: tunnel_networkv6
+      - name: LocalNetworks
+        type: SelectedMapList
+        key: local_networks
+      - name: RemoteNetworks
+        type: SelectedMapList
+        key: remote_networks
+      - name: RouteGateway
+        type: string
+        key: route_gateway
+      - name: RedirectGateway
+        type: SelectedMapList
+        key: redirect_gateway
+      - name: RegisterDNS
+        type: string
+        key: register_dns
+      - name: DNSDomain
+        type: SelectedMapList
+        key: dns_domain
+      - name: DNSDomainSearch
+        type: SelectedMapList
+        key: dns_domain_search
+      - name: DNSServers
+        type: SelectedMapList
+        key: dns_servers
+      - name: NTPServers
+        type: SelectedMapList
+        key: ntp_servers
+      - name: WINSServers
+        type: SelectedMapList
+        key: wins_servers
+      - name: Description
+        type: string
+        key: description
+
+rpc:
+  - name: "Service"
+    filename: service
+    customTypes:
+      Result:
+        - name: Result
+          type: string
+          key: result
+      ActionResult:
+        - name: Result
+          type: string
+          key: result
+      GenKeyResult:
+        - name: Result
+          type: string
+          key: result
+        - name: Key
+          type: string
+          key: key
+    rpc_calls:
+      - name: "Reconfigure"
+        method: "POST"
+        endpoint: "/openvpn/service/reconfigure"
+        result_type: "ActionResult"
+      - name: "StartService"
+        method: "POST"
+        endpoint: "/openvpn/service/start_service"
+        params:
+          - name: "id"
+            optional: true
+        result_type: "Result"
+      - name: "StopService"
+        method: "POST"
+        endpoint: "/openvpn/service/stop_service"
+        params:
+          - name: "id"
+            optional: true
+        result_type: "Result"
+      - name: "RestartService"
+        method: "POST"
+        endpoint: "/openvpn/service/restart_service"
+        params:
+          - name: "id"
+            optional: true
+        result_type: "Result"
+      - name: "GenKey"
+        method: "GET"
+        endpoint: "/openvpn/instances/gen_key"
+        # The PHP route only accepts hyphenated values (tls-auth, tls-crypt,
+        # …) via the ?type= query string; the path-parameter form silently
+        # fails for anything other than the default "secret".
+        params:
+          - name: "keyType"
+            key: "type"
+            optional: true
+            queryParameter: true
+        result_type: "GenKeyResult"

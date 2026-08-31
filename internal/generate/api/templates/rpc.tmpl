@@ -38,19 +38,28 @@ func (c *Controller) {{ $rpcContext.Name }}{{ .Name }}(ctx context.Context
     ) (*{{ .ResultType }},error) {
 
     callParams := []string{}
+    queryParams := make(map[string]string)
     bodyParams := make(map[string]interface{})
 
     {{ range .Parameters }}
-        {{- if and (not .IsBodyParameter) (not .CustomType) }}
+        {{- if .IsQueryParameter }}
+            {{- if .Optional }}
+            if {{ .Name }} != nil {
+            queryParams["{{ .KeyOrName }}"]=*{{ .Name }}
+            }
+            {{- else }}
+            queryParams["{{ .KeyOrName }}"]={{ .Name }}
+            {{- end }}
+        {{- else if and (not .IsBodyParameter) (not .CustomType) }}
             {{- if .Optional }}
             if {{ .Name }} != nil {
             callParams = append(callParams,*{{ .Name }})
             }
             {{- else }}
-            callParams = append(callParams,{{ .Name }}) 
+            callParams = append(callParams,{{ .Name }})
             {{- end }}
         {{- else }}
-            bodyParams["{{ .Name }}"]={{ .Name }}
+            bodyParams["{{ .KeyOrName }}"]={{ .Name }}
         {{- end }}
     {{ end }}
 
@@ -58,6 +67,7 @@ func (c *Controller) {{ $rpcContext.Name }}{{ .Name }}(ctx context.Context
         BaseEndpoint: "{{ .Endpoint }}",
         Method: "{{ .Method }}",
         PathParameters: callParams,
+        QueryParameters: queryParams,
         BodyParameters: bodyParams,
     }
     

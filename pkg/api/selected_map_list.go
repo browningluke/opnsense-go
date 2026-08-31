@@ -43,10 +43,11 @@ func (s *SelectedMapList) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SelectedMapList) MarshalJSON() ([]byte, error) {
-	// Ensure list is sorted
-	sort.Strings(*s)
-	str := strings.Join(*s, ",")
-	return json.Marshal(str)
+	// Sort a copy so Marshal stays read-only; the receiver may be
+	// shared with concurrent readers.
+	sorted := append([]string(nil), (*s)...)
+	sort.Strings(sorted)
+	return json.Marshal(strings.Join(sorted, ","))
 }
 
 func (s *SelectedMapList) String() string {
@@ -70,10 +71,10 @@ func (s *SelectedMapListNL) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SelectedMapListNL) MarshalJSON() ([]byte, error) {
-	// Ensure list is sorted
-	sort.Strings(*s)
-	str := strings.Join(*s, "\n")
-	return json.Marshal(str)
+	// Sort a copy so Marshal stays read-only; see SelectedMapList.MarshalJSON.
+	sorted := append([]string(nil), (*s)...)
+	sort.Strings(sorted)
+	return json.Marshal(strings.Join(sorted, "\n"))
 }
 
 func (s *SelectedMapListNL) String() string {
