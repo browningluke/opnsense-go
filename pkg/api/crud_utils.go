@@ -7,57 +7,39 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/errs"
 )
 
-func resourceWrap[K any](monad string, resource K) map[string]K {
-	return map[string]K{
-		monad: resource,
-	}
-}
-
-func resourceUnwrap[K any](monad string, resource K, reqData map[string]json.RawMessage) error {
-	wrapped, ok := reqData[monad]
-	if !ok || len(wrapped) == 0 {
-		// Upstream returned 200 but the response did not include the
-		// configured monad — treat as not-found.
-		return errs.NewNotFoundError()
-	}
-
-	if err := json.Unmarshal(wrapped, resource); err != nil {
+func withMutex(ctx context.Context, fn func() error) error {
+	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
 		return err
 	}
-
-	return nil
+	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
+	return fn()
 }
 
 func set[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, endpoint string) (string, error) {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
-		return "", err
-	}
-	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
+	var uuid string
+	err := withMutex(ctx, func() error {
+		// Wrap resource
+		wrapped := map[string](*K){opts.Monad: resource}
 
-	// Wrap resource
-	wrapped := resourceWrap(opts.Monad, resource)
+		// Make request to OPNsense
+		respJson := &addResp{}
+		if err := c.doRequest(ctx, "POST", endpoint, wrapped, respJson); err != nil {
+			return err
+		}
 
-	// Make request to OPNsense
-	respJson := &addResp{}
-	err := c.doRequest(ctx, "POST", endpoint, wrapped, respJson)
-	if err != nil {
-		return "", err
-	}
+		// Validate result
+		if respJson.Result != "saved" {
+			return fmt.Errorf("resource not changed. result: %s. errors: %s", respJson.Result, respJson.Validations)
+		}
 
-	// Validate result
-	if respJson.Result != "saved" {
-		return "", fmt.Errorf("resource not changed. result: %s. errors: %s", respJson.Result, respJson.Validations)
-	}
+		uuid = respJson.UUID
 
-	// Reconfigure (i.e. restart) the OPNsense service
-	err = c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
-	if err != nil {
-		return respJson.UUID, err
-	}
-
-	return respJson.UUID, nil
+		// Reconfigure (i.e. restart) the OPNsense service
+		return c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
+	})
+	return uuid, err
 }
 
 func get(c *Client, ctx context.Context, endpoint string) (map[string]json.RawMessage, error) {
@@ -72,7 +54,7 @@ func get(c *Client, ctx context.Context, endpoint string) (map[string]json.RawMe
 		switch err.(type) {
 		case *json.UnmarshalTypeError:
 			// Handle unmarshal error (means ID is invalid, or was deleted upstream)
-			return nil, errs.NewNotFoundError()
+			return nil, errs.ErrNotFound
 		}
 		return nil, err
 	}
@@ -97,8 +79,13 @@ func Get[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K, id st
 	}
 
 	// Unwrap json
-	err = resourceUnwrap(opts.Monad, resource, reqData)
-	if err != nil {
+	wrapped, ok := reqData[opts.Monad]
+	if !ok || len(wrapped) == 0 {
+		// Upstream returned 200 but the response did not include the
+		// configured monad — treat as not-found.
+		return nil, errs.ErrNotFound
+	}
+	if err := json.Unmarshal(wrapped, resource); err != nil {
 		return nil, err
 	}
 
@@ -123,7 +110,7 @@ func GetFilter[K any](c *Client, ctx context.Context, opts ReqOpts, resource *K,
 	}
 
 	// If loop exits without match, key doesn't exist in list
-	return nil, errs.NewNotFoundError()
+	return nil, errs.ErrNotFound
 }
 
 func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) ([]K, error) {
@@ -145,7 +132,7 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 
 	if len(resources) == 0 {
 		// If no resources returned, exit with NotFound error
-		return nil, errs.NewNotFoundError()
+		return nil, errs.ErrNotFound
 	}
 
 	return resources, nil
@@ -154,27 +141,18 @@ func GetAll[K any](c *Client, ctx context.Context, opts ReqOpts, resources []K) 
 func Delete(c *Client, ctx context.Context, opts ReqOpts, id string) error {
 	// Since the OPNsense controller has to be reconfigured after every change, locking the mutex prevents
 	// the API from being written to while it's reconfiguring, which results in data loss.
-	if err := GlobalMutexKV.Lock(clientMutexKey, ctx); err != nil {
-		return err
-	}
-	defer GlobalMutexKV.Unlock(clientMutexKey, ctx)
+	return withMutex(ctx, func() error {
+		respJson := &deleteResp{}
+		if err := c.doRequest(ctx, "POST", fmt.Sprintf("%s/%s", opts.DeleteEndpoint, id), nil, respJson); err != nil {
+			return err
+		}
 
-	respJson := &deleteResp{}
-	err := c.doRequest(ctx, "POST", fmt.Sprintf("%s/%s", opts.DeleteEndpoint, id), nil, respJson)
-	if err != nil {
-		return err
-	}
+		// Validate that override was deleted
+		if respJson.Result != "deleted" {
+			return fmt.Errorf("resource not deleted. result: %s", respJson.Result)
+		}
 
-	// Validate that override was deleted
-	if respJson.Result != "deleted" {
-		return fmt.Errorf("resource not deleted. result: %s", respJson.Result)
-	}
-
-	// Reconfigure (i.e. restart) the OPNsense service
-	err = c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
-	if err != nil {
-		return err
-	}
-
-	return nil
+		// Reconfigure (i.e. restart) the OPNsense service
+		return c.ReconfigureService(ctx, opts.ReconfigureEndpoint)
+	})
 }
