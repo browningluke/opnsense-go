@@ -11,7 +11,15 @@ resources:
       update: "/routes/routes/setroute"
       delete: "/routes/routes/delroute"
     attrs:
-      - name: Disabled
+      # OPNsense 26.1.10 (core #10027) renamed this field from 'disabled'
+      # to 'enabled'. Enabled is the canonical field; Disabled is kept only
+      # for backwards compatibility with pre-26.1.10 releases. Consumers
+      # should write both (each version ignores the key it doesn't know)
+      # and read Enabled, falling back to Disabled when Enabled is empty.
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Disabled # deprecated: pre-26.1.10 compatibility only
         type: string
         key: disabled
       - name: Description

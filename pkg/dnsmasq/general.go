@@ -57,13 +57,15 @@ type GeneralSettingsWrapper struct {
 func (c *Controller) GeneralSettingsGet(ctx context.Context) (*GeneralSettingsWrapper, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/dnsmasq/settings/get",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/dnsmasq/settings/get",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &GeneralSettingsWrapper{}
@@ -78,15 +80,17 @@ func (c *Controller) GeneralSettingsGet(ctx context.Context) (*GeneralSettingsWr
 func (c *Controller) GeneralSettingsSet(ctx context.Context, dnsmasq *GeneralSettings) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	bodyParams["dnsmasq"] = dnsmasq
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/dnsmasq/settings/set",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/dnsmasq/settings/set",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}

@@ -29,13 +29,15 @@ type SystemStatus struct {
 func (c *Controller) SystemHalt(ctx context.Context) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/system/halt",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/system/halt",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}
@@ -50,13 +52,15 @@ func (c *Controller) SystemHalt(ctx context.Context) (*api.ActionResult, error) 
 func (c *Controller) SystemReboot(ctx context.Context) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/system/reboot",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/system/reboot",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}
@@ -71,13 +75,15 @@ func (c *Controller) SystemReboot(ctx context.Context) (*api.ActionResult, error
 func (c *Controller) SystemStatus(ctx context.Context) (*SystemStatus, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/system/status",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/system/status",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &SystemStatus{}
@@ -92,15 +98,17 @@ func (c *Controller) SystemStatus(ctx context.Context) (*SystemStatus, error) {
 func (c *Controller) SystemDismissStatus(ctx context.Context, subject string) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	bodyParams["subject"] = subject
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/core/system/dismiss_status",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/core/system/dismiss_status",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}

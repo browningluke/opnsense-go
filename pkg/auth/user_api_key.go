@@ -35,15 +35,17 @@ type GetAllApiKeysResult struct {
 func (c *Controller) UserAddApiKey(ctx context.Context, username string) (*AddApiKeyResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, username)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/auth/user/add_api_key",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/auth/user/add_api_key",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &AddApiKeyResult{}
@@ -58,15 +60,17 @@ func (c *Controller) UserAddApiKey(ctx context.Context, username string) (*AddAp
 func (c *Controller) UserDeleteApiKey(ctx context.Context, id string) (*api.ActionResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callParams = append(callParams, id)
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/auth/user/del_api_key",
-		Method:         "POST",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/auth/user/del_api_key",
+		Method:          "POST",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &api.ActionResult{}
@@ -81,13 +85,15 @@ func (c *Controller) UserDeleteApiKey(ctx context.Context, id string) (*api.Acti
 func (c *Controller) UserGetAllApiKeys(ctx context.Context) (*GetAllApiKeysResult, error) {
 
 	callParams := []string{}
+	queryParams := make(map[string]string)
 	bodyParams := make(map[string]interface{})
 
 	callOpts := api.RPCOpts{
-		BaseEndpoint:   "/auth/user/search_api_key",
-		Method:         "GET",
-		PathParameters: callParams,
-		BodyParameters: bodyParams,
+		BaseEndpoint:    "/auth/user/search_api_key",
+		Method:          "GET",
+		PathParameters:  callParams,
+		QueryParameters: queryParams,
+		BodyParameters:  bodyParams,
 	}
 
 	resultData := &GetAllApiKeysResult{}

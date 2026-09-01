@@ -3,6 +3,7 @@ package schema
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -73,10 +74,22 @@ type RPCData struct {
 }
 
 type Parameter struct {
-	Name            string `yaml:"name"`
-	Optional        bool   `yaml:"optional"`
-	IsBodyParameter bool   `yaml:"bodyParameter"`
-	CustomType      string `yaml:"customType"`
+	Name             string `yaml:"name"`
+	Key              string `yaml:"key"`
+	Optional         bool   `yaml:"optional"`
+	IsBodyParameter  bool   `yaml:"bodyParameter"`
+	IsQueryParameter bool   `yaml:"queryParameter"`
+	CustomType       string `yaml:"customType"`
+}
+
+// KeyOrName returns the wire/URL key the API expects for this parameter.
+// Defaults to Name when Key is unset; lets schemas use a Go-safe variable
+// name (e.g. keyType) while emitting the actual API key (e.g. ?type=).
+func (p *Parameter) KeyOrName() string {
+	if p.Key != "" {
+		return p.Key
+	}
+	return p.Name
 }
 
 type RPCCallData struct {
@@ -138,10 +151,21 @@ func GetControllerNames() []string {
 
 	var controllerNames []string
 	for _, file := range files {
+		// Skip directories and non-YAML entries (.DS_Store, README.md,
+		// editor swap files, etc.). Without this guard, a single stray
+		// file in schema/ makes the generator panic with an opaque
+		// yaml.Unmarshal error.
+		if file.IsDir() {
+			continue
+		}
+		name := file.Name()
+		if !strings.HasSuffix(name, ".yml") && !strings.HasSuffix(name, ".yaml") {
+			continue
+		}
 		controllerNames = append(
 			controllerNames,
 			// Get load controller name from schema file
-			newController(fmt.Sprintf("%s/%s", relativePathToSchema, file.Name())).Name,
+			newController(fmt.Sprintf("%s/%s", relativePathToSchema, name)).Name,
 		)
 	}
 	return controllerNames

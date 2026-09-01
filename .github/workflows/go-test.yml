@@ -8,6 +8,8 @@ on:
       - 'scripts/**'
       - 'README.md'
       - '.github/**'
+      - '!.github/workflows/go-test.yml'
+      - '!.github/workflows/go-test-reusable.yml'
 
 permissions:
   contents: read

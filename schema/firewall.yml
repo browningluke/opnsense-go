@@ -309,6 +309,9 @@ resources:
       - name: UpdateFreq # only when type = urltable
         type: string
         key: updatefreq
+      - name: PathExpression # only when type = urljson
+        type: string
+        key: path_expression
       - name: Statistics # not when type = port
         type: string
         key: counters

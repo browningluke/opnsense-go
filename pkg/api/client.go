@@ -180,7 +180,7 @@ func (c *Client) ReconfigureService(ctx context.Context, endpoint string) error 
 	} else if respJson.Result != "" {
 		status = respJson.Result
 	} else {
-		panic(errors.New("reconfigure returned with unknown status response"))
+		return errors.New("reconfigure returned with unknown status response")
 	}
 
 	// Validate service restarted correctly

@@ -7,6 +7,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/auth"
 	"github.com/browningluke/opnsense-go/pkg/bind"
 	"github.com/browningluke/opnsense-go/pkg/core"
+	"github.com/browningluke/opnsense-go/pkg/cron"
 	"github.com/browningluke/opnsense-go/pkg/diagnostics"
 	"github.com/browningluke/opnsense-go/pkg/dnsmasq"
 	"github.com/browningluke/opnsense-go/pkg/dyndns"
@@ -14,8 +15,12 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
 	"github.com/browningluke/opnsense-go/pkg/kea"
+	"github.com/browningluke/opnsense-go/pkg/monit"
+	"github.com/browningluke/opnsense-go/pkg/openvpn"
 	"github.com/browningluke/opnsense-go/pkg/quagga"
 	"github.com/browningluke/opnsense-go/pkg/routes"
+	"github.com/browningluke/opnsense-go/pkg/syslog"
+	"github.com/browningluke/opnsense-go/pkg/trust"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
 	"github.com/browningluke/opnsense-go/pkg/wireguard"
 )
@@ -25,6 +30,7 @@ type Client interface {
 	Auth() *auth.Controller
 	Bind() *bind.Controller
 	Core() *core.Controller
+	Cron() *cron.Controller
 	Diagnostics() *diagnostics.Controller
 	Dnsmasq() *dnsmasq.Controller
 	Dyndns() *dyndns.Controller
@@ -32,8 +38,12 @@ type Client interface {
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
 	Kea() *kea.Controller
+	Monit() *monit.Controller
+	Openvpn() *openvpn.Controller
 	Quagga() *quagga.Controller
 	Routes() *routes.Controller
+	Syslog() *syslog.Controller
+	Trust() *trust.Controller
 	Unbound() *unbound.Controller
 	Wireguard() *wireguard.Controller
 }
@@ -57,6 +67,10 @@ func (c *client) Bind() *bind.Controller {
 
 func (c *client) Core() *core.Controller {
 	return &core.Controller{Api: c.a}
+}
+
+func (c *client) Cron() *cron.Controller {
+	return &cron.Controller{Api: c.a}
 }
 
 func (c *client) Diagnostics() *diagnostics.Controller {
@@ -87,12 +101,28 @@ func (c *client) Kea() *kea.Controller {
 	return &kea.Controller{Api: c.a}
 }
 
+func (c *client) Monit() *monit.Controller {
+	return &monit.Controller{Api: c.a}
+}
+
+func (c *client) Openvpn() *openvpn.Controller {
+	return &openvpn.Controller{Api: c.a}
+}
+
 func (c *client) Quagga() *quagga.Controller {
 	return &quagga.Controller{Api: c.a}
 }
 
 func (c *client) Routes() *routes.Controller {
 	return &routes.Controller{Api: c.a}
+}
+
+func (c *client) Syslog() *syslog.Controller {
+	return &syslog.Controller{Api: c.a}
+}
+
+func (c *client) Trust() *trust.Controller {
+	return &trust.Controller{Api: c.a}
 }
 
 func (c *client) Unbound() *unbound.Controller {
