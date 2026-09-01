@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 env:
-  OPNSENSE_VERSION: "26.1"
-  OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-26.1.qcow2"
-  OPNSENSE_SHA1: 2266a644b1669be1a8d916a0a79fc91ba4be4733
+  OPNSENSE_VERSION: "26.7"
+  OPNSENSE_URL: "https://files.bsd.ac/opnsense-qemu/opnsense-26.7.qcow2"
+  OPNSENSE_SHA1: 85adfabb6b1e23beec8673e4bbe83e869666f954
   OPNSENSE_SSH_PORT: 8022
   OPNSENSE_WEB_PORT: 8443
 
@@ -163,7 +163,7 @@ jobs:
           -nographic &
           QEMU_PID="$!"
           echo "qemu-pid=${QEMU_PID}" >> "$GITHUB_OUTPUT"
-          sleep 180 # Wait for the VM to boot
+          sleep 240 # Wait for the VM to boot
           [ -d "/proc/${QEMU_PID}" ] || (echo "QEMU process not found" && exit 1)
 
       - name: Create API key
