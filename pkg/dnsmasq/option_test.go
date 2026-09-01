@@ -56,7 +56,7 @@ func TestOption(t *testing.T) {
 	option.OptionV6 = api.SelectedMap("23")
 	// option.Tag = nil
 	// option.TagSet = api.SelectedMap("763bd6ed-e6bc-4c3c-aef7-6fef954179a5")
-	option.Value = "255.255.255.250"
+	option.Value = "[2001:db8:abcd:0012::1]"
 	option.Description = "test-subnetmask-updated"
 	err = controller.UpdateOption(ctx, respAdd, option)
 	if err != nil {

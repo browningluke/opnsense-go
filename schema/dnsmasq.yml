@@ -37,6 +37,9 @@ resources:
       - name: HardwareAddresses
         type: SelectedMapList
         key: hwaddr
+      - name: LeaseTime
+        type: string
+        key: lease_time
       - name: Tag
         type: SelectedMap
         key: set_tag
@@ -111,7 +114,7 @@ resources:
         type: SelectedMap
         key: constructor
       - name: Mode
-        type: SelectedMap
+        type: SelectedMapList
         key: mode
       - name: PrefixLength
         type: string
@@ -129,7 +132,7 @@ resources:
         type: string
         key: nosync
       - name: RaMode
-        type: SelectedMap
+        type: SelectedMapList
         key: ra_mode
       - name: RaPriority
         type: SelectedMap
@@ -700,6 +703,9 @@ rpc:
       - name: DefaultDomain
         type: string
         key: domain
+      - name: LocalDomain
+        type: string
+        key: local
       - name: MaxLeases
         type: string
         key: lease_max
@@ -715,6 +721,15 @@ rpc:
       - name: RouterAdvertisements
         type: string
         key: enable_ra
+      - name: HostPing
+        type: string
+        key: host_ping
       - name: DisableHASync
         type: string
         key: nosync
+      - name: LogDhcp
+        type: string
+        key: log_dhcp
+      - name: LogQuiet
+        type: string
+        key: log_quiet

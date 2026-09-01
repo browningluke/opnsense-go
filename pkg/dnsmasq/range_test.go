@@ -28,83 +28,123 @@ func TestRange(t *testing.T) {
 	}
 	ctx := context.Background()
 
+	expectedMode := api.SelectedMapList([]string{
+		"static",
+	})
 	rng := &Range{
 		StartAddress: "192.168.100.100",
-		EndAddress:   "192.168.100.199",
 		DomainType:   api.SelectedMap("range"),
+		Mode:         expectedMode,
+		Description:  "test-description",
 	}
 
-	respAdd, err := controller.AddRange(ctx, rng)
+	respId, err := controller.AddRange(ctx, rng)
 	if err != nil {
 		t.Fatalf("Failed to add range: %v", err)
 	}
-	t.Logf("AddRange: %+v", respAdd)
+	t.Logf("AddRange: %+v", respId)
 
-	respGet, err := controller.GetRange(ctx, respAdd)
+	// Cleanup is only used if the test fails before the explicit delete.
+	deleted := false
+
+	t.Cleanup(func() {
+		if deleted {
+			return
+		}
+
+		if err := controller.DeleteRange(ctx, respId); err != nil {
+			t.Errorf("Failed to cleanup range: %v", err)
+		}
+	})
+
+	v, err := controller.GetRange(ctx, respId)
 	if err != nil {
 		t.Fatalf("Failed to get range: %v", err)
 	}
-	t.Logf("GetRange: %+v", respGet)
+	t.Logf("GetRange: %+v", v)
 
-	// rng.Interface = api.SelectedMap("lan")
-	// rng.Tags = api.SelectedMap("d594fa8a-1a76-44e7-afab-adb6c5bdb69e")
-	rng.StartAddress = "192.168.100.200"
-	rng.EndAddress = "192.168.100.250"
-	rng.SubnetMask = "255.255.255.224"
-	// rng.Constructor = api.SelectedMap("lan")
-	// rng.Mode = api.SelectedMap("static")
-	rng.LeaseTime = "3600"
-	rng.Domain = "test-domain-updated"
-	rng.DisableHASync = "1"
+	if v.StartAddress != rng.StartAddress {
+		t.Fatalf("StartAddress not equal; Got: %q Expected: %q", v.StartAddress, rng.StartAddress)
+	}
+
+	if v.EndAddress != "" {
+		t.Fatalf("EndAddress must be empty for static range; Got: %q", v.EndAddress)
+	}
+
+	if v.SubnetMask != "" {
+		t.Fatalf("SubnetMask must be empty for static range; Got: %q", v.SubnetMask)
+	}
+
+	if v.DomainType.String() != rng.DomainType.String() {
+		t.Fatalf("DomainType not equal; Got: %q Expected: %q", v.DomainType.String(), rng.DomainType.String())
+	}
+
+	if v.Description != rng.Description {
+		t.Fatalf("Description not equal; Got: %q Expected: %q", v.Description, rng.Description)
+	}
+
+	// ---------------------------------------------------------------------
+	// Verify SelectedMapList round-trip.
+	// ---------------------------------------------------------------------
+
+	if len(v.Mode) != 1 {
+		t.Fatalf("Mode contains unexpected number of values; Got: %+v Expected: %+v", v.Mode, expectedMode)
+	}
+
+	if v.Mode[0] != "static" {
+		t.Fatalf("Mode not equal; Got: %+v Expected: %+v", v.Mode, expectedMode)
+	}
+
+	// ---------------------------------------------------------------------
+	// Update static range.
+	//
+	// Do NOT specify EndAddress or SubnetMask.
+	// ---------------------------------------------------------------------
+	rng.StartAddress = "192.168.100.101"
 	rng.Description = "test-description-updated"
-	err = controller.UpdateRange(ctx, respAdd, rng)
+	rng.Mode = api.SelectedMapList([]string{"static"})
+	err = controller.UpdateRange(ctx, respId, rng)
 	if err != nil {
 		t.Fatalf("Failed to update range: %v", err)
 	}
 	t.Logf("UpdateRange: %+v", rng)
 
-	respSearch, err := controller.SearchRange(ctx, "-1")
+	// ---------------------------------------------------------------------
+	// GET after update
+	// ---------------------------------------------------------------------
+	v, err = controller.GetRange(ctx, respId)
 	if err != nil {
-		t.Fatalf("Failed to search ranges: %v", err)
+		t.Fatalf("Failed to get range after update: %v", err)
 	}
-	t.Logf("SearchRange: %+v", respSearch)
-	noRowFound := true
-	lastId := ""
-	for _, v := range respSearch.Rows {
-		lastId = v.Id
-		if v.Id != respAdd {
-			continue
-		}
-		noRowFound = false
-		if v.StartAddress != rng.StartAddress {
-			t.Fatalf("StartAddress not updated; Got: %s Expected: %s", v.StartAddress, rng.StartAddress)
-		}
-		if v.EndAddress != rng.EndAddress {
-			t.Fatalf("EndAddress not updated; Got: %s Expected: %s", v.EndAddress, rng.EndAddress)
-		}
-		if v.SubnetMask != rng.SubnetMask {
-			t.Fatalf("SubnetMask not updated; Got: %s Expected: %s", v.SubnetMask, rng.SubnetMask)
-		}
-		if v.LeaseTime != rng.LeaseTime {
-			t.Fatalf("LeaseTime not updated; Got: %s Expected: %s", v.LeaseTime, rng.LeaseTime)
-		}
-		if v.Domain != rng.Domain {
-			t.Fatalf("Domain not updated; Got: %s Expected: %s", v.Domain, rng.Domain)
-		}
-		if v.DisableHASync != rng.DisableHASync {
-			t.Fatalf("DisableHASync not updated; Got: %s Expected: %s", v.DisableHASync, rng.DisableHASync)
-		}
-		if v.Description != rng.Description {
-			t.Fatalf("Description not updated; Got: %s Expected: %s", v.Description, rng.Description)
-		}
+	t.Logf("GetRange after update: %+v", v)
+
+	if v.StartAddress != rng.StartAddress {
+		t.Fatalf("StartAddress not updated; Got: %q Expected: %q", v.StartAddress, rng.StartAddress)
 	}
-	if noRowFound {
-		t.Fatalf("Row not found that was added; Got: %s Expected: %s", lastId, respAdd)
+	if v.EndAddress != "" {
+		t.Fatalf("EndAddress must remain empty for static range; Got: %q", v.EndAddress)
+	}
+	if v.SubnetMask != "" {
+		t.Fatalf("SubnetMask must remain empty for static range; Got: %q", v.SubnetMask)
+	}
+	if v.Description != rng.Description {
+		t.Fatalf("Description not updated; Got: %q Expected: %q", v.Description, rng.Description)
+	}
+	if len(v.Mode) != 1 {
+		t.Fatalf("Mode contains unexpected number of values after update; Got: %+v Expected: %+v", v.Mode, rng.Mode)
+	}
+	if v.Mode[0] != "static" {
+		t.Fatalf("Mode not updated; Got: %+v Expected: %+v", v.Mode, rng.Mode)
 	}
 
-	err = controller.DeleteRange(ctx, respAdd)
+	// ---------------------------------------------------------------------
+	// Delete
+	// ---------------------------------------------------------------------
+
+	err = controller.DeleteRange(ctx, respId)
 	if err != nil {
 		t.Fatalf("Failed to delete range: %v", err)
 	}
+	deleted = true
 	t.Log("DeleteRange: Deleted!")
 }

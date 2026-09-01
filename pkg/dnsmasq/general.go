@@ -15,12 +15,16 @@ type GeneralDHCPSettings struct {
 	InterfaceNoDhcp       api.SelectedMapList `json:"no_interface"`
 	FQDN                  string              `json:"fqdn"`
 	DefaultDomain         string              `json:"domain"`
+	LocalDomain           string              `json:"local"`
 	MaxLeases             string              `json:"lease_max"`
 	Authoritative         string              `json:"authoritative"`
 	ReplyDelay            string              `json:"reply_delay"`
 	RegisterFirewallRules string              `json:"default_fw_rules"`
 	RouterAdvertisements  string              `json:"enable_ra"`
+	HostPing              string              `json:"host_ping"`
 	DisableHASync         string              `json:"nosync"`
+	LogDhcp               string              `json:"log_dhcp"`
+	LogQuiet              string              `json:"log_quiet"`
 }
 
 type GeneralSettings struct {

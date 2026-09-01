@@ -58,6 +58,7 @@ func TestHost(t *testing.T) {
 	host.AliasRecords = api.SelectedMapList([]string{"test-alias-1", "test-alias-2"})
 	host.CnameRecords = api.SelectedMapList([]string{"test-cname-1", "test-cname-2"})
 	host.HardwareAddresses = api.SelectedMapList([]string{"00:11:22:33:44:55", "AA:BB:CC:DD:EE:FF"})
+	host.LeaseTime = "43200"
 	// host.Tagset = api.SelectedMap("ee791e64-69de-4776-a9a0-e1442630c6ef")
 	err = controller.UpdateHost(ctx, respAdd, host)
 	if err != nil {
@@ -92,6 +93,9 @@ func TestHost(t *testing.T) {
 		}
 		if v.HardwareAddresses != host.HardwareAddresses.String() {
 			t.Fatalf("Hardware addresses not updated; Got: %s Expected: %s", v.HardwareAddresses, host.HardwareAddresses.String())
+		}
+		if v.LeaseTime != host.LeaseTime {
+			t.Fatalf("LeaseTime not updated; Got: %s Expected: %s", v.LeaseTime, host.LeaseTime)
 		}
 	}
 	if noRowFound {

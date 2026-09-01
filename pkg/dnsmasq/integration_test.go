@@ -75,7 +75,7 @@ func TestIntegration(t *testing.T) {
 	}
 
 	optionTwo.TypeMatchTag = api.SelectedMap(tagOneId)
-	controller.UpdateOption(ctx, optionTwoId, optionTwo)
+	err = controller.UpdateOption(ctx, optionTwoId, optionTwo)
 	if err != nil {
 		t.Fatalf("Error updating: %+v; %s", optionTwo, err)
 	}

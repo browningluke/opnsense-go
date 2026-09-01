@@ -20,24 +20,24 @@ var RangeOpts = api.ReqOpts{
 // Data structs
 
 type Range struct {
-	Interface        api.SelectedMap `json:"interface"`
-	Tag              api.SelectedMap `json:"set_tag"`
-	StartAddress     string          `json:"start_addr"`
-	EndAddress       string          `json:"end_addr"`
-	SubnetMask       string          `json:"subnet_mask"`
-	Constructor      api.SelectedMap `json:"constructor"`
-	Mode             api.SelectedMap `json:"mode"`
-	PrefixLength     string          `json:"prefix_len"`
-	LeaseTime        string          `json:"lease_time"`
-	DomainType       api.SelectedMap `json:"domain_type"`
-	Domain           string          `json:"domain"`
-	DisableHASync    string          `json:"nosync"`
-	RaMode           api.SelectedMap `json:"ra_mode"`
-	RaPriority       api.SelectedMap `json:"ra_priority"`
-	RaMTU            string          `json:"ra_mtu"`
-	RaInterval       string          `json:"ra_interval"`
-	RaRouterLifetime string          `json:"ra_router_lifetime"`
-	Description      string          `json:"description"`
+	Interface        api.SelectedMap     `json:"interface"`
+	Tag              api.SelectedMap     `json:"set_tag"`
+	StartAddress     string              `json:"start_addr"`
+	EndAddress       string              `json:"end_addr"`
+	SubnetMask       string              `json:"subnet_mask"`
+	Constructor      api.SelectedMap     `json:"constructor"`
+	Mode             api.SelectedMapList `json:"mode"`
+	PrefixLength     string              `json:"prefix_len"`
+	LeaseTime        string              `json:"lease_time"`
+	DomainType       api.SelectedMap     `json:"domain_type"`
+	Domain           string              `json:"domain"`
+	DisableHASync    string              `json:"nosync"`
+	RaMode           api.SelectedMapList `json:"ra_mode"`
+	RaPriority       api.SelectedMap     `json:"ra_priority"`
+	RaMTU            string              `json:"ra_mtu"`
+	RaInterval       string              `json:"ra_interval"`
+	RaRouterLifetime string              `json:"ra_router_lifetime"`
+	Description      string              `json:"description"`
 }
 
 // CRUD operations
