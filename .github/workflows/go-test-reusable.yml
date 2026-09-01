@@ -163,7 +163,7 @@ jobs:
           -nographic &
           QEMU_PID="$!"
           echo "qemu-pid=${QEMU_PID}" >> "$GITHUB_OUTPUT"
-          sleep 180 # Wait for the VM to boot
+          sleep 240 # Wait for the VM to boot
           [ -d "/proc/${QEMU_PID}" ] || (echo "QEMU process not found" && exit 1)
 
       - name: Create API key
