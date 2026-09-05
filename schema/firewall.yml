@@ -338,3 +338,38 @@ resources:
       - name: Color
         type: string
         key: color
+
+rpc:
+  - name: NATSettings
+    filename: nat_settings
+    customTypes:
+      NATGeneral:
+        - name: SNATMode
+          type: SelectedMap
+          key: snat_mode
+      NATSettings:
+        - name: General
+          type: NATGeneral
+          key: general
+      NATSettingsMonad:
+        - name: Filter
+          type: NATSettings
+          key: filter
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/firewall/source_nat/get"
+        result_type: NATSettingsMonad
+      - name: Update
+        method: POST
+        endpoint: "/firewall/source_nat/set"
+        params:
+          - name: filter
+            optional: false
+            bodyParameter: true
+            customType: NATSettings
+        result_type: "api.ActionResult"
+      - name: Apply
+        method: POST
+        endpoint: "/firewall/source_nat/apply"
+        result_type: "api.ActionResult"

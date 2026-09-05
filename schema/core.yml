@@ -117,3 +117,57 @@ rpc:
             optional: false
             type: string
         result_type: "ServiceActionResult"
+  - name: "Firmware"
+    filename: firmware
+    customTypes:
+      Package:
+        - name: Name
+          type: string
+          key: name
+        - name: Version
+          type: string
+          key: version
+        - name: Installed
+          type: string
+          key: installed
+        - name: Provided
+          type: string
+          key: provided
+        - name: Configured
+          type: string
+          key: configured
+        - name: Repository
+          type: string
+          key: repository
+      Info:
+        - name: Plugin
+          type: '[]Package'
+          key: plugin
+      Action:
+        - name: Status
+          type: string
+          key: status
+        - name: MessageUUID
+          type: string
+          key: msg_uuid
+    rpc_calls:
+      - name: "Info"
+        method: "GET"
+        endpoint: "/core/firmware/info"
+        result_type: "Info"
+      - name: "Install"
+        method: "POST"
+        endpoint: "/core/firmware/install"
+        params:
+          - name: "packageName"
+            optional: false
+            type: string
+        result_type: "Action"
+      - name: "Remove"
+        method: "POST"
+        endpoint: "/core/firmware/remove"
+        params:
+          - name: "packageName"
+            optional: false
+            type: string
+        result_type: "Action"

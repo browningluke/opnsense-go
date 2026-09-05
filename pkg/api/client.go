@@ -59,8 +59,9 @@ func NewClient(options Options) *Client {
 
 	// Configure HTTP client
 	client.client.HTTPClient.Transport = &http.Transport{
-		Proxy:           http.ProxyFromEnvironment,
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: options.AllowInsecure},
+		Proxy:             http.ProxyFromEnvironment,
+		ForceAttemptHTTP2: true,
+		TLSClientConfig:   &tls.Config{InsecureSkipVerify: options.AllowInsecure},
 	}
 
 	//   Set defaults for retries
@@ -128,7 +129,9 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	reqCopy := req.Clone(req.Context())
 	reqCopy.Header.Set("Authorization", "****************")
 
-	dReq, _ := httputil.DumpRequest(reqCopy, true)
+	// Request and response payloads can contain passwords, API secrets, and
+	// private keys. Log only their metadata after redacting Authorization.
+	dReq, _ := httputil.DumpRequest(reqCopy, false)
 	logger.Println(fmt.Sprintf("\n%s\n", string(dReq)))
 
 	// Do request
@@ -138,8 +141,12 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, body an
 	}
 	defer res.Body.Close()
 
-	// Log response
-	dRes, _ := httputil.DumpResponse(res, true)
+	// Log response metadata without emitting session cookies returned by OPNsense.
+	resCopy := new(http.Response)
+	*resCopy = *res
+	resCopy.Header = res.Header.Clone()
+	resCopy.Header.Del("Set-Cookie")
+	dRes, _ := httputil.DumpResponse(resCopy, false)
 	logger.Println(ctx, fmt.Sprintf("\n%s\n", string(dRes)))
 
 	// Check for 200

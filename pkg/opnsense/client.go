@@ -12,6 +12,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/dnsmasq"
 	"github.com/browningluke/opnsense-go/pkg/dyndns"
 	"github.com/browningluke/opnsense-go/pkg/firewall"
+	"github.com/browningluke/opnsense-go/pkg/ids"
 	"github.com/browningluke/opnsense-go/pkg/interfaces"
 	"github.com/browningluke/opnsense-go/pkg/ipsec"
 	"github.com/browningluke/opnsense-go/pkg/kea"
@@ -23,6 +24,7 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/trust"
 	"github.com/browningluke/opnsense-go/pkg/unbound"
 	"github.com/browningluke/opnsense-go/pkg/wireguard"
+	"github.com/browningluke/opnsense-go/pkg/zenarmor"
 )
 
 // Client defines a client interface for the Proxmox Virtual Environment API.
@@ -35,6 +37,7 @@ type Client interface {
 	Dnsmasq() *dnsmasq.Controller
 	Dyndns() *dyndns.Controller
 	Firewall() *firewall.Controller
+	Ids() *ids.Controller
 	Interfaces() *interfaces.Controller
 	Ipsec() *ipsec.Controller
 	Kea() *kea.Controller
@@ -46,6 +49,7 @@ type Client interface {
 	Trust() *trust.Controller
 	Unbound() *unbound.Controller
 	Wireguard() *wireguard.Controller
+	Zenarmor() *zenarmor.Controller
 }
 
 type client struct {
@@ -87,6 +91,10 @@ func (c *client) Dyndns() *dyndns.Controller {
 
 func (c *client) Firewall() *firewall.Controller {
 	return &firewall.Controller{Api: c.a}
+}
+
+func (c *client) Ids() *ids.Controller {
+	return &ids.Controller{Api: c.a}
 }
 
 func (c *client) Interfaces() *interfaces.Controller {
@@ -131,4 +139,8 @@ func (c *client) Unbound() *unbound.Controller {
 
 func (c *client) Wireguard() *wireguard.Controller {
 	return &wireguard.Controller{Api: c.a}
+}
+
+func (c *client) Zenarmor() *zenarmor.Controller {
+	return &zenarmor.Controller{Api: c.a}
 }

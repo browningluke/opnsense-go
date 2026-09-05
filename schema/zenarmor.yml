@@ -1,0 +1,8 @@
+---
+name: zenarmor
+reconfigureEndpoint: ""
+resources: []
+
+# Zenarmor uses hand-written RPC clients because its plugin endpoints do not
+# follow the OPNsense core MVC resource conventions. Keeping the controller in
+# the schema registry ensures client generation retains the custom package.

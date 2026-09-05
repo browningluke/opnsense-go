@@ -1,0 +1,167 @@
+---
+name: ids
+reconfigureEndpoint: "/ids/service/reconfigure"
+resources:
+  - name: Policy
+    filename: policy
+    monad: policy
+    endpoints:
+      add: "/ids/settings/add_policy"
+      get: "/ids/settings/get_policy"
+      update: "/ids/settings/set_policy"
+      delete: "/ids/settings/del_policy"
+      reconfigure: "null"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Priority
+        type: string
+        key: prio
+      - name: Action
+        type: SelectedMapList
+        key: action
+      - name: Rulesets
+        type: SelectedMapList
+        key: rulesets
+      - name: Content
+        type: SelectedMapList
+        key: content
+      - name: NewAction
+        type: SelectedMap
+        key: new_action
+      - name: Description
+        type: string
+        key: description
+  - name: PolicyRule
+    filename: policy_rule
+    monad: rule
+    endpoints:
+      add: "/ids/settings/add_policy_rule"
+      get: "/ids/settings/get_policy_rule"
+      update: "/ids/settings/set_policy_rule"
+      delete: "/ids/settings/del_policy_rule"
+      reconfigure: "null"
+    attrs:
+      - name: SID
+        type: string
+        key: sid
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Message
+        type: string
+        key: msg
+      - name: Source
+        type: string
+        key: source
+  - name: UserRule
+    filename: user_rule
+    monad: rule
+    endpoints:
+      add: "/ids/settings/add_user_rule"
+      get: "/ids/settings/get_user_rule"
+      update: "/ids/settings/set_user_rule"
+      delete: "/ids/settings/del_user_rule"
+      reconfigure: "null"
+    attrs:
+      - name: Enabled
+        type: string
+        key: enabled
+      - name: Source
+        type: string
+        key: source
+      - name: Destination
+        type: string
+        key: destination
+      - name: Fingerprint
+        type: string
+        key: fingerprint
+      - name: Description
+        type: string
+        key: description
+      - name: Action
+        type: SelectedMap
+        key: action
+      - name: Bypass
+        type: string
+        key: bypass
+rpc:
+  - name: Settings
+    filename: settings
+    customTypes:
+      General:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Mode
+          type: SelectedMap
+          key: mode
+        - name: Interfaces
+          type: SelectedMapList
+          key: interfaces
+        - name: HomeNet
+          type: SelectedMapList
+          key: homenet
+        - name: Promisc
+          type: string
+          key: promisc
+      Settings:
+        - name: General
+          type: General
+          key: general
+      SettingsMonad:
+        - name: Ids
+          type: Settings
+          key: ids
+    rpc_calls:
+      - name: Get
+        method: "GET"
+        endpoint: "/ids/settings/get"
+        result_type: SettingsMonad
+      - name: Update
+        method: "POST"
+        endpoint: "/ids/settings/set"
+        params:
+          - name: ids
+            optional: false
+            bodyParameter: true
+            customType: Settings
+        result_type: "api.ActionResult"
+  - name: Ruleset
+    filename: ruleset
+    customTypes:
+      Ruleset:
+        - name: Filename
+          type: string
+          key: filename
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: Description
+          type: string
+          key: description
+      ToggleResult:
+        - name: Status
+          type: string
+          key: status
+    rpc_calls:
+      - name: Get
+        method: "GET"
+        endpoint: "/ids/settings/get_ruleset"
+        params:
+          - name: id
+            optional: false
+        result_type: Ruleset
+      - name: Toggle
+        method: "POST"
+        endpoint: "/ids/settings/toggle_ruleset"
+        params:
+          - name: filename
+            optional: false
+          - name: enabled
+            optional: false
+        result_type: ToggleResult
