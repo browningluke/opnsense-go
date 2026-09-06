@@ -150,7 +150,7 @@ func TestAssignmentCreateDelete(t *testing.T) {
 	ctx := context.Background()
 
 	assignment := &Assignment{
-		Device:      device,
+		Device:      api.SelectedMap(device),
 		Description: "Test assignment",
 		Lock:        "0",
 	}

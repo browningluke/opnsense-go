@@ -20,9 +20,9 @@ var AssignmentOpts = api.ReqOpts{
 // Data structs
 
 type Assignment struct {
-	Device      string `json:"if"`
-	Description string `json:"descr"`
-	Lock        string `json:"lock"`
+	Device      api.SelectedMap `json:"if"`
+	Description string          `json:"descr"`
+	Lock        string          `json:"lock"`
 }
 
 // CRUD operations

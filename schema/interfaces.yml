@@ -133,7 +133,7 @@ resources:
       reconfigure: "/interfaces/assignment/reconfigure"
     attrs:
       - name: Device
-        type: string
+        type: SelectedMap
         key: if
       - name: Description
         type: string
