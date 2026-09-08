@@ -85,6 +85,9 @@ resources:
       - name: KeepAlive
         type: string
         key: keepalive
+      - name: Servers
+        type: SelectedMapList
+        key: servers
 
 rpc:
   - name: General
