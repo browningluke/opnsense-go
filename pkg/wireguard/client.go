@@ -28,6 +28,7 @@ type Client struct {
 	ServerAddress string              `json:"serveraddress"`
 	ServerPort    string              `json:"serverport"`
 	KeepAlive     string              `json:"keepalive"`
+	Servers       api.SelectedMapList `json:"servers"`
 }
 
 // CRUD operations
