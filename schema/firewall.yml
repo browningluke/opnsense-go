@@ -162,7 +162,32 @@ resources:
       - name: MatchLocalTag
         type: string
         key: tagged
-
+  - name: Group
+    filename: group
+    monad: group
+    endpoints:
+      add: "/firewall/group/addItem"
+      get: "/firewall/group/getItem"
+      update: "/firewall/group/setItem"
+      delete: "/firewall/group/delItem"
+      search: "/firewall/group/searchItem"
+      reconfigure: "/firewall/group/reconfigure"
+    attrs:
+      - name: Name
+        type: string
+        key: ifname
+      - name: Members
+        type: SelectedMapList
+        key: members
+      - name: Sequence
+        type: string
+        key: sequence
+      - name: NoGroup
+        type: string
+        key: nogroup
+      - name: Description
+        type: string
+        key: descr
   - name: NAT
     filename: nat
     monad: rule
