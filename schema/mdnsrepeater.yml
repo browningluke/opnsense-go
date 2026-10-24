@@ -1,0 +1,42 @@
+---
+name: mdnsrepeater
+# Requires the os-mdns-repeater plugin.
+rpc:
+  - name: Settings
+    filename: settings
+    customTypes:
+      SettingsMonad:
+        - name: MDNSRepeater
+          type: Settings
+          key: mdnsrepeater
+      Settings:
+        - name: Enabled
+          type: string
+          key: enabled
+        - name: EnableCarp
+          type: string
+          key: enablecarp
+        - name: Interfaces
+          type: SelectedMapList
+          key: interfaces
+        - name: Blocklist
+          type: SelectedMapList
+          key: blocklist
+    rpc_calls:
+      - name: Get
+        method: GET
+        endpoint: "/mdnsrepeater/settings/get"
+        result_type: SettingsMonad
+      - name: Set
+        method: POST
+        endpoint: "/mdnsrepeater/settings/set"
+        params:
+          - name: mdnsrepeater
+            optional: false
+            bodyParameter: true
+            customType: Settings
+        result_type: api.ActionResult
+      - name: Reconfigure
+        method: POST
+        endpoint: "/mdnsrepeater/service/reconfigure"
+        result_type: api.ReconfigureStatusResult

@@ -66,6 +66,9 @@ Edit `schema/<service>.yml`, then run `make all`. The `generate.go` in every ser
 
 CI runs the integration suite as parallel shards — one runner + one OPNsense VM per shard, defined in the `SHARDS` map in the `plan` job of `.github/workflows/go-test-reusable.yml`. **If you add a new `pkg/<service>` package, you must assign it to a shard there** (usually the `other` bucket; give it a dedicated shard if its suite runs long). The `plan` job fails the build if a service package is unassigned.
 
+### Plugin-backed services
+CI boots the stock image, where plugins can't be installed (OPNsense requires an up-to-date core first), so plugin endpoints return 404 there. New plugin packages should name the plugin in their schema file and skip their integration tests on a 404; `mdnsrepeater` (`os-mdns-repeater`) is the reference. The provider's CI image has the plugins installed and covers them end to end. Older plugin packages (`bind`, `quagga`, `dyndns`) predate this and have no integration tests.
+
 ### Schema YAML structure
 - `resources` block → CRUD resources. Each resource becomes `Add<Name>`, `Get<Name>`, `Update<Name>`, `Delete<Name>` methods.
   - `readOnly: true` — omits Add/Update/Delete.
