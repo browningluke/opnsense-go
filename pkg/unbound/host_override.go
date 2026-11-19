@@ -27,6 +27,7 @@ type HostOverride struct {
 	Server      string          `json:"server"`
 	MXPriority  string          `json:"mxprio"`
 	MXDomain    string          `json:"mx"`
+	TTL         string          `json:"ttl"`
 	Description string          `json:"description"`
 }
 

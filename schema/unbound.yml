@@ -54,6 +54,9 @@ resources:
       - name: MXDomain
         type: string
         key: mx
+      - name: TTL
+        type: string
+        key: ttl
       - name: Description
         type: string
         key: description
